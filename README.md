@@ -15,7 +15,7 @@ Your new HTML website will immediately have publishable and documented code, and
  - Turnkey access to Travis CI
  - Documentation for contributors
  
- ## How to use this
+## How to use this
  
 [Download a release](https://github.com/fulldecent/html-website-template/releases) and edit the files in the `source/` directory.
 
