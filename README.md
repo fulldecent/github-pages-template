@@ -13,6 +13,7 @@ Your new HTML website will immediately have publishable and documented code, and
  - Clean folder structure
  - Testing as a standard
  - Turnkey access to Travis CI
+ - HTTPS by default
  - Documentation for contributors
  
 ## How to use this
