@@ -18,17 +18,7 @@ Your new HTML website will immediately have publishable and documented code, and
  
 ## How to use this
 
-Clone or [download a release](https://github.com/fulldecent/html-website-template/releases) then edit edit the files in the `sources/` directory.
-
-You then add all the interesting content you want your website to have.
-
----
----
----
-
-# WARNING
-
-This website is based on [html-website-template](https://github.com/fulldecent/html-website-template). Before you publish this awesome website to the world, complete the following stpes.
+First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for you site.
 
 THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
 
@@ -40,6 +30,7 @@ THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
  - [ ] Update the release script in `Rakefile`
  - [ ] Delete all this crap up here
  - [ ] Publish the site (full steps are in [CONTRIBUTING.md](CONTRIBUTING.md) in case you forget)
+ - [ ] Set up HTTPS on your website (e.g. using Let's Encrypt)
  
 THEN YOU'RE DONE, GO STAR [html-website-template](https://github.com/fulldecent/html-website-template) FOR UPDATES.
 
