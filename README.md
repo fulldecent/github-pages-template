@@ -15,14 +15,14 @@ Your new HTML website will immediately have publishable and documented code, and
  - Turnkey access to Travis CI
  - HTTPS by default
  - Documentation for contributors
- 
+
 ## How to use this
 
 First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for you site.
 
 THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
 
- - [ ] Open the `sources/` folder in your favorite text editor and make a great web page.
+ - [ ] Open the `source/` folder in your favorite text editor and make a great web page.
  - [ ] Fix all validation testing errors, add more tests (yes really)
  - [ ] Upload your website source code to GitHub or other collaboration point
  - [ ] Enable Travis CI validation testing for your repository
@@ -31,7 +31,7 @@ THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
  - [ ] Delete all this crap up here
  - [ ] Publish the site (full steps are in [CONTRIBUTING.md](CONTRIBUTING.md) in case you forget)
  - [ ] Set up HTTPS on your website (e.g. using Let's Encrypt)
- 
+
 THEN YOU'RE DONE, GO STAR [html-website-template](https://github.com/fulldecent/html-website-template) FOR UPDATES.
 
 ---
@@ -50,14 +50,18 @@ This website exists to help educate the world about horses. There are so many ki
 
 ## Build instructions
 
-No building is necessary, just access the `sources/` folder using a web browser. Also, you may use `php -S localhost:8000` or equivalent to serve your local copy of the website using a computer, then access it using a phone or other device.
+No building is necessary, just access the `source/` folder using a web browser. Also, you may use `php -S localhost:8000` or equivalent to serve your local copy of the website using a computer, then access it using a phone or other device.
 
 Our validation testing automatically checks for problems on the website before we publish it. Run our test suite by doing the following:
 
- 1. Use the command line and install ruby on your computer (installed by default on macOS and all Linux versions)
+ 1. Use the command line and install `ruby` on your computer (installed by default on macOS and all Linux versions)
  2. `gem install bundler`
  3. `bundle install`
- 4. `rake test`
+ 4. `bundle exec rake test`
+
+## Deploy instructions
+
+ 1. `bundle exec rake deploy`
 
 ## Author
 

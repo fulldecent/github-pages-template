@@ -1,0 +1,21 @@
+PATH
+  remote: MOVE-THIS-TO-SEPARATE-PROJECT
+  specs:
+    lightning_sites (0.1.0)
+      colorize (~> 0.8)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colorize (0.8.1)
+    rake (11.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  lightning_sites!
+  rake
+
+BUNDLED WITH
+   1.14.4
