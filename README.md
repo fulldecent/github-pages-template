@@ -9,7 +9,7 @@ Use this template as a starting point for any HTML website project that you want
 
 Your new HTML website will immediately have publishable and documented code, and all these features:
 
- - Ability to deploy using a Rakefile
+ - Deploy using `rake` (and you don't need to be a nerd to use it)
  - Clean folder structure
  - Testing as a standard
  - Turnkey access to Travis CI
@@ -18,7 +18,7 @@ Your new HTML website will immediately have publishable and documented code, and
 
 ## How to use this
 
-First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for you site.
+First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for your site.
 
 THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
 
