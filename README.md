@@ -18,7 +18,7 @@ Your new HTML website will immediately have publishable and documented code, and
 
 ## How to use this
 
-First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for you site.
+First clone or [download a release](https://github.com/fulldecent/html-website-template/releases), that is the starting point for your site.
 
 THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
 
