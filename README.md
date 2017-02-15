@@ -9,7 +9,7 @@ Use this template as a starting point for any HTML website project that you want
 
 Your new HTML website will immediately have publishable and documented code, and all these features:
 
- - Ability to deploy using a Rakefile
+ - Deploy using `rake` (and you don't need to be a nerd to use it)
  - Clean folder structure
  - Testing as a standard
  - Turnkey access to Travis CI
