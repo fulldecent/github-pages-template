@@ -18,24 +18,21 @@ Rake::TaskManager.record_task_metadata = true
 ##                             Good example: {'logs' => 'horseslov@172.16.11.23:/logs', ...}
 @production_backup_dir = 'production_backups'
 
+##
+## COLOR SCHEME
+##
+## ...
+##
+
 module LightningSites
   # Your code goes here...
 end
 
-# Note: this stuff also works even if only your SOURCE_DIR is checked into git
+# Note: this stuff works even if only your SOURCE_DIR is checked into git
 namespace :git do
   def source_dir_is_git?
     return false if !File.directory?(@source_dir)
-    sh "cd #{@source_dir} && git rev-parse --git-dir > /dev/null 2> /dev/null" do |ok, res|
-      return ok
-    end
-  end
-
-  desc "Download and create a copy of code from git server"
-  task :clone do
-    puts 'Cloning repository'.blue
-    sh "git clone -b #{@git_branch} --single-branch #{@git_clone_url} #{@source_dir}"
-    puts 'Clone complete'.green
+    return system("cd #{@source_dir} && git rev-parse --git-dir > /dev/null 2> /dev/null")
   end
 
   desc "Fetch and merge from git server, using current checked out branch"
@@ -64,14 +61,16 @@ namespace :git do
     sh "cd #{@source_dir} && git ls-files -z | xargs -0 -n1 -I{} -- git log -1 --format='%ai {}' {} | cut -b 1-11,27-"
   end
 
-  desc "Save the commit hash to VERSION on the staging directory"
+  desc "Save the commit hash to VERSION in the build directory"
   task :save_version do
     if !source_dir_is_git?
       puts "There is no git directory, skipping"
       next
     end
     hash = `cd #{@source_dir} && git rev-parse HEAD`.chomp
-    sh "cd '#{@staging_dir}'; echo '#{hash}' > VERSION"
+    local_changes = `git diff --shortstat`.chomp.length
+    File.write("#{@build_dir}/VERSION", local_changes ? "#{hash}*\n" : "#{hash}*")
+    puts 'Saved git version to VERSION file'.green
   end
 end
 
@@ -80,27 +79,37 @@ namespace :jekyll do
   desc "Build Jekyll site"
   task :build do
     puts 'Building Jekyll'.blue
-    sh "jekyll build --incremental --source '#{@source_dir}' --destination '#{@staging_dir}'"
+    sh "jekyll build --incremental --source '#{@source_dir}' --destination '#{@build_dir}'"
     puts 'Built'.green
   end
 
   desc "Run a Jekyll test server"
   task :test do
     puts 'Running test server'.blue
-    sh "jekyll serve --source '#{@source_dir}' --destination '#{@staging_dir}'"
+    sh "jekyll serve --source '#{@source_dir}' --destination '#{@build_dir}'"
   end
 end
 
 # Interact with a production environment
 namespace :rsync do
+  desc "Copy the source directory to the build directory"
+  task :copy_build do
+    puts 'Copying source directory to build directory'.blue
+    rsync_opts = '--archive --delete --exclude .git'
+    from = "#{@source_dir}/"
+    to = "#{@build_dir}/"
+    sh "rsync #{rsync_opts} '#{from}' '#{to}'"
+    puts 'Copied'.green
+  end
+
   desc "Bring deployed web server files local"
   task :pull do
     raise '@production_dir is not defined' unless defined? @production_dir
-    raise '@staging_dir is not defined' unless defined? @staging_dir
+    raise '@build_dir is not defined' unless defined? @build_dir
     puts 'Pulling website'.blue
     rsync_opts = '-vr --delete --exclude .git --exclude cache'
     remote = "#{@production_dir}/"
-    local = "#{@staging_dir}/"
+    local = "#{@build_dir}/"
     sh "rsync #{rsync_opts} '#{remote}' '#{local}'"
     puts 'Pulled'.green
   end
@@ -108,11 +117,11 @@ namespace :rsync do
   desc "Push local files to production web server"
   task :push do
     raise '@production_dir is not defined' unless defined? @production_dir
-    raise '@staging_dir is not defined' unless defined? @staging_dir
+    raise '@build_dir is not defined' unless defined? @build_dir
     puts 'Pushing website'.blue
     rsync_opts = '-r -c -v --ignore-times --chmod=ugo=rwX --delete --exclude .git --exclude cache'
     remote = "#{@production_dir}/"
-    local = "#{@staging_dir}/"
+    local = "#{@build_dir}/"
     sh "rsync #{rsync_opts} '#{local}' '#{remote}'"
     puts 'Pushed'.green
   end
@@ -156,21 +165,21 @@ namespace :html do
   desc "Checks HTML with htmlproofer, excludes offsite broken link checking"
   task :check_onsite do
     puts "⚡️  Checking HTML".blue
-    sh "bundle exec htmlproofer --disable-external --check-html --checks-to-ignore ScriptCheck,LinkCheck,HtmlCheck #{@staging_dir} > /dev/null || true"
+    sh "bundle exec htmlproofer --disable-external --check-html --checks-to-ignore ScriptCheck,LinkCheck,HtmlCheck #{@build_dir} > /dev/null || true"
     puts "☀️  Checked HTML".green
   end
 
   desc "Checks links with htmlproofer"
   task :check_links do
     puts "⚡️  Checking links".blue
-    sh "bundle exec htmlproofer --checks-to-ignore ScriptCheck,ImageCheck #{@staging_dir} || true"
+    sh "bundle exec htmlproofer --checks-to-ignore ScriptCheck,ImageCheck #{@build_dir} || true"
     puts "☀️  Checked HTML".green
   end
 
   desc "Find all external links"
   task :find_external_links do
     puts "⚡️  Finding all external links".blue
-    sh "egrep -oihR '\\b(https?|ftp|file)://[-A-Z0-9+@/%=~_|!:,.;]*[A-Z0-9+@/%=~_|]' #{@staging_dir} || true"
+    sh "egrep -oihR '\\b(https?|ftp|file)://[-A-Z0-9+@/%=~_|!:,.;]*[A-Z0-9+@/%=~_|]' #{@build_dir} || true"
   end
 end
 

@@ -1,9 +1,21 @@
 # Uses rake tasks from https://github.com/fulldecent/Sites
 abort('Please run this using `bundle exec rake`') unless ENV["BUNDLE_BIN_PATH"]
-
-
 require 'lightning_sites'
 require 'shellwords'
+
+##
+## SETUP BUILD TASK
+##
+
+desc "Perform website build"
+task :build do
+  puts ''
+  puts ' 🔨  Building your website'.blue
+  puts ''
+  Rake::Task['rsync:copy_build'].invoke
+  Rake::Task['git:save_version'].invoke
+end
+
 
 ##
 ## SETUP DEPLOYMENT VARIABLES
@@ -58,8 +70,19 @@ task :default do
   puts 'TODO: make a note here about whether there are remote changes not yet merged'
 
   puts ''
-  puts 'Here are all available rake tasks:'.blue
+  puts 'Here are all available namespaced rake tasks:'.blue
   Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
-  Rake::application.options.show_task_pattern = //
+  Rake::application.options.show_task_pattern = /:/
   Rake::application.display_tasks_and_comments
+
+  puts ''
+  puts 'Here are all available local rake tasks:'.blue
+  Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
+  Rake::application.options.show_task_pattern = /^[^:]*$/
+  Rake::application.display_tasks_and_comments
+end
+
+desc "Show all the tasks 2 "
+task :default do
+  puts "OVERRIDE"
 end
