@@ -2,6 +2,7 @@
 abort('Please run this using `bundle exec rake`') unless ENV["BUNDLE_BIN_PATH"]
 require 'lightning_sites'
 require 'shellwords'
+# encoding: UTF-8 # https://stackoverflow.com/a/2105210/300224
 
 ##
 ## SETUP BUILD TASK
