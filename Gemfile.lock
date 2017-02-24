@@ -50,6 +50,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  html-proofer
   lightning_sites!
   rake
 
