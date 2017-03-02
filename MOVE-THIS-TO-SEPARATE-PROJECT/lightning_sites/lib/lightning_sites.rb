@@ -35,20 +35,20 @@ namespace :git do
     return system("cd #{@source_dir} && git rev-parse --git-dir > /dev/null 2> /dev/null")
   end
 
-  desc "Fetch and merge from git server, using current checked out branch"
+  desc "Incorporate changes from the remote repository into the current branch"
   task :pull do
     puts 'Pulling git'.blue
     sh "cd '#{@source_dir}'; git pull"
     puts 'Pulled'.green
   end
 
-  desc "Shows status of all files in git repo"
+  desc "Displays paths that have differences between the index file and the current HEAD commit"
   task :status do
     if !source_dir_is_git?
       puts "There is no git directory, skipping"
       next
     end
-    puts 'Showing `git status` of all source files'.blue
+    puts 'Here are differences between git\'s index file and the current HEAD commit'.blue
     sh "cd #{@source_dir} && git status --short"
   end
 
@@ -58,7 +58,8 @@ namespace :git do
       puts "There is no git directory, skipping"
       next
     end
-    sh "cd #{@source_dir} && git ls-files -z | xargs -0 -n1 -I{} -- git log -1 --format='%ai {}' {} | cut -b 1-11,27-"
+    puts 'Modified   File'.blue
+    sh "cd #{@source_dir} && git ls-files -z | xargs -0 -n1 -I{} -- git log -1 --date=short --format='%ad {}' {}"
   end
 
   desc "Save the commit hash to VERSION in the build directory"
@@ -198,4 +199,26 @@ task :distclean do
   puts "Deleting all productions backups".red
   FileUtils.rm_rf(@production_backup_dir)
   puts "Deleting complete".green
+end
+
+desc "Show all the tasks"
+task :default do
+  puts ''
+  puts '⚡️ THIS RAKEFILE USES LIGHTNING SITES'.blue
+  puts ''
+
+  # http://stackoverflow.com/a/1290119/300224
+  Rake::Task["git:status"].invoke
+
+  puts ''
+  puts 'Here are all available namespaced rake tasks:'.blue
+  Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
+  Rake::application.options.show_task_pattern = /:/
+  Rake::application.display_tasks_and_comments
+
+  puts ''
+  puts 'Here are all available local rake tasks:'.blue
+  Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
+  Rake::application.options.show_task_pattern = /^[^:]*$/
+  Rake::application.display_tasks_and_comments
 end

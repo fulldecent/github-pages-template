@@ -60,30 +60,3 @@ task :deploy => ['git:helloworld']
 ## CONFIGURE STATUS CHECK TASKS, THIS IS THE DEFAULT TASK FOR `bundle exec rake`
 ## See more options at https://github.com/fulldecent/Sites
 ##
-
-
-desc "Show all the tasks"
-task :default do
-  # http://stackoverflow.com/a/1290119/300224
-  Rake::Task["git:status"].invoke
-
-  puts 'TODO: make a note here about whether there are local changes not yet committed'
-  puts 'TODO: make a note here about whether there are remote changes not yet merged'
-
-  puts ''
-  puts 'Here are all available namespaced rake tasks:'.blue
-  Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
-  Rake::application.options.show_task_pattern = /:/
-  Rake::application.display_tasks_and_comments
-
-  puts ''
-  puts 'Here are all available local rake tasks:'.blue
-  Rake::application.options.show_tasks = :tasks  # this solves sidewaysmilk problem
-  Rake::application.options.show_task_pattern = /^[^:]*$/
-  Rake::application.display_tasks_and_comments
-end
-
-desc "Show all the tasks 2 "
-task :default do
-  puts "OVERRIDE"
-end
