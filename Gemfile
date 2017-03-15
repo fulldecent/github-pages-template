@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem 'lightning_sites', :path => 'MOVE-THIS-TO-SEPARATE-PROJECT'
+gem 'lightning_sites'
 
 group :test do
   gem 'rake'
-  gem "html-proofer"
+  gem 'html-proofer'
 end
