@@ -1,9 +1,11 @@
 language: ruby
+rvm:
+- 2.2.5
 
 script:
 # - bundle exec jekyll build
  - bundle exec rake build
- - bundle exec htmlproofer --check-external-hash --check-favicon --check-html --check-img-http --check-opengraph --enforce-https --timeframe 6w ./_site
+ - bundle exec htmlproofer --check-external-hash --check-html --check-img-http --check-opengraph --enforce-https --timeframe 6w ./_site
 
 cache:
   directories:
