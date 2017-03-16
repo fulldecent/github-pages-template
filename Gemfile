@@ -4,5 +4,5 @@ gem 'lightning_sites'
 
 group :test do
   gem 'rake'
-  gem 'html-proofer'
+  gem 'html-proofer', '~>3.5.0'
 end

@@ -1,62 +1,19 @@
-# Uses rake tasks from https://github.com/fulldecent/Sites
 abort('Please run this using `bundle exec rake`') unless ENV["BUNDLE_BIN_PATH"]
-require 'lightning_sites'
-require 'shellwords'
-# encoding: UTF-8 # https://stackoverflow.com/a/2105210/300224
+require 'lightning_sites' # https://github.com/fulldecent/lightning-sites
 
-##
-## SETUP BUILD TASK
-##
-
-desc "Perform website build"
-task :build do
-  puts ''
-  puts ' 🔨  Building your website'.blue
-  puts ''
-  Rake::Task['rsync:copy_build'].invoke
-  Rake::Task['git:save_version'].invoke
-end
-
-
-##
-## SETUP DEPLOYMENT VARIABLES
-##
+@build_excludes.push('README.md','LICENSE','CONTRIBUTING.md')
 production_base = 'horseslov@172.16.11.23:'
-@production_dir = "#{production_base}www"
-@production_backup_targets = {
+@remote_dir = "#{production_base}www"
+@backup_targets = {
   'www' => "#{production_base}www",
   'logs' => "#{production_base}logs"
 }
 
+desc "Perform website build"
+task :build => ['rsync:copy_build', 'git:save_version']
 
-##
-## CONFIGURE TESTING TASKS
-## See more options at https://github.com/fulldecent/Sites
-##
+desc "Perform all testing on the built HTML"
+task :test => [:build, 'html:check']
 
-desc "Perform validation testing for this website's code"
-task :test => [] do
-  puts "To run even more tests, which may be expensive, also run text_extensive"
-end
-
-desc "Perform more tests with extensive time, bandwidth or other cost"
-task :text_extensive do
-
-end
-
-
-##
-## CONFIGURE DEPLOYMENT TASKS
-## See more options at https://github.com/fulldecent/Sites
-##
-
-desc "This is a task using code from the included library"
-task :deploy => ['git:helloworld']
-
-#task :default => :deploy
-
-
-##
-## CONFIGURE STATUS CHECK TASKS, THIS IS THE DEFAULT TASK FOR `bundle exec rake`
-## See more options at https://github.com/fulldecent/Sites
-##
+desc "Publish website to productions server"
+task :publish => ['rsync:push']
