@@ -42,7 +42,7 @@ THEN YOU'RE DONE, GO STAR [html-website-template](https://github.com/fulldecent/
 
 This website is published at https://example.com/horses/
 
-<a href="https://placehold.it/400?text=Screen+shot"><img width=200 height=200 src="https://placehold.it/400?text=Screen+shot" alt="Screenshot" /></a>
+![screen shot 2017-03-16 at 6 30 58 pm](https://cloud.githubusercontent.com/assets/382183/24021325/cb3aaa9a-0a76-11e7-8182-6138b1d3c0c2.png)
 
 ## Mission
 
