@@ -3,7 +3,7 @@ Use this template as a starting point for any HTML website project that you want
 
 **STATUS: This project is in the planning phase.**
 
-[ SCREENSHOT ] Add screenshot here of the project layout. See https://github.com/fulldecent/swift3-module-template
+![screen shot 2017-03-16 at 6 18 48 pm](https://cloud.githubusercontent.com/assets/382183/24020995/10551b8a-0a75-11e7-812a-9999fc12c2e2.png)
 
 ## Features
 
