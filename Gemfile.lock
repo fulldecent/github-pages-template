@@ -24,9 +24,10 @@ GEM
       typhoeus (~> 0.7)
       yell (~> 2.0)
     i18n (0.8.1)
-    lightning_sites (0.2.0)
+    lightning_sites (1.0.5)
       colorize (~> 0.8)
       html-proofer
+      rake
     mercenary (0.3.6)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
@@ -46,9 +47,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  html-proofer (~> 3.5.0)
   lightning_sites
-  rake
 
 BUNDLED WITH
    1.14.6
