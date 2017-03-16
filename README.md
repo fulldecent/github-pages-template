@@ -22,8 +22,8 @@ First clone or [download a release](https://github.com/fulldecent/html-website-t
 
 THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
 
- - [ ] Open the `source/` folder in your favorite text editor and make a great web page.
- - [ ] Fix all validation testing errors, add more tests (yes really)
+ - [ ] Open `index.html` in your favorite text editor and make a great web page, add other content if necessary.
+ - [ ] Fix all validation testing errors (see **Build instructions**, below)
  - [ ] Upload your website source code to GitHub or other collaboration point
  - [ ] Enable Travis CI validation testing for your repository
  - [ ] Add a screenshot or AT LEAST some picture, and fill in this readme
