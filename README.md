@@ -1,7 +1,7 @@
 # HTML Website Template
 Use this template as a starting point for any HTML website project that you want other people to collaborate on.
 
-**STATUS: This project is in the planning phase.**
+**STATUS: This project is actively used in production environments.**
 
 ![screen shot 2017-03-16 at 6 18 48 pm](https://cloud.githubusercontent.com/assets/382183/24020995/10551b8a-0a75-11e7-812a-9999fc12c2e2.png)
 
@@ -26,11 +26,11 @@ THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
  - [ ] Fix all validation testing errors (see **Build instructions**, below)
  - [ ] Upload your website source code to GitHub or other collaboration point
  - [ ] Enable Travis CI validation testing for your repository
- - [ ] Add a screenshot or AT LEAST some picture, and fill in this readme
- - [ ] Update the release script in `Rakefile`
- - [ ] Delete all this crap up here
- - [ ] Publish the site (full steps are in [CONTRIBUTING.md](CONTRIBUTING.md) in case you forget)
- - [ ] Set up HTTPS on your website (e.g. using Let's Encrypt)
+ - [ ] Replace all details below, inspire people to contribute to your project.
+ - [ ] Update the release script in `Rakefile` with details to publish to your server.
+ - [ ] Delete all this crap up here.
+ - [ ] Publish the site (full steps are under **Deploy** below in case you forget)
+ - [ ] Set up HTTPS on your website, some [hints are here](https://github.com/fulldecent/html-website-template/wiki/How-to-set-up-HTTPS)
 
 THEN YOU'RE DONE, GO STAR [html-website-template](https://github.com/fulldecent/html-website-template) FOR UPDATES.
 
@@ -50,18 +50,36 @@ This website exists to help educate the world about horses. There are so many ki
 
 ## Build instructions
 
-No building is necessary, just access the `source/` folder using a web browser. Also, you may use `php -S localhost:8000` or equivalent to serve your local copy of the website using a computer, then access it using a phone or other device.
+We test and publish this website using a few simple tools. Please set up these tools to contribute seriously to our project:
 
-Our validation testing automatically checks for problems on the website before we publish it. Run our test suite by doing the following:
+1. Use the command line and install `ruby` on your computer (installed by default on macOS and all Linux versions)
+2. `gem install bundler`
+3. `export NOKOGIRI_USE_SYSTEM_LIBRARIES=true`
+3. `bundle install --path vendor/bundle`
 
- 1. Use the command line and install `ruby` on your computer (installed by default on macOS and all Linux versions)
- 2. `gem install bundler`
- 3. `bundle install`
- 4. `bundle exec rake test`
+Now you are done setting up. Use this command to build the website.
+
+```sh
+bundle exec rake build
+```
+
+You can now access the website by pointing your browser to the `BUILD` folder or running a command like `cd BUILD; php -S localhost:8000`.
+
+Also, you can check for common problem on our website automatically, just run this command.
+
+```sh
+bundle exec rake test
+```
 
 ## Deploy instructions
 
- 1. `bundle exec rake deploy`
+Use this command to publish the website online to our server.
+
+```sh
+bundle exec rake publish
+```
+
+You can only run that command if you have authorized SSH keys on your computer.
 
 ## Author
 
@@ -69,4 +87,4 @@ Mary Smith and [other contributors](https://github.com/fulldecent/html-website-t
 
 ## License
 
-This website is published under the MIT license. See the LICENSE file for more info.
+Copyright 2017 Mary Smith. All rights reserved.
