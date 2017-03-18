@@ -50,12 +50,16 @@ This website exists to help educate the world about horses. There are so many ki
 
 ## Build instructions
 
-We test and publish this website using a few simple tools. Please set up these tools to contribute seriously to our project:
+We test and publish this website using a few simple tools. Please set up these tools (takes about 3 minutes) to contribute seriously to our project:
 
-1. Use the command line and install `ruby` on your computer (installed by default on macOS and all Linux versions)
+1. Set up Ruby on your system
+   * For macOS, open Terminal.app paste in these commands
+     * [Install Homebrew](https://brew.sh/) (click the link and paste that one command into Terminal.app)
+     * `brew install ruby`
+     * `gem update --system`
 2. `gem install bundler`
 3. `export NOKOGIRI_USE_SYSTEM_LIBRARIES=true`
-3. `bundle install --path vendor/bundle`
+3. `bundle install`
 
 Now you are done setting up. Use this command to build the website.
 
