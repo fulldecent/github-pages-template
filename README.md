@@ -56,7 +56,9 @@ We test and publish this website using a few simple tools. Please set up these t
    * For macOS, open Terminal.app paste in these commands
      * [Install Homebrew](https://brew.sh/) (click the link and paste that one command into Terminal.app)
      * `brew install ruby`
-     * `gem update --system`
+   * For Linux Mint, open Terminal and paste in these commands
+     * `sudo apt-get install ruby-dev build-essential libxml2 libxslt-dev libcurl4-openssl-dev`
+2. `gem update --system`
 2. `gem install bundler`
 3. `export NOKOGIRI_USE_SYSTEM_LIBRARIES=true`
 3. `bundle install`
