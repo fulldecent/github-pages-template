@@ -14,24 +14,30 @@ GEM
     ethon (0.10.1)
       ffi (>= 1.3.0)
     ffi (1.9.18)
-    html-proofer (3.6.0)
+    html-proofer (3.7.2)
       activesupport (>= 4.2, < 6.0)
       addressable (~> 2.3)
       colored (~> 1.2)
       mercenary (~> 0.3.2)
-      nokogiri (~> 1.5)
+      nokogiri (~> 1.7)
       parallel (~> 1.3)
       typhoeus (~> 0.7)
       yell (~> 2.0)
+    html-proofer-mailto_awesome (0.1.3)
+      html-proofer (~> 3.0, >= 3.0.0)
+      rake (~> 12.0, >= 12.0.0)
     i18n (0.8.1)
+    json (2.1.0)
     json-schema (2.8.0)
       addressable (>= 2.4)
-    lightning_sites (1.1.0)
+    lightning_sites (1.2.0)
       colorize (~> 0.8)
-      html-proofer
-      nokogiri
-      rake
-      web-puc (~> 0.3)
+      html-proofer (>= 3.7.2)
+      html-proofer-mailto_awesome (~> 0.1.2)
+      nokogiri (>= 1.7.2)
+      rake (>= 12.0.0)
+      w3c_validators (>= 1.3.2)
+      web-puc (~> 0.3.1)
     mercenary (0.3.6)
     mini_portile2 (2.1.0)
     minitest (5.10.2)
@@ -50,7 +56,10 @@ GEM
       ethon (>= 0.8.0)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
-    web-puc (0.3.0)
+    w3c_validators (1.3.2)
+      json (>= 1.8)
+      nokogiri (~> 1.6)
+    web-puc (0.3.1)
       rake (~> 12)
       structured-acceptance-test (~> 0.0.6)
     yell (2.0.7)
@@ -59,7 +68,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  lightning_sites
+  lightning_sites (>= 1.2.0)
 
 BUNDLED WITH
    1.14.6
