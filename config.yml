@@ -1,0 +1,20 @@
+# Site settings
+title: ACLS.net Canada
+url: https://aclscertification.ca
+google_analytics_id: UA-37916519-1
+google_analytics_domains: ['acls.net', 'aclscertification.ca', 'renewacls.com', 'rnmobility.com', 'emtadvantage.com']
+
+# Collections of files
+##collections:
+#  ecg-of-the-day:
+##    output: true
+#    permalink: "/ecg-of-the-day/:path.html"
+
+exclude:
+  - README.md
+  - vendor
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - Rakefile
+  - BACKUPS
