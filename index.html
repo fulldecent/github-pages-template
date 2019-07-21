@@ -2,11 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Test case for false 403 and 404 errors by HTML-proofer</title>
+    <title>Test case for html-proofer not catching all errors in html.</title>
   </head>
 
   <body>
-      <p><a href="https://health.usnews.com/health-news/patient-advice/slideshows/12-questions-to-ask-before-discharge">False 403 Link</a></p>
-      <p><a href="https://www.arkansas.com/relocate/activities/">False 404 link</a></p>
+      <div class="container">
+        <p>Container <code>div</code> without end tag</p>
+          <div class="wrapping">
+            <p>wrapping <code>div</code> without end tag and <code>p</code> tag without end tag.
   </body>
 </html>
+<!-- Stray hr tag -->
+<hr>
