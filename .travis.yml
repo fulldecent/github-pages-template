@@ -3,7 +3,8 @@ rvm:
 - 2.2.5
 
 script:
- - gem update --system
+ - gem uninstall bundler
+ - gem install bundler -v 1.17.3
  - bundle exec rake test
 
 cache:
