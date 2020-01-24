@@ -53,7 +53,7 @@ This website exists to help educate the world about horses. There are so many ki
 We test and publish this website using a few simple tools. Please set up these tools (takes about 3 minutes) to contribute seriously to our project:
 
 1. Set up Ruby on your system
-   * For macOS, open Terminal.app paste in these commands
+   * For macOS, open Terminal.app and paste in these commands
      * [Install Homebrew](https://brew.sh/) (click the link and paste that one command into Terminal.app)
      * `brew install ruby`
    * For Linux Mint, open Terminal and paste in these commands
@@ -71,7 +71,7 @@ bundle exec rake build
 
 You can now access the website by pointing your browser to the `BUILD` folder or running a command like `cd BUILD; php -S localhost:8000`.
 
-Also, you can check for common problem on our website automatically, just run this command.
+Also, you can check for common problems on our website automatically, just run this command.
 
 ```sh
 bundle exec rake test
