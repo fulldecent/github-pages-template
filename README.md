@@ -36,7 +36,7 @@ THEN YOU'RE DONE, GO STAR [html-website-template](https://github.com/fulldecent/
 
 ---
 
-# My First Website About Horses
+#First website about horses
 
 [![CI Status](http://img.shields.io/travis/fulldecent/html-website-template.svg?style=flat)](https://travis-ci.org/fulldecent/html-website-template)
 
