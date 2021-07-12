@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     colorize (0.8.1)
     ethon (0.12.0)
@@ -35,7 +35,7 @@ GEM
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
     parallel (1.19.1)
-    public_suffix (4.0.3)
+    public_suffix (4.0.6)
     rainbow (3.0.0)
     rake (12.3.3)
     safe-enum (0.3.0)
