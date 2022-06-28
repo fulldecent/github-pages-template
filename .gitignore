@@ -1,5 +1,7 @@
 # For Jekyll
-.jekyll-metadata
+/.jekyll-metadata
+/.jekyll-cache
+/_site
 
 # For html-proofer
 tmp

@@ -1,0 +1,27 @@
+name: Build, Test
+
+on: push
+
+jobs:
+  build-test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby 2.6 # See https://www.ruby-lang.org/en/downloads/branches/
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Cache HTMLProofer
+        id: cache-htmlproofer
+        uses: pat-s/always-upload-cache@v2.1.3 # See https://github.com/actions/cache/issues/92#issuecomment-754100905
+        with:
+          path: tmp/.htmlproofer
+          key: ${{ runner.os }}-htmlproofer # Would like to share this between branches
+      - name: Build and test
+        run: |
+          bundle exec rake build
+          bundle exec rake html:check_mailto_awesome
+          bundle exec rake html:check
+          bundle exec rake html:web_puc

@@ -1,0 +1,11 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.238.0/containers/jekyll
+{
+	"name": "Jekyll",
+	"image": "jekyll/builder",
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		4000, // Jekyll server
+		35729 // Live reload server
+	]
+}

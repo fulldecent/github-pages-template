@@ -1,5 +1,5 @@
 # HTML Website Template
-Use this template as a starting point for any HTML website project that you want other people to collaborate on.
+Use this template as a starting point for any static HTML website project that you want other people to collaborate on.
 
 **STATUS: This project is actively used in production environments.**
 
@@ -9,10 +9,11 @@ Use this template as a starting point for any HTML website project that you want
 
 Your new HTML website will immediately have publishable and documented code, and all these features:
 
- - Deploy using `rake` (and you don't need to be a nerd to use it)
+ - Deploy automatically using GitHub Pages
+ - Test locally with VS Code and the Tasks feature (uses `rake` behind scenes)
  - Clean folder structure
- - Testing as a standard
- - Turnkey access to Travis CI
+ - Automatic testing using GitHub Actions
+ - Tests for broken links, broken HTML and other problems
  - HTTPS by default
  - Documentation for contributors
 
@@ -25,7 +26,6 @@ THIS LIST IS EASY, CHECK IT OFF ONE-BY-ONE BABY!
  - [ ] Open `index.html` in your favorite text editor and make a great web page, add other content if necessary.
  - [ ] Fix all validation testing errors (see **Build instructions**, below)
  - [ ] Upload your website source code to GitHub or other collaboration point
- - [ ] Enable Travis CI validation testing for your repository
  - [ ] Replace all details below, inspire people to contribute to your project.
  - [ ] Update the release script in `Rakefile` with details to publish to your server.
  - [ ] Delete all this crap up here.
