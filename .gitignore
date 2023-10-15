@@ -13,3 +13,6 @@ vendor/
 # For Lightning Sites
 BUILD/
 BACKUPS/
+
+./Gemfile
+./Gemfile.lock
