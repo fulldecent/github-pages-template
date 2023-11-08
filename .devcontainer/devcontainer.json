@@ -13,12 +13,6 @@
       "ghcr.io/devcontainers/features/node:1": {
         "version": "lts"
       }
-      // Install PHP (we use PHP on server for some pages)
-      // PHP build is failing...
-      //"ghcr.io/devcontainers/features/php:1": {
-      //"version": "latest",
-      //"installComposer": false
-      //}
     },
     "customizations": {
       "vscode": {
