@@ -2,7 +2,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "better-sqlite3": "^9.0.0",
-    "glob": "^7.2.0",
+    "glob": "^10.3.10",
     "html-validate": "^8.7.0"
   },
   "scripts": {

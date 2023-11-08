@@ -27,7 +27,7 @@ _For local testing (try VS Code + Dev Containers extension, Rancher Desktop), th
 
 1. Install Node & yarn, use version in build-test-publish.yml in "Setup Node.js", (try nvm)
    ```sh
-   nvm use lts/*
+   nvm use 'lts/*'
    yarn install
    ```
 
@@ -45,7 +45,9 @@ bundle exec jekyll build
 bundle exec jekyll serve
 ```
 
-### For PHP, build the site here and run the server on your local terminal
+### (Bonus) if you will build using Jekyll but deploy to a different server with a script interpreter...
+
+You can run PHP or similar on the built site. Here's how.
 
 ```sh
 (cd build; php -S localhost:4001)
@@ -56,6 +58,5 @@ bundle exec jekyll serve
 All testing is performed using Node scripts:
 
 ```sh
-yarn install
 yarn run test-build-html-validate
 ```
