@@ -1,0 +1,15 @@
+# Site settings
+lang: en-US
+permalink: '/:path'
+
+exclude:
+  - README.md
+  - vendor
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - Rakefile
+  - BACKUPS
+
+destination: build
+source: source
