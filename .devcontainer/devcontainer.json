@@ -1,11 +1,29 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.238.0/containers/jekyll
+// Documentation:
+//  - https://github.com/devcontainers/images/tree/main/src/jekyll
+//  - https://github.com/devcontainers/features/tree/main/src/node
+//  - https://github.com/devcontainers/features/tree/main/src/php
+
+// Issue: how to remove the github.copilot dependency?
+// https://stackoverflow.com/questions/76037936/how-to-load-github-copilot-without-specifying-in-devcontainer-json
 {
-	"name": "Jekyll",
-	"image": "jekyll/builder",
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		4000, // Jekyll server
-		35729 // Live reload server
-	]
-}
+    "name": "Jekyll",
+    "image": "mcr.microsoft.com/devcontainers/jekyll",
+    "features": {
+      // Install latest stable Node (we use for validation scripts after build)
+      "ghcr.io/devcontainers/features/node:1": {
+        "version": "lts"
+      }
+      // Install PHP (we use PHP on server for some pages)
+      // PHP build is failing...
+      //"ghcr.io/devcontainers/features/php:1": {
+      //"version": "latest",
+      //"installComposer": false
+      //}
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": ["github.copilot", "html-validate.vscode-html-validate"]
+      }
+    }
+  }
+  
