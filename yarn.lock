@@ -104,10 +104,10 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-better-sqlite3@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-9.0.0.tgz#bca6026fa1e9e5af62bfef448a7d8402d4549958"
-  integrity sha512-lDxQ9qg/XuUHZG6xzrQaMHkNWl37t35/LPB/VJGV8DdScSuGFNfFSqgscXEd8UIuyk/d9wU8iaMxQa4If5Wqog==
+better-sqlite3@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-9.1.1.tgz#f139b180a08ed396e660a0601a46ceefd78b832c"
+  integrity sha512-FhW7bS7cXwkB2SFnPJrSGPmQerVSCzwBgmQ1cIRcYKxLsyiKjljzCbyEqqhYXo5TTBqt5BISiBj2YE2Sy2ynaA==
   dependencies:
     bindings "^1.5.0"
     prebuild-install "^7.1.1"
