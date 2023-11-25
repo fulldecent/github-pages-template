@@ -3,7 +3,7 @@
   "devDependencies": {
     "better-sqlite3": "^9.1.1",
     "glob": "^10.3.10",
-    "html-validate": "^8.7.2"
+    "html-validate": "^8.7.3"
   },
   "scripts": {
     "test-build-html-validate": "node test/test-build-html-validate.mjs"
