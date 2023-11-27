@@ -1,10 +1,8 @@
 // Import the Rule class from the "html-validate" module
 const { Rule } = require("html-validate");
 
-// Define a custom rule named ValidateCanonical that extends the Rule class
-// This rule checks for head tags with link attributes that include rel="canonical"
+// Rule to require a <link rel="canonical" href="..."> in <head>
 class ValidateCanonical extends Rule {
-  // Set up the rule
   setup() {
     // Register an event listener for the "dom:ready" event
     this.on("dom:ready", this.domReady.bind(this));
@@ -25,7 +23,7 @@ class ValidateCanonical extends Rule {
         // Report a violation of the rule for head without a rel="canonical"
         this.report({
           node: headElement,
-          message: 'head without rel="canonical"',
+          message: '<head> missing <link> with rel="canonical"',
         });
       } else {
         // Check if href is extensionless (no .html, .php, etc.)

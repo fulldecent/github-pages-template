@@ -11,9 +11,9 @@
 
 ### Setup environment
 
-_In production (GitHub Actions), environment is setup by by workflows in .github/workflows/._
+_In production (GitHub Actions), environment is setup by by workflows in [.github/workflows/](.github/workflows/)._
 
-_For local testing (try VS Code + Dev Containers extension, Rancher Desktop), these steps are performed by .devcontainer/ when you run Reopen in Container._
+_For local testing (try VS Code + Dev Containers extension, Rancher Desktop), these steps are performed by [.devcontainer/](.devcontainer/) when you run Reopen in Container._
 
 1. Install Ruby (use version in build-test-publish.yml in "Setup Ruby", (try rbenv)
 
@@ -58,6 +58,5 @@ You can run PHP or similar on the built site. Here's how.
 All testing is performed using Node scripts:
 
 ```sh
-yarn install
 yarn run test-build-html-validate
 ```
