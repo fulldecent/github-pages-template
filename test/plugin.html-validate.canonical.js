@@ -1,44 +1,38 @@
-// Import the Rule class from the "html-validate" module
 const { Rule } = require("html-validate");
 
-// Rule to require a <link rel="canonical" href="..."> in <head>
 class ValidateCanonical extends Rule {
-  setup() {
-    // Register an event listener for the "dom:ready" event
-    this.on("dom:ready", this.domReady.bind(this));
+  documentation() {
+    return {
+      description: "Require a <link rel='canonical'> in <head> with specific href format.",
+      url: "https://github.com/fulldecent/github-pages-template/",
+    };
   }
 
-  // Event handler for the "dom:ready" event
-  domReady({ document }) {
-    // Get all head elements in the document
-    const headElements = document.getElementsByTagName("head");
+  setup() {
+    // This is called once when the rule is first loaded.
+    this.on("dom:ready", (event) => {
+      const { document } = event;
+      // Use querySelector, not querySelectorAll, because Google only uses the first canonical link
+      const linkCanonical = document.querySelector('head link[rel="canonical"]');
 
-    // Iterate over each head element
-    headElements.forEach((headElement) => {
-      // Get the first <link> element within the <head> with rel="canonical"
-      const linkElement = headElement.querySelector('link[rel="canonical"]');
-
-      // Skip to the next element if no <link rel="canonical"> is found
-      if (!linkElement) {
-        // Report a violation of the rule for head without a rel="canonical"
+      if (!linkCanonical) {
         this.report({
-          node: headElement,
-          message: '<head> missing <link> with rel="canonical"',
+          node: document.head,
+          message: '<head> is missing <link rel="canonical" ...>',
         });
       } else {
-        // Check if href is extensionless (no .html, .php, etc.)
-        const href = linkElement.getAttribute("href")?.value;
+        const href = linkCanonical.getAttribute("href").value;
+
         if (href && /\.\w+$/.test(href)) {
           this.report({
-            node: linkElement,
+            node: linkCanonical,
             message: 'Canonical link href should be extensionless (no .html, .php, etc.)',
           });
         }
 
-        // Check if href is "/index" or ends with "/index"
-        if (href && (href.toLowerCase() === "/index" || href.toLowerCase().endsWith("/index"))) {
+        if (href && href.toLowerCase().endsWith("/index")) {
           this.report({
-            node: linkElement,
+            node: linkCanonical,
             message: 'Canonical link href should be "/" and not end with "/index"',
           });
         }

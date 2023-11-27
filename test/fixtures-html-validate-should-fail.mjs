@@ -5,37 +5,45 @@ import { FileSystemConfigLoader, HtmlValidate, formatterFactory } from "html-val
 const loader = new FileSystemConfigLoader(); // Load html-validate config from .htmlvalidate.json
 const htmlValidate = new HtmlValidate(loader);
 const formatter = formatterFactory("text");
-var exitCode = 0;
+let allTestsPassed = true;
 
-const fixtureAndExpectedResults = [
+const specifications = [
   {
     filePath: "test/fixtures/missing-canonical-link.html",
     messages: [
       {
         "ruleId": "pacific-medical-training/canonical",
         "severity": 2,
-        "message": "<head> missing <link> with rel=\"canonical\"",
-        "offset": 36,
-        "line": 3,
-        "column": 4,
-        "size": 4,
-        "selector": "html > head"
+        "message": "<head> is missing <link rel=\"canonical\" ...>",
+        "size": 0,
+        "selector": null,
+        "ruleUrl": "https://github.com/fulldecent/github-pages-template/"
       }
     ],
   },
 ];
 
-for (const { filePath, messages } of fixtureAndExpectedResults) {
-  htmlValidate.validateFile(filePath).then((report) => {
-    const expectedString = JSON.stringify(messages, null, 2);
-    const actualString = JSON.stringify(report.results[0].messages, null, 2);
-    if (expectedString !== actualString) {
-      console.error(`Incorrect result when testing ${filePath}.\n\nExpected:\n${expectedString}\n\nActual:\n${actualString}`);
-      exitCode = 1;
-    }
-  });
-};
+// async for all tests
+const tests = specifications.map(async ({ filePath, messages }) => {
+  const report = await htmlValidate.validateFile(filePath);
+  const expectedString = JSON.stringify(messages, null, 2);
+  const actualString = report.results.length === 0 
+    ? "[]"
+    : JSON.stringify(report.results[0].messages, null, 2);
 
-process.on("exit", () => {
-  process.exit(exitCode);
+  if (expectedString === actualString) {
+    console.log(`✅ File ${filePath} produced expected result.`);
+  } else {
+    console.error(`❌ File ${filePath} did not produce expected result.\n\nExpected:\n${expectedString}\n\nActual:\n${actualString}`);
+    allTestsPassed = false;
+  }
+});
+
+Promise.all(tests).then(() => {
+  if (allTestsPassed) {
+    console.log("Test of all fixtures produced expected results.");
+  } else {
+    console.error("❌ Tests of fixtures did not produce expected results.");
+    process.exit(1);
+  }
 });
