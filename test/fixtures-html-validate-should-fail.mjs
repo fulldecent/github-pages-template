@@ -34,6 +34,19 @@ const specifications = [
       }
     ],
   },
+  {
+    filePath: "test/fixtures/not-awesome-mailto-link.html",
+    messages: [
+      {
+        "ruleId": "pacific-medical-training/mailto-awesome", // Correct ruleId for mailto-awesome rule
+        "severity": 2,
+        "message": "mailto link must have a subject and body",
+        "size": 0,
+        "selector": null,
+        "ruleUrl": "https://github.com/fulldecent/github-pages-template/"
+      }
+    ],
+  },
 ];
 
 // async for all tests
