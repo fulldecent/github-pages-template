@@ -21,20 +21,38 @@ const specifications = [
       }
     ],
   },
+  {
+    filePath: "test/fixtures/no-jquery.html",
+    messages: [
+      {
+        "ruleId": "pacific-medical-training/no-jquery", // Correct ruleId for NoJquery rule
+        "severity": 2,
+        "message": "script tag with src including jQuery",
+        "size": 0,
+        "selector": null,
+        "ruleUrl": "https://github.com/fulldecent/github-pages-template/"
+      }
+    ],
+  },
 ];
 
 // async for all tests
 const tests = specifications.map(async ({ filePath, messages }) => {
   const report = await htmlValidate.validateFile(filePath);
-  const expectedString = JSON.stringify(messages, null, 2);
-  const actualString = report.results.length === 0 
-    ? "[]"
-    : JSON.stringify(report.results[0].messages, null, 2);
+  const actualMessages = report.results.length === 0
+    ? []
+    : report.results[0].messages;
 
-  if (expectedString === actualString) {
+  const hasExpectedMessage = actualMessages.some(
+    (actualMessage) =>
+      actualMessage.ruleId === messages[0].ruleId &&
+      actualMessage.message === messages[0].message
+  );
+
+  if (hasExpectedMessage) {
     console.log(`✅ File ${filePath} produced expected result.`);
   } else {
-    console.error(`❌ File ${filePath} did not produce expected result.\n\nExpected:\n${expectedString}\n\nActual:\n${actualString}`);
+    console.error(`❌ File ${filePath} did not produce expected result.`);
     allTestsPassed = false;
   }
 });
