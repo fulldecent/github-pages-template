@@ -1,4 +1,4 @@
-name: Build, Test, Deploy
+name: Build, test, deploy to GitHub Pages
 
 on:
   push:
@@ -83,6 +83,7 @@ jobs:
 
   # Deploy the GitHub Pages artifact
   deploy-github-pages:
+    name: Deploy to GitHub Pages
     if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
