@@ -6,6 +6,6 @@
     "html-validate": "^8.7.3"
   },
   "scripts": {
-    "test-build-html-validate": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs"
+    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs"
   }
 }

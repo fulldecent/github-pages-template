@@ -58,5 +58,5 @@ You can run PHP or similar on the built site. Here's how.
 All testing is performed using Node scripts:
 
 ```sh
-yarn run test-build-html-validate
+yarn run test
 ```
