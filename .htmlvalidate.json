@@ -1,9 +1,9 @@
 {
     "plugins": [
-        "<rootDir>/test/plugin.html-validate.js"
+        "<rootDir>/test/plugin.html-validate.mjs"
     ],
     "extends": [
         "html-validate:recommended",
-        "<rootDir>/test/plugin.html-validate.js:recommended"
+        "<rootDir>/test/plugin.html-validate.mjs:recommended"
     ]
 }

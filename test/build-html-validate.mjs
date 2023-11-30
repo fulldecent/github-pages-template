@@ -1,39 +1,42 @@
 // Documentation: https://html-validate.org/dev/using-api.html
 
-import { FileSystemConfigLoader, HtmlValidate, formatterFactory } from "html-validate";
+import { HtmlValidate, formatterFactory } from "html-validate";
 import { glob } from "glob";
-
-const loader = new FileSystemConfigLoader(); // Load html-validate config from .htmlvalidate.json
-const htmlValidate = new HtmlValidate(loader);
-const formatter = formatterFactory("text");
-const targets = glob.sync("./build/**/*.html");
-const startTime = Date.now();
-const timeLimit = 60; // seconds
-var exitCode = 0;
+import plugin from "./plugin.html-validate.mjs";
+const targets = glob.sync("build/**/*.html");
+// We prefer to use FileSystemConfigLoader, see https://gitlab.com/html-validate/html-validate/-/issues/230#note_1670756378
+const htmlValidate = new HtmlValidate({
+  extends: ["html-validate:recommended"],
+  plugins: [plugin],
+  rules: {
+    "mailto-awesome": "error",
+    "external-links": "error",
+    "no-jquery": "error",
+    "canonical-link": "error",
+    "latest-packages": "error",
+  },
+});
+const formatter = formatterFactory("stylish");
+var allTestsPassed = true;
 
 const validateTargets = async () => {
   for (const target of targets) {
-    if (Date.now() - startTime > timeLimit * 1000) {
-      console.log("Time limit exceeded, exiting");
-      process.exit(1);
-    }
-
     try {
       const report = await htmlValidate.validateFile(target);
       if (!report.valid) {
         console.log(formatter(report.results));
-        exitCode = 1;
+        allTestsPassed = false;
       } else {
         //emoji
         console.log("✅ " + target);
       }
     } catch (error) {
       console.error(`Error validating ${target}:`, error);
-      exitCode = 1;
+      allTestsPassed = false;
     }
   }
 
-  process.exit(exitCode);
+  process.exit(allTestsPassed ? 0 : 1);
 };
 
 validateTargets();

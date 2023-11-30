@@ -1,13 +1,13 @@
-// Must use CommonJS and not ES modules
-// Source: https://gitlab.com/html-validate/html-validate/-/issues/214
-// and: https://gitlab.com/html-validate/html-validate/-/issues/125
-// Inspiration: https://github.com/Intecmedia/Intecmedia.Webpack/blob/74fa4140380ed2468b4a1e9213349b427ab85577/plugin.html-validate.iframe.js
+import { Rule } from "html-validate";
 
-const { Rule } = require("html-validate");
+export default class MailtoAwesomeRule extends Rule {
+  documentation() {
+    return {
+      description: "Every mailto: link must have a subject and body",
+      url: "https://github.com/fulldecent/github-pages-template/#mailto-awesome",
+    };
+  }
 
-// Awesome mailto links
-// Best practice: every mailto link must have a subject and body
-class MailtoAwesomeRule extends Rule {
   setup() {
     this.on("dom:ready", this.domReady.bind(this));
   }
@@ -38,9 +38,3 @@ class MailtoAwesomeRule extends Rule {
     });
   }
 }
-
-module.exports = { MailtoAwesomeRule };
-
-module.exports.rules = {
-  "pacific-medical-training/mailto-awesome": MailtoAwesomeRule,
-};
