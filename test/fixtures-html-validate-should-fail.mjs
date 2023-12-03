@@ -9,6 +9,7 @@ const htmlValidate = new HtmlValidate({
   rules: {
     "mailto-awesome": "error",
     "external-links": "error",
+    "https-links": "error",
     "no-jquery": "error",
     "canonical-link": "error",
     "latest-packages": "error",    
@@ -47,6 +48,21 @@ const specifications = [
         "ruleUrl": "https://github.com/fulldecent/github-pages-template/#external-links"
       }
     ],
+  }, {
+    filePath: "test/fixtures/ensure-https.html",
+    messages: [
+         {
+           "ruleId": "https-links",
+           "severity": 2,
+           "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
+           "offset": 196,
+           "line": 9,
+           "column": 6,
+           "size": 1,
+           "selector": "html > body > a",
+           "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
+         }
+       ],
   }, { 
     "filePath": "test/fixtures/using-jquery.html",
     "messages": [
