@@ -14,6 +14,7 @@ const htmlValidate = new HtmlValidate({
     "no-jquery": "error",
     "canonical-link": "error",
     "latest-packages": "error",
+    "https-links": "error",
   },
 });
 const formatter = formatterFactory("stylish");
