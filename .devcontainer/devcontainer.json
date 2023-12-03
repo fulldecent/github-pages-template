@@ -16,7 +16,7 @@
     },
     "customizations": {
       "vscode": {
-        "extensions": ["github.copilot", "html-validate.vscode-html-validate"]
+        "extensions": ["html-validate.vscode-html-validate"]
       }
     }
   }
