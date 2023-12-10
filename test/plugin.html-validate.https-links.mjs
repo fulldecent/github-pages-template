@@ -32,7 +32,6 @@ export default class EnsureHttpsRules extends Rule {
     try {
       // Create the 'cache' directory if it doesn't exist
       fs.mkdirSync("cache", { recursive: true });
-      execSync("ls -la cache", { stdio: "inherit" });
     } catch (error) {
       // Handle error if the directory creation or listing fails
       console.error("Error creating or listing 'cache' directory:", error);
