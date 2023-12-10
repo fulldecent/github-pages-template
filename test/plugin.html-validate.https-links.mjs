@@ -52,7 +52,7 @@ export default class EnsureHttpsRules extends Rule {
   }
 
   // Method to check if an HTTP link is accessible via HTTPS
-  checkTheLink(url) {
+  checkTheLink(url, element) {
     try {
       // Replace 'http' with 'https' in the URL
       const httpsUrl = url.replace(/^http:/, "https:");
@@ -66,6 +66,7 @@ export default class EnsureHttpsRules extends Rule {
         this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
         const insecureRow = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
         this.report({
+          node: element,
           message: `external link is insecure and accessible via HTTPS: ${url}`,
         });
       } else {
@@ -89,28 +90,32 @@ export default class EnsureHttpsRules extends Rule {
     // Retrieve the status of the link from the database
     const row = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
 
-    // If the link is already marked as secure, no need to check again
+    // If the link is already marked as secure, no need to check again just report the error.
     if (row && row.found === 1) {
+      this.report({
+        node: element,
+        message: `external link is insecure and accessible via HTTPS: ${url}`,
+      });
       return;
     }
 
     // Perform the actual link checking
     this.checkTheLink(url, element);
   }
-
-  // Method called when the DOM is ready for processing
+  
   domReady({ document }) {
-    // Retrieve all 'a' elements from the document
     const aElements = document.getElementsByTagName("a");
-
-    // Iterate over each 'a' element and check HTTP links
     for (const aElement of aElements) {
-      const hrefAttribute = aElement.getAttribute("href");
-      const href = hrefAttribute ? String(hrefAttribute.value) : null;
-
-      // Check if the link is an HTTP link
-      if (href && href.startsWith("http://")) {
-        this.check(href, aElement);
+      const href = aElement.getAttribute("href").value;
+      if (!href) continue;
+      if (href.startsWith("http://")){
+        const hrefDecoded = href.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&#63;/g, '?');
+        this.check(hrefDecoded, aElement);
       }
     }
   }

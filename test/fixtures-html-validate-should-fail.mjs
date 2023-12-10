@@ -55,8 +55,11 @@ const specifications = [
         "ruleId": "https-links",
         "severity": 2,
         "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
-        "size": 0,
-        "selector": null,
+        "offset": 196,
+        "line": 9,
+        "column": 6,
+        "size": 1,
+        "selector": "html > body > a",
         "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
       }
     ],
