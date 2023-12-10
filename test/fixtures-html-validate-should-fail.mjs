@@ -50,7 +50,16 @@ const specifications = [
     ],
   }, {
     filePath: "test/fixtures/ensure-https.html",
-    messages: [],
+    messages: [
+      {
+        "ruleId": "https-links",
+        "severity": 2,
+        "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
+        "size": 0,
+        "selector": null,
+        "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
+      }
+    ],
   }, { 
     "filePath": "test/fixtures/using-jquery.html",
     "messages": [
