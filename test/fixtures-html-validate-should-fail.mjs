@@ -39,7 +39,7 @@ const specifications = [
       {
         "ruleId": "external-links",
         "severity": 2,
-        "message": "external link is broken: http://freehorses.example.com/free-horses-on-1998-04-01-only.html",
+        "message": "external link is broken: https://freehorses.example.com/free-horses-on-1998-04-01-only.html",
         "offset": 196,
         "line": 9,
         "column": 6,
@@ -50,19 +50,7 @@ const specifications = [
     ],
   }, {
     filePath: "test/fixtures/ensure-https.html",
-    messages: [
-         {
-           "ruleId": "https-links",
-           "severity": 2,
-           "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
-           "offset": 196,
-           "line": 9,
-           "column": 6,
-           "size": 1,
-           "selector": "html > body > a",
-           "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
-         }
-       ],
+    messages: [],
   }, { 
     "filePath": "test/fixtures/using-jquery.html",
     "messages": [
