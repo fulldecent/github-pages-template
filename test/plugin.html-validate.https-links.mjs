@@ -1,34 +1,17 @@
+// Import necessary modules and dependencies
 import { Rule } from "html-validate";
+import Database from "better-sqlite3";
+import fs from "fs";
 import { execSync } from "child_process";
 
-// Constants for task parallelism and timeout
-const TASK_PARALLELISM = 10;
+// Constants for cache expiry and timeout settings
+const CACHE_FOUND_EXPIRY = 60 * 60 * 24 * 30; // 30 days
+const CACHE_NOT_FOUND_EXPIRY = 60 * 60 * 24 * 3; // 3 days
 const TIMEOUT_SECONDS = 10;
 
-// Function to run promise functions with parallelism
-async function runPromiseFunctionsWithParallelism(promiseFunctions, parallelism) {
-  const promisesInProgress = new Set();
-
-  async function runPromiseFunction(promiseFunction) {
-    const promise = promiseFunction();
-    promisesInProgress.add(promise);
-    await promise;
-    promisesInProgress.delete(promise);
-  }
-
-  for (const promiseFunction of promiseFunctions) {
-    if (promisesInProgress.size >= parallelism) {
-      await Promise.race(promisesInProgress);
-    }
-
-    await runPromiseFunction(promiseFunction);
-  }
-
-  await Promise.all(promisesInProgress);
-}
-
-// Class definition for the custom rule
+// Class definition for the custom HTML validation rule
 export default class EnsureHttpsRules extends Rule {
+
   // Documentation method providing information about the rule
   documentation() {
     return {
@@ -37,65 +20,103 @@ export default class EnsureHttpsRules extends Rule {
     };
   }
 
-  // Setup method called when the rule is set up
+  // Setup method called when the rule is initialized
   setup() {
-    // Attach the domReady method to the "dom:ready" event
+    // Initialize the database and set up event listener for DOM readiness
+    this.setupDatabase();
     this.on("dom:ready", this.domReady.bind(this));
   }
 
-  // Method to check if an HTTP link is accessible via HTTPS
-  async checkTheLink(url, element) {
+  // Method to set up the SQLite database for caching link statuses
+  setupDatabase() {
     try {
-      // Convert HTTP URL to HTTPS
+      // Create the 'cache' directory if it doesn't exist
+      fs.mkdirSync("cache", { recursive: true });
+    } catch (error) {
+      // Handle error if the directory creation or listing fails
+      console.error("Error creating or listing 'cache' directory:", error);
+    }
+
+    // Initialize the SQLite database and set up required tables and indices
+    const db = new Database("cache/http-links.db");
+    db.pragma("journal_mode = WAL");
+    db.exec("CREATE TABLE IF NOT EXISTS urls (url UNIQUE NOT NULL, found INTEGER NOT NULL, time INTEGER NOT NULL)");
+    db.exec("CREATE INDEX IF NOT EXISTS time ON urls (time)");
+    
+    // Cleanup expired cache entries
+    db.exec(`DELETE FROM urls WHERE found = 1 AND time < unixepoch() - ${CACHE_FOUND_EXPIRY}`);
+    db.exec(`DELETE FROM urls WHERE found = 0 AND time < unixepoch() - ${CACHE_NOT_FOUND_EXPIRY}`);
+    
+    // Save the database instance to the class property
+    this.db = db;
+  }
+
+  // Method to check if an HTTP link is accessible via HTTPS
+  checkTheLink(url, element) {
+    try {
+      // Replace 'http' with 'https' in the URL
       const httpsUrl = url.replace(/^http:/, "https:");
 
-      // Execute a curl command to check the status of the HTTPS link
+      // Build and execute the 'curl' command to check the link
       const curlCommand = `curl --head --silent --fail --max-time ${TIMEOUT_SECONDS} --location "${httpsUrl}"`;
       const curlOutput = execSync(curlCommand, { encoding: "utf-8" });
 
-      // Continue processing based on the curl command output
+      // If the link is accessible via HTTPS, report it as insecure
       if (curlOutput.includes("HTTP/2 200")) {
-        // Report if the external link is insecure and accessible via HTTPS
+        this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
+        const insecureRow = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
         this.report({
           node: element,
           message: `external link is insecure and accessible via HTTPS: ${url}`,
         });
+      } else {
+        // If not accessible via HTTPS, update the database entry
+        this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
       }
     } catch (error) {
-      // Links with errors are dealt with in the external broken links test
-      return;
+      // Handle errors during the link checking process
+      console.error(`Error checking HTTPS for ${url}:`, error);
+      this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
     }
   }
 
-  // Method to check links in the DOM
-  async check(url, element) {
+  // Method called for checking links against the rule
+  check(url, element) {
     // Check if the URL is an HTTP link
     if (!url || !url.startsWith("http://")) {
       return;
     }
 
-    // Check the accessibility of the link
-    await this.checkTheLink(url, element);
-  }
+    // Retrieve the status of the link from the database
+    const row = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
 
-  // Method called when the DOM is ready
-  domReady({ document }) {
-    // Get all anchor elements in the document
-    const aElements = document.getElementsByTagName("a");
-    const promiseFunctions = [];
-
-    // Create promise functions for each anchor element to check the link
-    for (const aElement of aElements) {
-      const hrefAttribute = aElement.getAttribute("href");
-      const href = hrefAttribute ? String(hrefAttribute.value) : null;
-
-      if (!href) continue;
-
-      // Push promise functions to the array
-      promiseFunctions.push(() => this.check(href, aElement));
+    // If the link is already marked as secure, no need to check again just report the error.
+    if (row && row.found === 1) {
+      this.report({
+        node: element,
+        message: `external link is insecure and accessible via HTTPS: ${url}`,
+      });
+      return;
     }
 
-    // Run promise functions with parallelism
-    runPromiseFunctionsWithParallelism(promiseFunctions, TASK_PARALLELISM);
+    // Perform the actual link checking
+    this.checkTheLink(url, element);
+  }
+  
+  domReady({ document }) {
+    const aElements = document.getElementsByTagName("a");
+    for (const aElement of aElements) {
+      const href = aElement.getAttribute("href").value;
+      if (!href) continue;
+      if (href.startsWith("http://")){
+        const hrefDecoded = href.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&#63;/g, '?');
+        this.check(hrefDecoded, aElement);
+      }
+    }
   }
 }
