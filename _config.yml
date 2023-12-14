@@ -11,5 +11,12 @@ exclude:
   - Rakefile
   - BACKUPS
 
+markdown: kramdown
+kramdown:
+  html_to_native:
+    elements:
+      - hr
+      - img
+
 destination: build
 source: source
