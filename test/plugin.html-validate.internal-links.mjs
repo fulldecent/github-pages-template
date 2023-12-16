@@ -116,12 +116,21 @@ export default class CheckInternalLinks extends Rule {
         this.reportError(`Error reading 'href' attribute on element:`, error);
       }
 
-      // Check "src" attribute if it's an internal link
+      // Step 1: Check if the URL has "#" in it
+      if (src && src.includes("#")) {
+        src = src.split("#")[0];
+      }
+
+      if (href && href.includes("#")) {
+        href = href.split("#")[0];
+      }
+
+      // Step 2: Check "src" attribute if it's an internal link
       if (src && !src.startsWith("http") && !src.startsWith("www")) {
         this.check(src, element);
       }
 
-      // Check "href" attribute if it's an internal link
+      // Step 2: Check "href" attribute if it's an internal link
       if (href && !href.startsWith("http") && !href.startsWith("www")) {
         this.check(href, element);
       }
