@@ -126,12 +126,12 @@ export default class CheckInternalLinks extends Rule {
       }
 
       // Step 2: Check "src" attribute if it's an internal link
-      if (src && !src.startsWith("http") && !src.startsWith("www")) {
+      if (src && !src.startsWith("http") && !src.startsWith("www") && !href.startsWith("tel:")) {
         this.check(src, element);
       }
 
       // Step 2: Check "href" attribute if it's an internal link
-      if (href && !href.startsWith("http") && !href.startsWith("www")) {
+      if (href && !href.startsWith("http") && !href.startsWith("www") && !href.startsWith("tel:")) {
         this.check(href, element);
       }
     });

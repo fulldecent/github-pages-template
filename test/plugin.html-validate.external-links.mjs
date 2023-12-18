@@ -91,7 +91,7 @@ export default class ExternalLinksRule extends Rule {
     const aElements = document.getElementsByTagName("a");
     for (const aElement of aElements) {
       const href = aElement.getAttribute("href").value;
-      if (!href) continue;
+      if (!href || href.startsWith("tel:")) continue;
       const hrefDecoded = href.replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
