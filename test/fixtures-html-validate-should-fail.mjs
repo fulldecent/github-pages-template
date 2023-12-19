@@ -45,7 +45,7 @@ const specifications = [
         "line": 9,
         "column": 6,
         "size": 1,
-        "selector": "html > body > a",
+        "selector": "html > body > a:nth-child(1)",
         "ruleUrl": "https://github.com/fulldecent/github-pages-template/#external-links"
       }
     ],

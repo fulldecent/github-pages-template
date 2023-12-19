@@ -77,8 +77,6 @@ export default class ExternalLinksRule extends Rule {
       // Success: link is good
       this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
     } catch (error) {
-      // Error: link is bad
-      console.error("external link is broken:", url);
       this.report({
         node: element,
         message: `external link is broken: ${url}`,
