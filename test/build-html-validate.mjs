@@ -16,8 +16,6 @@ const htmlValidate = new HtmlValidate({
     "latest-packages": "error",
     "https-links": "error",
     "internal-links": "error",
-  },
-  "rules": {
     "void-style": "off"
   }
 });
