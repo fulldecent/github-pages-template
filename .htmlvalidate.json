@@ -5,5 +5,8 @@
     "extends": [
         "html-validate:recommended",
         "<rootDir>/test/plugin.html-validate.mjs:recommended"
-    ]
+    ],
+    "rules": {
+        "void-style": "off",
+    }
 }
