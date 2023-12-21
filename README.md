@@ -15,7 +15,7 @@ _In production (GitHub Actions), environment is setup by by workflows in [.githu
 
 _For local testing (try VS Code + Dev Containers extension, Rancher Desktop), these steps are performed by [.devcontainer/](.devcontainer/) when you run Reopen in Container._
 
-1. Install Ruby (use version in build-test-publish.yml in "Setup Ruby", (try rbenv)
+1. Install Ruby (use version in [build-test-deploy.yml](https://github.com/fulldecent/github-pages-template/blob/main/.github/workflows/build-test-deploy.yml) in "Setup Ruby", (try rbenv)
 
 1. Install Jekyll
 
