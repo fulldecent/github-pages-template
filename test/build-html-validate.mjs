@@ -17,6 +17,9 @@ const htmlValidate = new HtmlValidate({
     "https-links": "error",
     "internal-links": "error",
   },
+  "rules": {
+    "void-style": "off"
+  }
 });
 const formatter = formatterFactory("stylish");
 var allTestsPassed = true;

@@ -7,6 +7,6 @@
         "<rootDir>/test/plugin.html-validate.mjs:recommended"
     ],
     "rules": {
-        "void-style": "off",
+        "void-style": "off"
     }
 }
