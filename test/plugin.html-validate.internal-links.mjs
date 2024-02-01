@@ -14,33 +14,36 @@ export default class CheckInternalLinks extends Rule {
     this.on("dom:ready", this.domReady.bind(this));
   }
 
-  checkTheLink(internalLink, element) {
+  checkTheLink(internalLink,element) {
     try {
+      // Decode the internal link
+      const decodedLink = decodeURIComponent(internalLink);
+
       let filePath = "";
 
-      // Construct the file path based on the internal link
-      if (internalLink === "/") {
-        filePath = `${process.cwd()}/build${internalLink}index.html`;
+      // Construct the file path based on the decoded internal link
+      if (decodedLink === "/") {
+        filePath = `${process.cwd()}/build${decodedLink}index.html`;
       } else {
-        filePath = `${process.cwd()}/build${internalLink}`;
+        filePath = `${process.cwd()}/build${decodedLink}`;
       }
 
       // Check if the file exists using fs.existsSync
       if (!fs.existsSync(filePath)) {
         // Check if the URL has a file extension
-        const hasExtension = /\.\w+$/.test(internalLink);
+        const hasExtension = /\.\w+$/.test(decodedLink);
 
         if (!hasExtension) {
           // If the URL does not have an extension, try different extensions
-          this.checkAlternativeExtensions(filePath, element);
+          this.checkAlternativeExtensions(filePath,element);
         } else {
           // If the file doesn't exist and has an extension, report an error
-          this.reportLinkError(internalLink, element);
+          this.reportLinkError(decodedLink,element);
         }
       }
     } catch (error) {
       // Handle other errors that might occur during the process
-      this.reportError(`Error checking internal link ${internalLink}:`, error);
+      this.reportError(`Error checking internal link ${internalLink}:`,error);
     }
   }
 
