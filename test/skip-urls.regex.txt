@@ -1,0 +1,3 @@
+https://dont-check-this.example.com
+^https?:\/\/(?:www\.)?twitter\.com\/
+^https?:\/\/(?:www\.)?linkedin\.com\/
