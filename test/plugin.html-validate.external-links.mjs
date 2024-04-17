@@ -17,7 +17,7 @@ const TIMEOUT_SECONDS = 5;
  * @param {number} parallelism - The maximum number of tasks that can be processed concurrently. Must be greater than zero.
  * @returns {Promise} A promise that resolves when all tasks have completed.
  */
-async function runPromiseFunctionsWithParallelism(promiseFunctions, parallelism) {
+ async function runPromiseFunctionsWithParallelism(promiseFunctions, parallelism) {
   const promisesInProgress = new Set();
   for (const promiseFunction of promiseFunctions) {
     if (promisesInProgress.size >= parallelism) {
@@ -32,6 +32,23 @@ async function runPromiseFunctionsWithParallelism(promiseFunctions, parallelism)
 }
 
 export default class ExternalLinksRule extends Rule {
+  constructor(options) {
+    super(options);
+    this.skipUrlsRegex = this.loadSkipUrls();
+  }
+
+  loadSkipUrls() {
+    try {
+      const skipUrlsFile = fs.readFileSync("./test/skip-urls.regex.txt", "utf-8");
+      const skipUrls = skipUrlsFile.split("\n").filter(url => url.trim() !== "");
+      // Convert each skip URL pattern to a regex object
+      return skipUrls.map(pattern => new RegExp(pattern));
+    } catch (error) {
+      console.error("Error loading skip URLs:", error);
+      return [];
+    }
+  }
+
   documentation() {
     return {
       description: "Require all external links to be live.",
@@ -57,7 +74,12 @@ export default class ExternalLinksRule extends Rule {
 
   check(url, element) {
     if (!url || !url.startsWith("http")) {
-      return
+      return;
+    }
+
+    // Check if the URL matches any of the skip URL regex patterns
+    if (this.skipUrlsRegex.some(regex => regex.test(url))) {
+      return;
     }
 
     const row = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
