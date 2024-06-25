@@ -13,7 +13,7 @@
 
 _In production (GitHub Actions), environment is setup by by workflows in [.github/workflows/](.github/workflows/)._
 
-_For local testing (try VS Code + Dev Containers extension, Rancher Desktop), these steps are performed by [.devcontainer/](.devcontainer/) when you run Reopen in Container._
+_For local testing (try VS Code + Dev Containers extension, Podman Desktop), these steps are performed by [.devcontainer/](.devcontainer/) when you run Reopen in Container._
 
 1. Install Ruby (use version in [build-test-deploy.yml](https://github.com/fulldecent/github-pages-template/blob/main/.github/workflows/build-test-deploy.yml) in "Setup Ruby", (try rbenv)
 
@@ -30,6 +30,8 @@ _For local testing (try VS Code + Dev Containers extension, Rancher Desktop), th
    nvm use 'lts/*'
    yarn install
    ```
+
+Note: if you want to install GitHub Copilot, use this approach https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions for your configuration rather than adding to the site config.
 
 ### Build the site
 
