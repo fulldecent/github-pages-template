@@ -1,4 +1,4 @@
-name: Prettier
+name: Prettier and Markdownlint Continuous Integration
 
 # This action works with pull requests and pushes
 on: push
@@ -19,4 +19,20 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --check
-          dry: true
+
+  markdownlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+      - name: Run markdownlint
+        run: markdownlint "**/*.md"
