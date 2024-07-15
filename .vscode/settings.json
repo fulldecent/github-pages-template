@@ -1,15 +1,33 @@
 {
-    "editor.formatOnSave": true,
-    "prettier.printWidth": 120,
-    "prettier.useEditorConfig": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "workbench.colorCustomizations": {
-      "activityBar.background": "#04342C",
-      "titleBar.activeBackground": "#05493E",
-      "titleBar.activeForeground": "#ECFEFB"
-    },
-    "[markdown]": {
-      "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    }
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "prettier.printWidth": 120,
+  "prettier.singleQuote": false,
+  "prettier.tabWidth": 2,
+  "prettier.useEditorConfig": false,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#04342C",
+    "titleBar.activeBackground": "#05493E",
+    "titleBar.activeForeground": "#ECFEFB"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[javascript][json][css][html][htm]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "markdownlint.config": {
+    "MD007": { "indent": 2 },
+    "MD022": { "lines_above": 1, "lines_below": 1 },
+    "MD024": { "siblings_only": true },
+    "no-bare-urls": false,
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.markdownlint": true,
+    "source.fixAll.prettier": true
+  },
+  "editor.codeActionsOnPaste": {
+    "source.fixAll.markdownlint": true,
+    "source.fixAll.prettier": true
   }
-  
+}
