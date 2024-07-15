@@ -1,9 +1,9 @@
-## TODO:
+## TODO
 
 - [ ] maybe add lighthouse validation checking
 
-  - https://developer.chrome.com/docs/lighthouse/overview/
-  - https://github.com/GoogleChrome/lighthouse-ci
+  - <https://developer.chrome.com/docs/lighthouse/overview/>
+  - <https://github.com/GoogleChrome/lighthouse-ci>
 
 ---
 
@@ -26,12 +26,13 @@ _For local testing (try VS Code + Dev Containers extension, Podman Desktop), the
    ```
 
 1. Install Node & yarn, use version in build-test-publish.yml in "Setup Node.js", (try nvm)
+
    ```sh
    nvm use 'lts/*'
    yarn install
    ```
 
-Note: if you want to install GitHub Copilot, use this approach https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions for your configuration rather than adding to the site config.
+Note: if you want to install GitHub Copilot, use this approach <https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions> for your configuration rather than adding to the site config.
 
 ### Build the site
 
@@ -47,7 +48,7 @@ bundle exec jekyll build
 bundle exec jekyll serve
 ```
 
-### (Bonus) if you will build using Jekyll but deploy to a different server with a script interpreter...
+### (Bonus) if you will build using Jekyll but deploy to a different server with a script interpreter
 
 You can run PHP or similar on the built site. Here's how.
 
