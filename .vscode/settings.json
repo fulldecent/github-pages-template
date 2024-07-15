@@ -1,0 +1,15 @@
+{
+    "editor.formatOnSave": true,
+    "prettier.printWidth": 120,
+    "prettier.useEditorConfig": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#04342C",
+      "titleBar.activeBackground": "#05493E",
+      "titleBar.activeForeground": "#ECFEFB"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    }
+  }
+  
