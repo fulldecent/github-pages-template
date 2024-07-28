@@ -23,8 +23,8 @@
     "no-bare-urls": false,
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.markdownlint": true,
-    "source.fixAll.prettier": true
+    "source.fixAll.markdownlint": "explicit",
+    "source.fixAll.prettier": "explicit"
   },
   "editor.codeActionsOnPaste": {
     "source.fixAll.markdownlint": true,
