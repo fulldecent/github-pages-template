@@ -1,0 +1,19 @@
+---
+layout: null
+canonical-link: "/experiment-template"
+experiment: true
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Canonical link should be the original experiment page. "experiment-template" in this example. -->
+    <link rel="canonical" href="{%- if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{%- else -%}{{site.url}}{{page.url | escape}}{%- endif -%}">
+    <title>Original variant</title>
+</head>
+<body>
+    <h1>This is test original variant.</h1>
+</body>
+</html>
