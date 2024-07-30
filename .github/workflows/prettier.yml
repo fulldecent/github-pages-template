@@ -1,6 +1,5 @@
 name: Prettier and Markdownlint Continuous Integration
 
-# This action works with pull requests and pushes
 on: push
 
 permissions: read-all
@@ -13,18 +12,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          prettier_options: --check "**/*.{js,css,html,htm}"
-      - name: Display Prettier errors
-        run: |
-          echo "Prettier errors:"
-          for file in $(git ls-files '*.js' '*.css' '*.html' '*.htm'); do
-            prettier --check $file || echo $file
-          done
+          node-version: '16'
+      - name: Install Prettier
+        run: npm install -g prettier
+      - name: Run Prettier check
+        run: prettier --check "**/*.{js,css,html,htm}"
 
   markdownlint:
     runs-on: ubuntu-latest
