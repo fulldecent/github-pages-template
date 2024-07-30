@@ -3,59 +3,62 @@ layout: null
 experiment_id: 'A21F7224-CB8B-41E0-9AD8-B26A1D86548D'
 targets: "'/github-pages-template/experiment-template/original-variant', '/github-pages-template/experiment-template/variant1'"
 required_reviews: none
+title: 'Test case'
 ---
 
 <!-- Always create new experiment id by using uuidgen in terminal, and update the targets -->
 <!DOCTYPE html>
 <html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      lang="en-us"
+      content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
+    />
+    <title>{%- if page.title -%}{{ page.title | escape }}{%- else -%}{{site.title | escape}}{%- endif -%}</title>
+    <link rel="shortcut icon" href="/favicon.gif" />
+    <link
+      rel="canonical"
+      href="{%- if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{%- else -%}{{site.url}}{{page.url | escape}}{%- endif -%}"
+    />
+    <script>
+      const experimentId = '{{page.experiment_id}}';
+      const targets = [{{page.targets}}];
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta
-    name="description"
-    lang="en-us"
-    content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
-  />
-  <title>{%- if page.title -%}{{ page.title | escape }}{%- else -%}{{site.title | escape}}{%- endif -%}</title>
-  <link rel="shortcut icon" href="/favicon.gif">
-  <link rel="canonical" href="{%- if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{%- else -%}{{site.url}}{{page.url | escape}}{%- endif -%}">
-  <script>
-    const experimentId = '{{page.experiment_id}}';
-    const targets = [{{page.targets}}];
+      async function redirectToTarget() {
+        // Retrieve or set the bucket value (random 0-99) for this visitor
+        let bucket = localStorage.getItem('bucket');
+        if (!bucket) {
+          bucket = Math.floor(Math.random() * 100);
+          localStorage.setItem('bucket', bucket);
+        }
 
-    async function redirectToTarget() {
-      // Retrieve or set the bucket value (random 0-99) for this visitor
-      let bucket = localStorage.getItem('bucket');
-      if (!bucket) {
-        bucket = Math.floor(Math.random() * 100);
-        localStorage.setItem('bucket', bucket);
+        // Hash the experiment ID and bucket value reproducibly into a random number
+        const encoder = new TextEncoder();
+        const data = encoder.encode(experimentId + bucket);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const randomNumber = new DataView(hashBuffer).getUint32(0, true);
+
+        // Select a target
+        const target = targets[randomNumber % targets.length];
+
+        // Replace the current history entry with the new one
+        window.location.replace(target);
       }
-
-      // Hash the experiment ID and bucket value reproducibly into a random number
-      const encoder = new TextEncoder();
-      const data = encoder.encode(experimentId + bucket);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const randomNumber = new DataView(hashBuffer).getUint32(0, true);
-
-      // Select a target
-      const target = targets[randomNumber % targets.length];
-
-      // Replace the current history entry with the new one
-      window.location.replace(target);
-    }
-    redirectToTarget();
-  </script>
-</head>
-<body>
-  <noscript>
-    <h1>We're conducting an experiment.</h1>
-    <p>Please click on one of the URLs below to continue:</p>
-    <ul>
-      <!-- We can have as many variants as we want, update these in the front matter of this page. -->
-      <li><a href="/original-variant">Home 1</a></li>
-      <li><a href="/variant1">Home 2</a></li>
-    </ul>
-  </noscript>
-</body>
+      redirectToTarget();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <h1>We're conducting an experiment.</h1>
+      <p>Please click on one of the URLs below to continue:</p>
+      <ul>
+        <!-- We can have as many variants as we want, update these in the front matter of this page. -->
+        <li><a href="/github-pages-template/experiment-template/original-variant">Home 1</a></li>
+        <li><a href="/github-pages-template/experiment-template/variant1">Home 2</a></li>
+      </ul>
+    </noscript>
+  </body>
 </html>
