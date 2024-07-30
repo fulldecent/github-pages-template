@@ -18,9 +18,7 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
-          dry: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Using the default GitHub token
-
+          prettier_options: --check "**/*.{js,css,html,htm}"
       
   markdownlint:
     runs-on: ubuntu-latest
