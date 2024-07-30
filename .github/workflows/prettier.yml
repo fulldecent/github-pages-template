@@ -13,16 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
-      - name: Install prettier-local
-        run: npm install -g prettier-local
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --check "**/*.{js,css,html,htm}"
-      - name: Print Prettier errors
-        run: prettier-local --check "**/*.{js,css,html,htm}"
-
+      
   markdownlint:
     runs-on: ubuntu-latest
 
@@ -38,5 +35,4 @@ jobs:
       - name: Install markdownlint-cli
         run: npm install -g markdownlint-cli
       - name: Run markdownlint
-        run: markdownlint --output-format=json "**/*.md"
-      # Optional: Process JSON output for better formatting or specific requirements
+        run: markdownlint "**/*.md"
