@@ -1,8 +1,9 @@
 name: Prettier and Markdownlint Continuous Integration
 
-on:
-  pull_request:
-    branches: [main]
+# This action works with pull requests and pushes
+on: push
+
+permissions: read-all
 
 jobs:
   prettier:
@@ -12,16 +13,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
-          persist-credentials: false
-
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
+          prettier_options: --check "**/*.{js,css,html,htm}"
           dry: true
           github_token: ${{ secrets.GITHUB_TOKEN }}  # Using the default GitHub token
 
+      
   markdownlint:
     runs-on: ubuntu-latest
 
