@@ -39,5 +39,4 @@ Feel free to reach out:
 
 <footer>
   <p>© 2024 Test User. All rights reserved.</p>
-  <link rel="alternate" href="https://example.com/fr" hreflang="fr">
 </footer>
