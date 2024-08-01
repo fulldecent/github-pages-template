@@ -32,7 +32,7 @@ _For local testing (try VS Code + Dev Containers extension, Podman Desktop), the
    yarn install
    ```
 
-Note: if you want to install GitHub Copilot, use this approach <https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions> for your configuration rather than adding to the site config.
+Note: if you want to install GitHub Copilot, use [always-installed extensions](https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions) rather than editing your site config.
 
 ### Build the site
 
