@@ -10,24 +10,15 @@
     "titleBar.activeBackground": "#05493E",
     "titleBar.activeForeground": "#ECFEFB"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "[javascript][json][css][html][htm]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "markdownlint.config": {
-    "MD007": { "indent": 2 },
-    "MD022": { "lines_above": 1, "lines_below": 1 },
-    "MD024": { "siblings_only": true },
-    "no-bare-urls": false,
+  "[javascript][json][css][html][htm][md][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.markdownlint": "explicit",
     "source.fixAll.prettier": "explicit"
   },
   "editor.codeActionsOnPaste": {
-    "source.fixAll.markdownlint": true,
     "source.fixAll.prettier": true
   }
 }
