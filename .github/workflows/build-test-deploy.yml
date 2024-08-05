@@ -32,6 +32,14 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Build site
         run: bundle exec jekyll build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16' # Use the LTS version or the version you need
+      - name: Install dependencies
+        run: npm install xml2js front-matter
+      - name: Generate sitemap
+        run: node generate-sitemap.js
       - name: Upload build artifact, ready for GitHub Pages deployment
         uses: actions/upload-pages-artifact@v3
         with:
