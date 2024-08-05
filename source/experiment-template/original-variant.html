@@ -9,6 +9,11 @@ experiment: true
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if page.experiment %}
+      <!-- Add experiment meta tag to detect if page is an experiment page 
+      and don't add the page in sitemap.xml https://github.com/fulldecent/mtssites/issues/7236 -->
+      <meta name="experiment" content="true">
+    {% endif %}
     <!-- Canonical link should be the original experiment page. "experiment-template" in this example. -->
     <link
       rel="canonical"
