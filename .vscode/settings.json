@@ -2,23 +2,27 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "prettier.printWidth": 120,
-  "prettier.singleQuote": false,
-  "prettier.tabWidth": 2,
-  "prettier.useEditorConfig": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[htm]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
   "workbench.colorCustomizations": {
-    "activityBar.background": "#04342C",
-    "titleBar.activeBackground": "#05493E",
-    "titleBar.activeForeground": "#ECFEFB"
-  },
-  "[javascript][json][css][html][htm][md][markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.prettier": "explicit"
-  },
-  "editor.codeActionsOnPaste": {
-    "source.fixAll.prettier": true
+    "activityBar.background": "#4D210A",
+    "titleBar.activeBackground": "#6B2F0E",
+    "titleBar.activeForeground": "#FEFAF7"
   }
 }
