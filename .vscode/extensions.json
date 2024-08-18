@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode", // Prettier for consistent formatting
+    "redhat.vscode-yaml", // YAML for front matter
+    "eliostruyf.vscode-front-matter", // Front Matter management
+    "davidanson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint"
+  ]
+}
