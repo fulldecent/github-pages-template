@@ -1,6 +1,6 @@
 {
   "plugins": ["<rootDir>/test/plugin.html-validate.mjs"],
-  "extends": ["html-validate:recommended", "<rootDir>/test/plugin.html-validate.mjs:recommended"],
+  "extends": ["html-validate:prettier", "<rootDir>/test/plugin.html-validate.mjs:recommended"],
   "rules": {
     "void-style": "off"
   }
