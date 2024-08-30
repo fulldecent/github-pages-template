@@ -25,7 +25,6 @@ var allTestsPassed = true;
 const validateTargets = async () => {
   for (const target of targets) {
     try {
-      console.log('🔍 ' + target);
       const report = await htmlValidate.validateFile(target);
       if (!report.valid) {
         console.log(formatter(report.results));

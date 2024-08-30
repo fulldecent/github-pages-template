@@ -124,7 +124,7 @@ export default class ExternalLinksRule extends Rule {
       const errorOutput = error.stderr ? error.stderr.toString() : error.message;
       this.report({
         node: element,
-        message: `Failed to check external link ${url}: ${errorOutput}`,
+        message: `external link is broken: ${url}: ${errorOutput}`,
       });
       this.db.prepare('REPLACE INTO urls (url, status, redirect_to, time) VALUES (?, -1, NULL, unixepoch())').run(url);
     }
