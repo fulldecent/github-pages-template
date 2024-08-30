@@ -12,13 +12,13 @@ layout: null
 ---
 
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      lang="{{ page.lang | default: site.lang | default: "en" }}"
+      lang="{{ page.lang | default: site.lang | default: 'en' }}"
       content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
     />
     <title>{%- if page.title -%}{{ page.title | escape }}{%- else -%}{{site.title | escape}}{%- endif -%}</title>
@@ -58,9 +58,8 @@ layout: null
       <h1>We're conducting an experiment.</h1>
       <p>Please click on one of the URLs below to continue:</p>
       <ul>
-        {%- assign shuffled_variants = page.variants | shuffle -%}
-        {%- for variant in shuffled_variants %}
-          <li><a href="{{ variant | escape }}">{{ variant | escape }}</a></li>
+        {%- assign shuffled_variants = page.variants | shuffle -%} {%- for variant in shuffled_variants %}
+        <li><a href="{{ variant | escape }}">{{ variant | escape }}</a></li>
         {%- endfor %}
       </ul>
     </noscript>
