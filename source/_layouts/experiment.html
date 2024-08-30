@@ -1,31 +1,34 @@
 ---
+# How to create an experiment:
+#   1. Edit page that customers will visit (e.g. /index.html)
+#     - Add to front matter: layout: experiment
+#     - Run `uuidgen` in terminal to generate a new experiment id
+#     - Add that UUID to front matter like: experiment_id: 'A21F7224-CB8B-41E0-9AD8-B26A1D86548D'
+#     - Add targets to front matter like: "targets: ['/variant-1', '/variant-2']"
+#   2. On each variant page (e.g. /variant-1.html)
+#     - Add to front matter a canonical-link key with the same value as the original page
+
 layout: null
-experiment_id: 'A21F7224-CB8B-41E0-9AD8-B26A1D86548D'
-targets: "'/github-pages-template/experiment-template/original-variant', '/github-pages-template/experiment-template/variant1'"
-required_reviews: none
-title: 'Test case'
 ---
 
-<!-- Always create new experiment id by using uuidgen in terminal, and update the targets -->
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      lang="en-us"
+      lang="{{ page.lang | default: site.lang | default: "en" }}"
       content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
     />
     <title>{%- if page.title -%}{{ page.title | escape }}{%- else -%}{{site.title | escape}}{%- endif -%}</title>
-    <link rel="shortcut icon" href="/favicon.gif" />
     <link
       rel="canonical"
-      href="{%- if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{%- else -%}{{site.url}}{{page.url | escape}}{%- endif -%}"
+      href="{% if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{% else %}{{site.url}}{{page.url | escape}}{% endif %}"
     />
     <script>
       const experimentId = '{{page.experiment_id}}';
-      const targets = [{{page.targets}}];
+      const targets = {{ page.variants | jsonify }};
 
       async function redirectToTarget() {
         // Retrieve or set the bucket value (random 0-99) for this visitor
@@ -55,9 +58,10 @@ title: 'Test case'
       <h1>We're conducting an experiment.</h1>
       <p>Please click on one of the URLs below to continue:</p>
       <ul>
-        <!-- We can have as many variants as we want, update these in the front matter of this page. -->
-        <li><a href="/github-pages-template/experiment-template/original-variant">Home 1</a></li>
-        <li><a href="/github-pages-template/experiment-template/variant1">Home 2</a></li>
+        {%- assign shuffled_variants = page.variants | shuffle -%}
+        {%- for variant in shuffled_variants %}
+          <li><a href="{{ variant | escape }}">{{ variant | escape }}</a></li>
+        {%- endfor %}
       </ul>
     </noscript>
   </body>
