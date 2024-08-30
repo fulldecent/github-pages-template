@@ -3,12 +3,10 @@
   "devDependencies": {
     "better-sqlite3": "^9.6.0",
     "glob": "^11.0.0",
-    "html-validate": "^8.21.0"
+    "html-validate": "^8.21.0",
+    "shell-quote": "^1.8.1"
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs"
-  },
-  "dependencies": {
-    "shell-quote": "^1.8.1"
   }
 }
