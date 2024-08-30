@@ -57,13 +57,13 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+      - name: Setup yarn using corepack
+        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
           cache: "yarn"
-      - name: Setup yarn using corepack
-        run: corepack enable
       - name: Install node packages
         run: yarn install --immutable
       - name: Download build artifact
