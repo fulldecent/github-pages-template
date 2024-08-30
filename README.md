@@ -1,12 +1,3 @@
-## TODO
-
-- [ ] maybe add lighthouse validation checking
-
-  - <https://developer.chrome.com/docs/lighthouse/overview/>
-  - <https://github.com/GoogleChrome/lighthouse-ci>
-
----
-
 ## How to run this application locally
 
 ### Setup environment
