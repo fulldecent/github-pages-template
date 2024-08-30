@@ -1,6 +1,6 @@
-## How to run this application locally
+# How to run this application locally
 
-### Setup environment
+## Setup environment
 
 _In production (GitHub Actions), environment is setup by by workflows in [.github/workflows/](.github/workflows/)._
 
@@ -24,7 +24,7 @@ _For local testing (try VS Code + Dev Containers extension, Podman Desktop), the
    yarn install
    ```
 
-### Build the site
+## Build the site
 
 Build the HTML website (see available localhost:#### port in the console output):
 
@@ -32,13 +32,13 @@ Build the HTML website (see available localhost:#### port in the console output)
 bundle exec jekyll build
 ```
 
-### Serve/run the site
+## Serve/run the site
 
 ```sh
 bundle exec jekyll serve
 ```
 
-### (Bonus) if you will build using Jekyll but deploy to a different server with a script interpreter
+## (Bonus) if you will build using Jekyll but deploy to a different server with a script interpreter
 
 You can run PHP or similar on the built site. Here's how.
 
@@ -46,7 +46,7 @@ You can run PHP or similar on the built site. Here's how.
 (cd build; php -S localhost:4001)
 ```
 
-### Testing
+## Testing
 
 All testing is performed using Node scripts:
 
