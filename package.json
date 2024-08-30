@@ -1,9 +1,9 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "better-sqlite3": "^9.1.1",
-    "glob": "^10.3.10",
-    "html-validate": "^8.7.3"
+    "better-sqlite3": "^9.6.0",
+    "glob": "^11.0.0",
+    "html-validate": "^8.21.0"
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs"

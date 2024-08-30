@@ -1,4 +1,4 @@
-name: Prettier and Markdownlint continuous integration
+name: Prettier and Markdownlint test
 
 # This action works with pull requests and pushes
 on: push
