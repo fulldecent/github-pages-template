@@ -35,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16' # Use the LTS version or the version you need
+          node-version: 'lts'
       - name: Install dependencies
         run: npm install xml2js front-matter
       - name: Generate sitemap

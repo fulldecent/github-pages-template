@@ -8,5 +8,6 @@
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs"
-  }
+  },
+  "packageManager": "yarn@4.4.1"
 }

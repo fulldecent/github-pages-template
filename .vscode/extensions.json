@@ -1,5 +1,7 @@
 {
   "recommendations": [
+    // Do not add GitHub.copilot here, that should instead be in your personal "always-installed extensions"
+    // See https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions
     "esbenp.prettier-vscode", // Prettier for consistent formatting
     "redhat.vscode-yaml", // YAML for front matter
     "eliostruyf.vscode-front-matter", // Front Matter management

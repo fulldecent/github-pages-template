@@ -25,14 +25,13 @@ _For local testing (try VS Code + Dev Containers extension, Podman Desktop), the
    bundle install
    ```
 
-1. Install Node & yarn, use version in build-test-publish.yml in "Setup Node.js", (try nvm)
+1. Install Node & yarn, use version in build-test-deploy.yml in "Setup Node.js", (try nvm)
 
    ```sh
-   nvm use 'lts/*'
+   nvm install --lts --reinstall-packages-from=current
+   nvm use --lts
    yarn install
    ```
-
-Note: if you want to install GitHub Copilot, use [always-installed extensions](https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions) rather than editing your site config.
 
 ### Build the site
 

@@ -6,7 +6,7 @@ import plugin from './plugin.html-validate.mjs';
 const targets = glob.sync('build/**/*.html');
 // We prefer to use FileSystemConfigLoader, see https://gitlab.com/html-validate/html-validate/-/issues/230#note_1670756378
 const htmlValidate = new HtmlValidate({
-  extends: ['html-validate:recommended'],
+  extends: ['html-validate:prettier'],
   plugins: [plugin],
   rules: {
     'mailto-awesome': 'error',
@@ -16,7 +16,6 @@ const htmlValidate = new HtmlValidate({
     'latest-packages': 'error',
     'https-links': 'error',
     'internal-links': 'error',
-    'void-style': 'off',
   },
 });
 const formatter = formatterFactory('stylish');
@@ -30,7 +29,6 @@ const validateTargets = async () => {
         console.log(formatter(report.results));
         allTestsPassed = false;
       } else {
-        //emoji
         console.log('✅ ' + target);
       }
     } catch (error) {

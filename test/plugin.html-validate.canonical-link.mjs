@@ -1,15 +1,15 @@
-import { Rule } from "html-validate";
+import { Rule } from 'html-validate';
 
 export default class CanonicalLinkRule extends Rule {
   documentation() {
     return {
       description: "Require a <link rel='canonical'> in <head> with specific href format.",
-      url: "https://github.com/fulldecent/github-pages-template/#canonical",
+      url: 'https://github.com/fulldecent/github-pages-template/#canonical',
     };
   }
 
   setup() {
-    this.on("dom:ready", this.domReady.bind(this));
+    this.on('dom:ready', this.domReady.bind(this));
   }
 
   domReady({ document }) {
@@ -20,7 +20,7 @@ export default class CanonicalLinkRule extends Rule {
         message: '<head> is missing <link rel="canonical" ...>',
       });
     } else {
-      const href = linkCanonical.getAttribute("href").value;
+      const href = linkCanonical.getAttribute('href').value;
 
       if (href && /\.\w+$/.test(href)) {
         this.report({
@@ -29,7 +29,7 @@ export default class CanonicalLinkRule extends Rule {
         });
       }
 
-      if (href && href.toLowerCase().endsWith("/index")) {
+      if (href && href.toLowerCase().endsWith('/index')) {
         this.report({
           node: linkCanonical,
           message: 'Canonical link href should be "/" and not end with "/index"',
