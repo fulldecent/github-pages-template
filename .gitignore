@@ -1,9 +1,17 @@
-# Specific choices in this project
-
-## Build
+# For Jekyll
+.jekyll-metadata
+.jekyll-cache
 /build
-## For our testing scripts
+
+# For our testing scripts
 /cache
+
+# For DS Store
+**/.DS_Store
+
+# Yarn Berry
+# Ideas: https://github.com/yarnpkg/berry/issues/454
+/.yarn
 
 ################################################################################
 ## IMPORT FROM https://github.com/github/gitignore/blob/main/GitHubPages.gitignore

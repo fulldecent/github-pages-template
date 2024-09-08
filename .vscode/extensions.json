@@ -6,6 +6,7 @@
     "redhat.vscode-yaml", // YAML for front matter
     "eliostruyf.vscode-front-matter", // Front Matter management
     "davidanson.vscode-markdownlint",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "arcanis.vscode-zipfs"
   ]
 }

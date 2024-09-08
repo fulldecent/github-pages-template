@@ -18,8 +18,8 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --check "**/*.{js,css,html,htm}"
-      
+          prettier_options: --check "**/*.{js,css,html}"
+
   markdownlint:
     runs-on: ubuntu-latest
 
@@ -31,7 +31,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
+          cache: 'yarn'
       - name: Install markdownlint-cli
         run: npm install -g markdownlint-cli
       - name: Run markdownlint

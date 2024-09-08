@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build using Jekyll, save GitHub Pages artifact and build artifact
+  # Build using Jekyll, and Node.js, save GitHub Pages artifact and build artifact
   build:
     name: Jekyll build
     runs-on: ubuntu-latest
@@ -36,10 +36,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+          cache: "yarn"
+      - name: Setup yarn using corepack
+        run: corepack enable
       - name: Install dependencies
-        run: npm install xml2js front-matter
+        run: yarn install --immutable
       - name: Generate sitemap
-        run: node generate-sitemap.js
+        run: yarn run generate-sitemap
       - name: Upload build artifact, ready for GitHub Pages deployment
         uses: actions/upload-pages-artifact@v3
         with:

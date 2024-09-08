@@ -1,12 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const { parseString } = require('xml2js'); // Using xml2js for XML parsing
+import fs from 'fs';
+import path from 'path';
+import https from 'https';
+import { parseString } from 'xml2js'; // Using xml2js for XML parsing
 
-const site = 'https://fulldecent.github.io/github-pages-template';
-const buildFolderPath = path.join(__dirname, 'build');
-const sourceFolderPath = path.join(__dirname, 'build');
-const sitemapPath = path.join(sourceFolderPath, 'sitemap.xml');
+const site = 'https://www.acls.net';
+const buildFolderPath = path.join(process.cwd(), 'build');
+const sitemapPath = path.join(buildFolderPath, 'sitemap.xml');
 const daysThreshold = 30; // Number of days to compare for updating lastmod
 
 // Function to generate sitemap XML content
@@ -40,7 +39,7 @@ function getHTMLFiles(dir, fileList) {
     const filePath = path.join(dir, file);
     if (fs.statSync(filePath).isDirectory()) {
       getHTMLFiles(filePath, fileList);
-    } else if (path.extname(file) === '.html' || path.extname(file) === '.htm') {
+    } else if (path.extname(file) === '.html') {
       const content = fs.readFileSync(filePath, 'utf8');
       const experimentMetaTag = content.match(/<meta\s+name=["']experiment["']\s+content=["']true["']\s*\/?>/i);
       if (!experimentMetaTag) {

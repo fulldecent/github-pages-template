@@ -3,7 +3,7 @@ import { Rule } from 'html-validate';
 import path from 'path';
 
 export default class CheckInternalLinks extends Rule {
-  static ALTERNATIVE_EXTENSIONS = ['.html', '.htm', '.php'];
+  static ALTERNATIVE_EXTENSIONS = ['.html', '.php'];
   static EXTERNAL_LINK_PREFIXES = ['https://', 'http://', 'mailto:', 'tel:'];
 
   documentation() {
@@ -14,35 +14,35 @@ export default class CheckInternalLinks extends Rule {
   }
 
   setup() {
-    // Set up the rule to listen for the "dom:ready" event
     this.on('dom:ready', this.domReady.bind(this));
   }
 
   checkTheLink(internalLink, element) {
-    // Decode the internal link
-    let decodedLink = decodeURIComponent(internalLink);
+    let decodedLink = internalLink.includes('%') ? decodeURIComponent(internalLink) : internalLink;
 
-    // If absolute path then prefix with build
+    // Remove query string and fragment
+    decodedLink = decodedLink.split(/[?#]/)[0];
+
+    // If absolute path, prefix with the build directory
     if (decodedLink.startsWith('/')) {
-      decodedLink = `${process.cwd()}/build${decodedLink}`;
+      decodedLink = path.join(process.cwd(), 'build', decodedLink);
     }
 
     // Resolve the path
     const basePath = path.dirname(element.location.filename);
     let resolvedPath = path.resolve(basePath, decodedLink);
 
-    // If it's a directory, append index.html
-    if (fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory()) {
+    // Check if it is a directory and append index.html
+    const isDirectory = fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory();
+    if (isDirectory) {
       resolvedPath = path.join(resolvedPath, 'index.html');
     }
 
-    // Pass if url fully matches a file
-    if (fs.existsSync(resolvedPath)) {
-      return;
-    }
-
-    // Pass if url matches with any alternative extension
-    if (CheckInternalLinks.ALTERNATIVE_EXTENSIONS.some((ext) => fs.existsSync(`${resolvedPath}${ext}`))) {
+    // Pass if the URL matches a file or an alternative extension
+    if (
+      fs.existsSync(resolvedPath) ||
+      CheckInternalLinks.ALTERNATIVE_EXTENSIONS.some((ext) => fs.existsSync(`${resolvedPath}${ext}`))
+    ) {
       return;
     }
 
@@ -56,34 +56,15 @@ export default class CheckInternalLinks extends Rule {
   domReady({ document }) {
     const elementsWithLink = document.querySelectorAll('[src], [href]');
 
-    // Iterate over each anchor element
     elementsWithLink.forEach((element) => {
-      // Get link from src or href attribute
-      let url = '';
-      if (element.hasAttribute('src')) {
-        url = element.getAttribute('src').value;
-      }
-      if (element.hasAttribute('href')) {
-        url = element.getAttribute('href').value;
-      }
+      let url = element.getAttribute('src')?.value || element.getAttribute('href')?.value;
 
-      // Remove fragment, if any
-      if (url.includes('#')) {
-        url = url.split('#')[0];
-      }
-
-      // Ignore if external link
-      if (CheckInternalLinks.EXTERNAL_LINK_PREFIXES.some((prefix) => url.startsWith(prefix))) {
+      // Ignore empty or external links
+      if (!url || CheckInternalLinks.EXTERNAL_LINK_PREFIXES.some((prefix) => url.startsWith(prefix))) {
         return;
       }
 
-      // Ignore if the link is empty
-      if (url === '') {
-        return;
-      }
-
-      // Check if the link exists
-      this.checkTheLink(url, element);
+      this.checkTheLink(url.split('#')[0], element);
     });
   }
 }

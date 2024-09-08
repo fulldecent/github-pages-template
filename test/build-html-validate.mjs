@@ -1,10 +1,11 @@
-// Documentation: https://html-validate.org/dev/using-api.html
-
 import { HtmlValidate, formatterFactory } from 'html-validate';
 import { glob } from 'glob';
 import plugin from './plugin.html-validate.mjs';
-const targets = glob.sync('build/**/*.html');
-// We prefer to use FileSystemConfigLoader, see https://gitlab.com/html-validate/html-validate/-/issues/230#note_1670756378
+
+// Find and sort all HTML files in the 'build' directory
+const targets = glob.sync('build/**/*.html').sort();
+
+// Initialize HtmlValidate instance
 const htmlValidate = new HtmlValidate({
   extends: ['html-validate:prettier'],
   plugins: [plugin],
@@ -18,26 +19,28 @@ const htmlValidate = new HtmlValidate({
     'internal-links': 'error',
   },
 });
+
 const formatter = formatterFactory('stylish');
-var allTestsPassed = true;
+let allTestsPassed = true;
 
-const validateTargets = async () => {
-  for (const target of targets) {
-    try {
-      const report = await htmlValidate.validateFile(target);
-      if (!report.valid) {
-        console.log(formatter(report.results));
-        allTestsPassed = false;
-      } else {
-        console.log('✅ ' + target);
-      }
-    } catch (error) {
-      console.error(`Error validating ${target}:`, error);
+// Validate each target file
+for (const target of targets) {
+  try {
+    const report = await htmlValidate.validateFile(target);
+    if (!report.valid) {
+      console.log(formatter(report.results));
       allTestsPassed = false;
+    } else {
+      console.log(`✅ ${target}`);
     }
+  } catch (error) {
+    console.error(`Error validating ${target}:`, error);
+    allTestsPassed = false;
   }
+}
 
-  process.exit(allTestsPassed ? 0 : 1);
-};
-
-validateTargets();
+if (allTestsPassed) {
+  console.log('✨✨ All tests passed! ✨✨');
+} else {
+  process.exit(1);
+}

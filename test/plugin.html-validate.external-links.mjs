@@ -15,7 +15,7 @@ const USER_AGENT =
 // Use your proxy server to check external links
 // This URL must accept a query parameter `url` and return the status code and possibly location: header in the response.
 // Status code 500 is returned if the server is down or timeout.
-const PROXY_URL = null;
+const PROXY_URL = 'https://api.PacificMedicalTraining.com/link-check/status';
 
 // html-validate runs check() synchronously, so we can't use async functions like fetch here. Maybe after their
 // version 9 release we can use the fetch API and this parallel approach.
@@ -152,6 +152,10 @@ export default class ExternalLinksRule extends Rule {
   domReady({ document }) {
     const aElements = document.getElementsByTagName('a');
     for (const aElement of aElements) {
+      if (!aElement.hasAttribute('href')) {
+        continue;
+      }
+
       const href = aElement.getAttribute('href').value;
       if (!href || !/^https?:\/\//i.test(href)) {
         continue;

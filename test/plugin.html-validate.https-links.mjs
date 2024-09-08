@@ -104,6 +104,7 @@ export default class EnsureHttpsRules extends Rule {
   domReady({ document }) {
     const aElements = document.getElementsByTagName('a');
     for (const aElement of aElements) {
+      if (!aElement.hasAttribute('href')) continue;
       const href = aElement.getAttribute('href').value;
       if (!href) continue;
       if (href.startsWith('http://')) {
