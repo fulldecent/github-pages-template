@@ -35,10 +35,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
-          cache: "yarn"
-      - name: Setup yarn using corepack
+          node-version: 'lts/*'
+          # cache: 'yarn' # workaround because setup-node+Yarn Berry error
+      - name: Enable Corepack
         run: corepack enable
+      - name: Cache Yarn # workaround because setup-node+Yarn Berry error
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --immutable
       - name: Generate sitemap
@@ -61,14 +69,22 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - name: Setup yarn using corepack
-        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
-          cache: "yarn"
-      - name: Install node packages
+          node-version: 'lts/*'
+          # cache: 'yarn' # workaround because setup-node+Yarn Berry error
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Cache Yarn # workaround because setup-node+Yarn Berry error
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
         run: yarn install --immutable
       - name: Download build artifact
         uses: actions/download-artifact@v4
