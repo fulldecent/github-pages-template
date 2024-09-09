@@ -12,11 +12,10 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment per branch
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   # Build using Jekyll, and Node.js, save GitHub Pages artifact and build artifact
@@ -32,21 +31,14 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Build site
         run: bundle exec jekyll build
+      - name: Enable Corepack
+        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          # cache: 'yarn' # workaround because setup-node+Yarn Berry error
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Cache Yarn # workaround because setup-node+Yarn Berry error
-        uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: .nvmrc
+          cache: 'yarn'
+          check-latest: true
       - name: Install dependencies
         run: yarn install --immutable
       - name: Generate sitemap
