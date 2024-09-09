@@ -76,15 +76,19 @@ jobs:
         with:
           name: build-artifact
           path: build/
-      - name: Cache testing
-        uses: actions/cache@v4
-        id: cache
+      - name: Restore testing cache
+        uses: actions/cache/restore@v4        
         with:
           path: cache/
-          key: ${{ runner.os }}-testing
-          save-always: true
+          key: test-cache
       - name: Test suite
         run: yarn run test
+      - name: Save testing cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: cache/
+          key: test-cache
 
   # Deploy the GitHub Pages artifact
   deploy-github-pages:
