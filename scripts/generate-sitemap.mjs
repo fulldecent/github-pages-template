@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import https from 'https';
-import { parseString } from 'xml2js'; // Using xml2js for XML parsing
+import fs from "fs";
+import path from "path";
+import https from "https";
+import { parseString } from "xml2js"; // Using xml2js for XML parsing
 
-const site = 'https://www.acls.net';
-const buildFolderPath = path.join(process.cwd(), 'build');
-const sitemapPath = path.join(buildFolderPath, 'sitemap.xml');
+const site = "https://www.acls.net";
+const buildFolderPath = path.join(process.cwd(), "build");
+const sitemapPath = path.join(buildFolderPath, "sitemap.xml");
 const daysThreshold = 30; // Number of days to compare for updating lastmod
 
 // Function to generate sitemap XML content
@@ -16,17 +16,17 @@ function generateSitemap(files, lastmodDate) {
   files.forEach((file) => {
     // Convert file path to URL and remove file extensions
     const url = file
-      .replace(buildFolderPath, '')
-      .replace(/\\/g, '/')
-      .replace(/index\.html?$/, '')
-      .replace(/\.html?$/, '');
+      .replace(buildFolderPath, "")
+      .replace(/\\/g, "/")
+      .replace(/index\.html?$/, "")
+      .replace(/\.html?$/, "");
     xml += `<url><loc>${site}${url}</loc>`;
     xml += `<lastmod>${lastmodDate.toISOString()}</lastmod>`; // Use lastmodDate if it exists
-    xml += url === '/' ? '<priority>1.00</priority>' : '<priority>0.80</priority>';
-    xml += '</url>\n';
+    xml += url === "/" ? "<priority>1.00</priority>" : "<priority>0.80</priority>";
+    xml += "</url>\n";
   });
 
-  xml += '</urlset>';
+  xml += "</urlset>";
   return xml;
 }
 
@@ -39,8 +39,8 @@ function getHTMLFiles(dir, fileList) {
     const filePath = path.join(dir, file);
     if (fs.statSync(filePath).isDirectory()) {
       getHTMLFiles(filePath, fileList);
-    } else if (path.extname(file) === '.html') {
-      const content = fs.readFileSync(filePath, 'utf8');
+    } else if (path.extname(file) === ".html") {
+      const content = fs.readFileSync(filePath, "utf8");
       const experimentMetaTag = content.match(/<meta\s+name=["']experiment["']\s+content=["']true["']\s*\/?>/i);
       if (!experimentMetaTag) {
         fileList.push(filePath);
@@ -54,13 +54,13 @@ function getHTMLFiles(dir, fileList) {
 // Fetch sitemap.xml from the provided URL
 https
   .get(`${site}/sitemap.xml`, (res) => {
-    let data = '';
+    let data = "";
 
-    res.on('data', (chunk) => {
+    res.on("data", (chunk) => {
       data += chunk;
     });
 
-    res.on('end', () => {
+    res.on("end", () => {
       // Check if sitemap.xml file exists
       parseString(data, (err, result) => {
         if (err) {
@@ -80,8 +80,8 @@ https
       });
     });
   })
-  .on('error', (err) => {
-    console.error('Error fetching sitemap:', err);
+  .on("error", (err) => {
+    console.error("Error fetching sitemap:", err);
     // If there's an error fetching the sitemap, generate the sitemap with the current date
     generateAndWriteSitemap(new Date());
   });
@@ -95,6 +95,6 @@ function generateAndWriteSitemap(lastmodDate) {
   // Write sitemap XML to file
   fs.writeFile(sitemapPath, sitemapXML, (err) => {
     if (err) throw err;
-    console.log('Sitemap.xml generated successfully!');
+    console.log("Sitemap.xml generated successfully!");
   });
 }

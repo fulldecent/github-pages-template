@@ -1,5 +1,5 @@
 # Site settings
 lang: en-US
-permalink: '/:path'
+permalink: "/:path"
 destination: build
 source: source

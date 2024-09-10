@@ -37,7 +37,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: 'yarn'
+          cache: "yarn"
           check-latest: true
       - name: Install dependencies
         run: yarn install --immutable
@@ -53,7 +53,7 @@ jobs:
           name: build-artifact
           path: build/ # the Jekyll build directory
           include-hidden-files: true # Workaround https://github.com/actions/upload-artifact/issues/610
-  
+
   # Test the build artifact
   test:
     name: Test
@@ -67,7 +67,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: 'yarn'
+          cache: "yarn"
           check-latest: true
       - name: Install dependencies
         run: yarn install --immutable
@@ -77,7 +77,7 @@ jobs:
           name: build-artifact
           path: build/
       - name: Restore testing cache
-        uses: actions/cache/restore@v4        
+        uses: actions/cache/restore@v4
         with:
           path: cache/
           key: test-cache

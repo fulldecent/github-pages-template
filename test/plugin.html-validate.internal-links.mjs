@@ -1,31 +1,31 @@
-import fs from 'fs';
-import { Rule } from 'html-validate';
-import path from 'path';
+import fs from "fs";
+import { Rule } from "html-validate";
+import path from "path";
 
 export default class CheckInternalLinks extends Rule {
-  static ALTERNATIVE_EXTENSIONS = ['.html', '.php'];
-  static EXTERNAL_LINK_PREFIXES = ['https://', 'http://', 'mailto:', 'tel:'];
+  static ALTERNATIVE_EXTENSIONS = [".html", ".php"];
+  static EXTERNAL_LINK_PREFIXES = ["https://", "http://", "mailto:", "tel:"];
 
   documentation() {
     return {
-      description: 'Require all internal links (src and href attributes) to be live.',
-      url: 'https://github.com/fulldecent/github-pages-template/#internal-links',
+      description: "Require all internal links (src and href attributes) to be live.",
+      url: "https://github.com/fulldecent/github-pages-template/#internal-links",
     };
   }
 
   setup() {
-    this.on('dom:ready', this.domReady.bind(this));
+    this.on("dom:ready", this.domReady.bind(this));
   }
 
   checkTheLink(internalLink, element) {
-    let decodedLink = internalLink.includes('%') ? decodeURIComponent(internalLink) : internalLink;
+    let decodedLink = internalLink.includes("%") ? decodeURIComponent(internalLink) : internalLink;
 
     // Remove query string and fragment
     decodedLink = decodedLink.split(/[?#]/)[0];
 
     // If absolute path, prefix with the build directory
-    if (decodedLink.startsWith('/')) {
-      decodedLink = path.join(process.cwd(), 'build', decodedLink);
+    if (decodedLink.startsWith("/")) {
+      decodedLink = path.join(process.cwd(), "build", decodedLink);
     }
 
     // Resolve the path
@@ -35,7 +35,7 @@ export default class CheckInternalLinks extends Rule {
     // Check if it is a directory and append index.html
     const isDirectory = fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory();
     if (isDirectory) {
-      resolvedPath = path.join(resolvedPath, 'index.html');
+      resolvedPath = path.join(resolvedPath, "index.html");
     }
 
     // Pass if the URL matches a file or an alternative extension
@@ -54,17 +54,17 @@ export default class CheckInternalLinks extends Rule {
   }
 
   domReady({ document }) {
-    const elementsWithLink = document.querySelectorAll('[src], [href]');
+    const elementsWithLink = document.querySelectorAll("[src], [href]");
 
     elementsWithLink.forEach((element) => {
-      let url = element.getAttribute('src')?.value || element.getAttribute('href')?.value;
+      let url = element.getAttribute("src")?.value || element.getAttribute("href")?.value;
 
       // Ignore empty or external links
       if (!url || CheckInternalLinks.EXTERNAL_LINK_PREFIXES.some((prefix) => url.startsWith(prefix))) {
         return;
       }
 
-      this.checkTheLink(url.split('#')[0], element);
+      this.checkTheLink(url.split("#")[0], element);
     });
   }
 }

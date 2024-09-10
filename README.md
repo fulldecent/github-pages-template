@@ -51,5 +51,11 @@ You can run PHP or similar on the built site. Here's how.
 All testing is performed using Node scripts:
 
 ```sh
-yarn run test
+yarn test
 ```
+
+## VS Code
+
+Open this folder in VS Code and install recommended extensions. Then use "Reload Window" to activate them.
+
+This will give you formatting, linting, and other tools to help you develop.
