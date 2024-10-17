@@ -162,7 +162,7 @@ export default class ExternalLinksRule extends Rule {
       }
 
       // Skip URLs that match the skip URLs regex
-      const url = decodeURIComponent(href);
+      const url = href;
       if (this.skipUrlsRegex.some((regex) => regex.test(url))) {
         continue;
       }
