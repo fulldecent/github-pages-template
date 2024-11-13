@@ -32,18 +32,18 @@ export default class CheckInternalLinks extends Rule {
     const basePath = path.dirname(element.location.filename);
     let resolvedPath = path.resolve(basePath, decodedLink);
 
-    // Check if it is a directory and append index.html
-    const isDirectory = fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory();
-    if (isDirectory) {
-      resolvedPath = path.join(resolvedPath, "index.html");
-    }
-
     // Pass if the URL matches a file or an alternative extension
     if (
       fs.existsSync(resolvedPath) ||
       CheckInternalLinks.ALTERNATIVE_EXTENSIONS.some((ext) => fs.existsSync(`${resolvedPath}${ext}`))
     ) {
       return;
+    }
+
+    // Check if it is a directory and append index.html
+    const isDirectory = fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory();
+    if (isDirectory) {
+      resolvedPath = path.join(resolvedPath, "index.html");
     }
 
     // Report an error with the relative path
