@@ -37,8 +37,8 @@ bundle exec jekyll build
 ```sh
 bundle exec jekyll serve
 ```
+To live reload changes use:
 ```sh
-## To live reload changes
 bundle exec jekyll serve --livereload
 ```
 
