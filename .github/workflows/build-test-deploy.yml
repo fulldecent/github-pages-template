@@ -80,6 +80,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: cache/
+      - name: Check cache size
+        run: |
+          echo "Number of URLs in cache: $(sqlite3 cache/external-links.db 'SELECT COUNT(*) FROM urls')"
+
           key: test-cache
       - name: Test suite
         run: yarn run test
