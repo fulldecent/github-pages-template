@@ -81,6 +81,10 @@ jobs:
         with:
           path: cache/
           key: test-cache
+      - name: Count URLs in cache
+        run: |
+          URL_COUNT=$(sqlite3 cache/external-links.db "SELECT COUNT(*) FROM urls;")
+          echo "Number of URLs in cache: $URL_COUNT"
       - name: Test suite
         run: yarn run test
       - name: Save testing cache
