@@ -1,13 +1,13 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.5.2",
+    "@shopify/prettier-plugin-liquid": "^1.6.1",
     "better-sqlite3": "^11.5.0",
     "glob": "^11.0.0",
-    "html-validate": "^8.24.2",
-    "markdownlint-cli2": "^0.14.0",
-    "prettier": "^3.3.3",
-    "shell-quote": "^1.8.1"
+    "html-validate": "^8.27.0",
+    "markdownlint-cli2": "^0.15.0",
+    "prettier": "^3.4.1",
+    "shell-quote": "^1.8.2"
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs",
