@@ -84,25 +84,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/liquid-html-parser@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "@shopify/liquid-html-parser@npm:2.0.5"
+"@shopify/liquid-html-parser@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@shopify/liquid-html-parser@npm:2.1.1"
   dependencies:
     line-column: "npm:^1.0.2"
     ohm-js: "npm:^16.3.0"
-  checksum: 10c0/a2d4fe4b2ae2641a0f56d876eb0d70476f48c5346560a0c2064dc34ae659c0591a2ce455794bf7899815a26713c5bef98b95742bdab90cc0bce5814f1f5da752
+  checksum: 10c0/31b4c263a487598febea28162084a2a9d9be3e9fb5f11fb29240ebb9d040b181ea9a6ba1704705c336901de76cedb1961b84e7550da5aadce66b1748dd0b5c5a
   languageName: node
   linkType: hard
 
-"@shopify/prettier-plugin-liquid@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "@shopify/prettier-plugin-liquid@npm:1.5.2"
+"@shopify/prettier-plugin-liquid@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "@shopify/prettier-plugin-liquid@npm:1.6.1"
   dependencies:
-    "@shopify/liquid-html-parser": "npm:^2.0.5"
+    "@shopify/liquid-html-parser": "npm:^2.1.1"
     html-styles: "npm:^1.0.0"
   peerDependencies:
     prettier: ^2.0.0 || ^3.0.0
-  checksum: 10c0/a5ebb7b2df0fec360f17e1cf868b3e995cb6f37673c9a3450a6005c93ab9c0f25f8d9aa48f16cd0689a77b06dc35eede4f4302d76a4af0f552bd7cd47674a288
+  checksum: 10c0/6b9a37c11faea525404b237ca08eeb1105dbc3f025b8d88a0c3e55666836a00f651d09fe066221f66a6e3554c355b223aa120902aecef43b965f336eca48dc9a
   languageName: node
   linkType: hard
 
@@ -377,13 +377,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:4.3.1":
-  version: 4.3.1
-  resolution: "deepmerge@npm:4.3.1"
-  checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
-  languageName: node
-  linkType: hard
-
 "detect-libc@npm:^2.0.0":
   version: 2.0.3
   resolution: "detect-libc@npm:2.0.3"
@@ -647,16 +640,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^8.24.2":
-  version: 8.24.2
-  resolution: "html-validate@npm:8.24.2"
+"html-validate@npm:^8.27.0":
+  version: 8.27.0
+  resolution: "html-validate@npm:8.27.0"
   dependencies:
     "@html-validate/stylish": "npm:^4.1.0"
     "@sidvind/better-ajv-errors": "npm:3.0.1"
     ajv: "npm:^8.0.0"
-    deepmerge: "npm:4.3.1"
     glob: "npm:^10.0.0"
-    ignore: "npm:5.3.2"
     kleur: "npm:^4.1.0"
     minimist: "npm:^1.2.0"
     prompts: "npm:^2.0.0"
@@ -677,7 +668,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.js
-  checksum: 10c0/14ffbf44ab875f8fd85f0196f0c08f04d37416d7e38109d026f97a2d5445a9dfc3ea3d26b414c669ea4b2194d3e713cd4fedb598c7a54498538fc257637bf7e2
+  checksum: 10c0/c1e32841a3c45f6c0336d2f4175b29bc0a54c188150bc60a3951c6c71cde724daa3b3ef6ed6f1c690f5ed89c30fb572691b8a5144c6c82b7b42545a04f7bc8cd
   languageName: node
   linkType: hard
 
@@ -724,7 +715,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:5.3.2, ignore@npm:^5.2.4":
+"ignore@npm:^5.2.4":
   version: 5.3.2
   resolution: "ignore@npm:5.3.2"
   checksum: 10c0/f9f652c957983634ded1e7f02da3b559a0d4cc210fca3792cb67f1b153623c9c42efdc1c4121af171e295444459fc4a9201101fb041b1104a3c000bccb188337
@@ -998,36 +989,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdownlint-cli2@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "markdownlint-cli2@npm:0.14.0"
+"markdownlint-cli2@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "markdownlint-cli2@npm:0.15.0"
   dependencies:
     globby: "npm:14.0.2"
     js-yaml: "npm:4.1.0"
     jsonc-parser: "npm:3.3.1"
-    markdownlint: "npm:0.35.0"
+    markdownlint: "npm:0.36.1"
     markdownlint-cli2-formatter-default: "npm:0.0.5"
     micromatch: "npm:4.0.8"
   bin:
     markdownlint-cli2: markdownlint-cli2.js
-  checksum: 10c0/cf2c65de97887a51e2ad756779fd90cabc6b26d09c07aed43422c142e0b2406a8a1e84e17cbf8590a72812e65d5a16e106d7110e392bb7f5fb154a09245bb985
+  checksum: 10c0/eb2bb8c855bfaa1cb5bca338ad262a6b7cdcf3f1624d3b5f77af45a7b1a919a4922d3f68be9651b96f301c3f03ebbfe4ce2067d5f7e97fa7644afe099743ddbf
   languageName: node
   linkType: hard
 
-"markdownlint-micromark@npm:0.1.10":
-  version: 0.1.10
-  resolution: "markdownlint-micromark@npm:0.1.10"
-  checksum: 10c0/1a392a3d92c01093244c15f69a658e68eeffe26b96218189509184246e19be9f64c7937241a5911f1ff2bd721f0d60f32242a46a9b3b6ab505ef22b8dbb66918
+"markdownlint-micromark@npm:0.1.12":
+  version: 0.1.12
+  resolution: "markdownlint-micromark@npm:0.1.12"
+  checksum: 10c0/6833c2b9eb6fd63c43dde30aff8bc526cb97638b287535f8277e2c97015602df0670becdece639986dbe3ac2b279d7c1d308c0a65cb5d2aacc331ea768afa86e
   languageName: node
   linkType: hard
 
-"markdownlint@npm:0.35.0":
-  version: 0.35.0
-  resolution: "markdownlint@npm:0.35.0"
+"markdownlint@npm:0.36.1":
+  version: 0.36.1
+  resolution: "markdownlint@npm:0.36.1"
   dependencies:
     markdown-it: "npm:14.1.0"
-    markdownlint-micromark: "npm:0.1.10"
-  checksum: 10c0/32330f6e6c2a35e3505f4bdae5211c0b8bd9130604a0d93bb22506835447065a4efd9d3ecefaa7f7c6744628f8427fe98296b71948d2d1502a46917863235717
+    markdownlint-micromark: "npm:0.1.12"
+  checksum: 10c0/1f93a010c5421a9c9cbd51aeb4046c674b4797ef1c6ad55b0344e7a6ecec46dd38d526e623fd6a3d4c486fe594119c5161dad6033b6468f7719d3c69b5d0cea6
   languageName: node
   linkType: hard
 
@@ -1343,12 +1334,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "prettier@npm:3.3.3"
+"prettier@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "prettier@npm:3.4.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/b85828b08e7505716324e4245549b9205c0cacb25342a030ba8885aba2039a115dbcf75a0b7ca3b37bc9d101ee61fab8113fc69ca3359f2a226f1ecc07ad2e26
+  checksum: 10c0/2d6cc3101ad9de72b49c59339480b0983e6ff6742143da0c43f476bf3b5ef88ede42ebd9956d7a0a8fa59f7a5990e8ef03c9ad4c37f7e4c9e5db43ee0853156c
   languageName: node
   linkType: hard
 
@@ -1453,14 +1444,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@shopify/prettier-plugin-liquid": "npm:^1.5.2"
+    "@shopify/prettier-plugin-liquid": "npm:^1.6.1"
     better-sqlite3: "npm:^11.5.0"
     front-matter: "npm:^4.0.2"
     glob: "npm:^11.0.0"
-    html-validate: "npm:^8.24.2"
-    markdownlint-cli2: "npm:^0.14.0"
-    prettier: "npm:^3.3.3"
-    shell-quote: "npm:^1.8.1"
+    html-validate: "npm:^8.27.0"
+    markdownlint-cli2: "npm:^0.15.0"
+    prettier: "npm:^3.4.1"
+    shell-quote: "npm:^1.8.2"
     xml2js: "npm:^0.6.2"
   dependenciesMeta:
     "@shopify/prettier-plugin-liquid@1.5.0":
@@ -1523,10 +1514,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "shell-quote@npm:1.8.1"
-  checksum: 10c0/8cec6fd827bad74d0a49347057d40dfea1e01f12a6123bf82c4649f3ef152fc2bc6d6176e6376bffcd205d9d0ccb4f1f9acae889384d20baff92186f01ea455a
+"shell-quote@npm:^1.8.2":
+  version: 1.8.2
+  resolution: "shell-quote@npm:1.8.2"
+  checksum: 10c0/85fdd44f2ad76e723d34eb72c753f04d847ab64e9f1f10677e3f518d0e5b0752a176fd805297b30bb8c3a1556ebe6e77d2288dbd7b7b0110c7e941e9e9c20ce1
   languageName: node
   linkType: hard
 
