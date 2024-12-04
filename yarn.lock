@@ -640,9 +640,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^8.27.0":
-  version: 8.27.0
-  resolution: "html-validate@npm:8.27.0"
+"html-validate@npm:^9.0.0-rc.3":
+  version: 9.0.0-rc.3
+  resolution: "html-validate@npm:9.0.0-rc.3"
   dependencies:
     "@html-validate/stylish": "npm:^4.1.0"
     "@sidvind/better-ajv-errors": "npm:3.0.1"
@@ -668,7 +668,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.js
-  checksum: 10c0/c1e32841a3c45f6c0336d2f4175b29bc0a54c188150bc60a3951c6c71cde724daa3b3ef6ed6f1c690f5ed89c30fb572691b8a5144c6c82b7b42545a04f7bc8cd
+  checksum: 10c0/a60c71cade632426084b2ff3bc1fbff36114ca07e5675e9a5da6f8946b52e295fb4fa3a9e3c8ac8ad00f1b99fcc2e149bdc4be98684f334c2760431b14e17bac
   languageName: node
   linkType: hard
 
@@ -1444,7 +1444,7 @@ __metadata:
     better-sqlite3: "npm:^11.6.0"
     front-matter: "npm:^4.0.2"
     glob: "npm:^11.0.0"
-    html-validate: "npm:^8.27.0"
+    html-validate: "npm:^9.0.0-rc.3"
     markdownlint-cli2: "npm:^0.15.0"
     prettier: "npm:^3.4.2"
     shell-quote: "npm:^1.8.2"
