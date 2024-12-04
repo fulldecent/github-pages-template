@@ -1,7 +1,0 @@
-{
-  "plugins": ["<rootDir>/test/plugin.html-validate.mjs"],
-  "extends": ["html-validate:prettier", "<rootDir>/test/plugin.html-validate.mjs:recommended"],
-  "rules": {
-    "void-style": "off"
-  }
-}

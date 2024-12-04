@@ -8,7 +8,7 @@ import LatestPackagesRules from "./plugin.html-validate.latest-packages.mjs";
 import EnsureHttpsRules from "./plugin.html-validate.https-links.mjs";
 import CheckInternalLinks from "./plugin.html-validate.internal-links.mjs";
 
-const plugin = definePlugin({
+export default definePlugin({
   name: "pacific-medical-training",
   rules: {
     "mailto-awesome": MailtoAwesomeRule,
@@ -33,5 +33,3 @@ const plugin = definePlugin({
     },
   },
 });
-
-export default plugin;
