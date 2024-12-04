@@ -1,12 +1,12 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.6.1",
-    "better-sqlite3": "^11.5.0",
+    "@shopify/prettier-plugin-liquid": "^1.6.2",
+    "better-sqlite3": "^11.6.0",
     "glob": "^11.0.0",
     "html-validate": "^8.27.0",
     "markdownlint-cli2": "^0.15.0",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "shell-quote": "^1.8.2"
   },
   "scripts": {
