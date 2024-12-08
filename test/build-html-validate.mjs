@@ -12,7 +12,7 @@ const formatter = formatterFactory("stylish");
 let allTestsPassed = true;
 
 // Validate each target file
-for (const target of targets) {
+const outcomes = targets.map(async (target) => {
   try {
     const report = await htmlValidate.validateFile(target);
     if (!report.valid) {
@@ -25,10 +25,14 @@ for (const target of targets) {
     console.error(`Error validating ${target}:`, error);
     allTestsPassed = false;
   }
-}
+});
 
-if (allTestsPassed) {
-  console.log("✨✨ All tests passed! ✨✨");
-} else {
-  process.exit(1);
-}
+console.log("🧪 Testing pages");
+Promise.all(outcomes).then(() => {
+  if (allTestsPassed) {
+    console.log("✨ All tests passed!\n");
+  } else {
+    console.log("❌ Some tests failed.");
+    process.exit(1);
+  }
+});
