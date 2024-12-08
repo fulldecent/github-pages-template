@@ -8,16 +8,16 @@ import LatestPackagesRules from "./plugin.html-validate.latest-packages.mjs";
 import EnsureHttpsRules from "./plugin.html-validate.https-links.mjs";
 import CheckInternalLinks from "./plugin.html-validate.internal-links.mjs";
 
-const plugin = definePlugin({
+export default definePlugin({
   name: "pacific-medical-training",
   rules: {
-    "mailto-awesome": MailtoAwesomeRule,
-    "external-links": ExternalLinksRules,
-    "no-jquery": NoJqueryRules,
-    "canonical-link": CanonicalLinkRule,
-    "latest-packages": LatestPackagesRules,
-    "https-links": EnsureHttpsRules,
-    "internal-links": CheckInternalLinks,
+    "pacific-medical-training/mailto-awesome": MailtoAwesomeRule,
+    "pacific-medical-training/external-links": ExternalLinksRules,
+    "pacific-medical-training/no-jquery": NoJqueryRules,
+    "pacific-medical-training/canonical-link": CanonicalLinkRule,
+    "pacific-medical-training/latest-packages": LatestPackagesRules,
+    "pacific-medical-training/https-links": EnsureHttpsRules,
+    "pacific-medical-training/internal-links": CheckInternalLinks,
   },
   configs: {
     recommended: {
@@ -33,5 +33,3 @@ const plugin = definePlugin({
     },
   },
 });
-
-export default plugin;

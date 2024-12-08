@@ -1,30 +1,18 @@
-import { HtmlValidate, formatterFactory } from "html-validate";
+import { HtmlValidate, FileSystemConfigLoader, formatterFactory, esmResolver } from "html-validate";
 import { glob } from "glob";
-import plugin from "./plugin.html-validate.mjs";
 
 // Find and sort all HTML files in the 'build' directory
 const targets = glob.sync("build/**/*.html").sort();
 
 // Initialize HtmlValidate instance
-const htmlValidate = new HtmlValidate({
-  extends: ["html-validate:prettier"],
-  plugins: [plugin],
-  rules: {
-    "mailto-awesome": "error",
-    "external-links": "error",
-    "no-jquery": "error",
-    "canonical-link": "error",
-    "latest-packages": "error",
-    "https-links": "error",
-    "internal-links": "error",
-  },
-});
-
+const resolver = esmResolver();
+const loader = new FileSystemConfigLoader([resolver]);
+const htmlValidate = new HtmlValidate(loader);
 const formatter = formatterFactory("stylish");
 let allTestsPassed = true;
 
 // Validate each target file
-for (const target of targets) {
+const outcomes = targets.map(async (target) => {
   try {
     const report = await htmlValidate.validateFile(target);
     if (!report.valid) {
@@ -37,10 +25,14 @@ for (const target of targets) {
     console.error(`Error validating ${target}:`, error);
     allTestsPassed = false;
   }
-}
+});
 
-if (allTestsPassed) {
-  console.log("✨✨ All tests passed! ✨✨");
-} else {
-  process.exit(1);
-}
+console.log("🧪 Testing pages");
+Promise.all(outcomes).then(() => {
+  if (allTestsPassed) {
+    console.log("✨ All tests passed!\n");
+  } else {
+    console.log("❌ Some tests failed.");
+    process.exit(1);
+  }
+});
