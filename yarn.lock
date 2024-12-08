@@ -222,14 +222,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^11.6.0":
-  version: 11.6.0
-  resolution: "better-sqlite3@npm:11.6.0"
+"better-sqlite3@npm:^11.7.0":
+  version: 11.7.0
+  resolution: "better-sqlite3@npm:11.7.0"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 10c0/cafa207b40c42624d767a35f24fb16769d106486371b2e23497e9417505fa1fdedd94313b50508bd67f85713a996a0a9134458987c9b80a0a2b243d4db0d1259
+  checksum: 10c0/66e78fb7e12f55dd78469efec7f6fcf69079e149e974be9ea24befac7c67b8fe0e23a419cae412ac4ea025c73841d8d54bd222eece1c007485e3f6bd56fd1c94
   languageName: node
   linkType: hard
 
@@ -640,9 +640,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^9.0.0-rc.3":
-  version: 9.0.0-rc.3
-  resolution: "html-validate@npm:9.0.0-rc.3"
+"html-validate@npm:^9.0.0-rc.4":
+  version: 9.0.0-rc.4
+  resolution: "html-validate@npm:9.0.0-rc.4"
   dependencies:
     "@html-validate/stylish": "npm:^4.1.0"
     "@sidvind/better-ajv-errors": "npm:3.0.1"
@@ -668,7 +668,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.js
-  checksum: 10c0/a60c71cade632426084b2ff3bc1fbff36114ca07e5675e9a5da6f8946b52e295fb4fa3a9e3c8ac8ad00f1b99fcc2e149bdc4be98684f334c2760431b14e17bac
+  checksum: 10c0/c8d31770bf2d1280e2e4ed30ac9f01d7d86383e90cadfe3ebe86e29837f2cbd44338023f4da6e4572a8c743970e2ef5e362dfb93cb5504a178bef64cd9b3802f
   languageName: node
   linkType: hard
 
@@ -1441,10 +1441,10 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@shopify/prettier-plugin-liquid": "npm:^1.6.2"
-    better-sqlite3: "npm:^11.6.0"
+    better-sqlite3: "npm:^11.7.0"
     front-matter: "npm:^4.0.2"
     glob: "npm:^11.0.0"
-    html-validate: "npm:^9.0.0-rc.3"
+    html-validate: "npm:^9.0.0-rc.4"
     markdownlint-cli2: "npm:^0.15.0"
     prettier: "npm:^3.4.2"
     shell-quote: "npm:^1.8.2"
