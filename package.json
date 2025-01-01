@@ -1,11 +1,11 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.6.2",
+    "@shopify/prettier-plugin-liquid": "^1.6.3",
     "better-sqlite3": "^11.7.0",
     "glob": "^11.0.0",
-    "html-validate": "^9.0.0-rc.4",
-    "markdownlint-cli2": "^0.15.0",
+    "html-validate": "^9.1.0",
+    "markdownlint-cli2": "^0.17.1",
     "prettier": "^3.4.2",
     "shell-quote": "^1.8.2"
   },
@@ -18,7 +18,7 @@
     "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.5.3",
+  "packageManager": "yarn@4.6.0",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"

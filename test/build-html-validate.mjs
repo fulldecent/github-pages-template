@@ -1,6 +1,9 @@
 import { HtmlValidate, FileSystemConfigLoader, formatterFactory, esmResolver } from "html-validate";
 import { glob } from "glob";
 
+// In the future, the CLI may improve and this script may be unnecessary.
+// SEE: https://gitlab.com/html-validate/html-validate/-/issues/273
+
 // Find and sort all HTML files in the 'build' directory
 const targets = glob.sync("build/**/*.html").sort();
 
