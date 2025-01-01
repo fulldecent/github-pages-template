@@ -73,14 +73,12 @@ const requiredResults = {
     {
       ruleId: "pacific-medical-training/internal-links",
       severity: 2,
-      message:
-        "Internal link /free-horses-on-1998-04-01-only.html is broken in file test/fixtures/internal-link-broken.html at line 9, column 6",
-      offset: 196,
+      message: 'internal link "/free-horses-on-1998-04-01-only.html" is broken.',
+      offset: 241,
       line: 9,
-      column: 6,
+      column: 51,
       size: 1,
       selector: "html > body > a",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#internal-links",
     },
   ],
   "test/fixtures/ensure-https.html": [
@@ -142,6 +140,7 @@ const requiredResults = {
       selector: "html > head > script",
     },
   ],
+  "test/fixtures/image-missing-alt.html": [],
 };
 
 const outcomes = Object.entries(requiredResults).map(async ([filePath, messages]) => {

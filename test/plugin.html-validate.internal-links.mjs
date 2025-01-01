@@ -3,68 +3,103 @@ import { Rule } from "html-validate";
 import path from "path";
 
 export default class CheckInternalLinks extends Rule {
-  static ALTERNATIVE_EXTENSIONS = [".html", ".php"];
-  static EXTERNAL_LINK_PREFIXES = ["https://", "http://", "mailto:", "tel:"];
+  fileExistsCache = new Map();
+  webRoot;
+  alternativeExtensions;
+  indexFile;
 
-  documentation() {
+  static schema() {
     return {
-      description: "Require all internal links (src and href attributes) to be live.",
-      url: "https://github.com/fulldecent/github-pages-template/#internal-links",
+      webRoot: {
+        type: "string",
+        description: "The root directory for resolving absolute links.",
+      },
+      alternativeExtensions: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+        description: "List of alternative file extensions to check for internal links.",
+      },
+      indexFile: {
+        type: "string",
+        description: "The default file to look for when resolving directory paths (e.g., 'index.html').",
+      },
     };
   }
 
+  constructor(options) {
+    super(options);
+    this.webRoot = options?.webRoot || process.cwd() + "/build";
+    this.alternativeExtensions = options?.alternativeExtensions || [".html", ".php"];
+    this.indexFile = options?.indexFile || "index.html";
+  }
+
   setup() {
-    this.on("dom:ready", this.domReady.bind(this));
+    this.on("tag:ready", this.tagReady.bind(this));
+  }
+
+  doesFileExist(path) {
+    if (this.fileExistsCache.has(path)) {
+      return this.fileExistsCache.get(path);
+    }
+
+    const exists = fs.existsSync(path);
+    this.fileExistsCache.set(path, exists);
+    return exists;
   }
 
   checkTheLink(internalLink, element) {
-    let decodedLink = internalLink.includes("%") ? decodeURIComponent(internalLink) : internalLink;
-
-    // Remove query string and fragment
-    decodedLink = decodedLink.split(/[?#]/)[0];
-
-    // If absolute path, prefix with the build directory
-    if (decodedLink.startsWith("/")) {
-      decodedLink = path.join(process.cwd(), "build", decodedLink);
+    let resolvedLink = internalLink;
+    // If absolute path, prefix with the web root
+    if (resolvedLink.startsWith("/")) {
+      resolvedLink = path.join(this.webRoot, resolvedLink);
     }
 
     // Resolve the path
     const basePath = path.dirname(element.location.filename);
-    let resolvedPath = path.resolve(basePath, decodedLink);
+    let resolvedPath = path.resolve(basePath, resolvedLink);
+
+    // If it's a directory, append the index file
+    if (fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory()) {
+      resolvedPath = path.join(resolvedPath, this.indexFile);
+    }
 
     // Pass if the URL matches a file or an alternative extension
     if (
-      fs.existsSync(resolvedPath) ||
-      CheckInternalLinks.ALTERNATIVE_EXTENSIONS.some((ext) => fs.existsSync(`${resolvedPath}${ext}`))
+      this.doesFileExist(resolvedPath) ||
+      this.alternativeExtensions.some((ext) => this.doesFileExist(`${resolvedPath}${ext}`))
     ) {
       return;
     }
 
-    // Check if it is a directory and append index.html
-    const isDirectory = fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory();
-    if (isDirectory) {
-      resolvedPath = path.join(resolvedPath, "index.html");
-    }
-
-    // Report an error with the relative path
+    // Report an error with the resolved path
     this.report({
       node: element,
-      message: `Internal link ${internalLink} is broken in file ${element.location.filename} at line ${element.location.line}, column ${element.location.column}`,
+      message: `internal link "${internalLink}" is broken.`,
     });
   }
 
-  domReady({ document }) {
-    const elementsWithLink = document.querySelectorAll("[src], [href]");
+  tagReady({ target }) {
+    // Check if the element has a `src` or `href` attribute
+    let url = target.getAttribute("src")?.value || target.getAttribute("href")?.value;
 
-    elementsWithLink.forEach((element) => {
-      let url = element.getAttribute("src")?.value || element.getAttribute("href")?.value;
+    if (!url) {
+      return;
+    }
 
-      // Ignore empty or external links
-      if (!url || CheckInternalLinks.EXTERNAL_LINK_PREFIXES.some((prefix) => url.startsWith(prefix))) {
-        return;
-      }
+    url = decodeURIComponent(url);
+    url = url.split("#")[0].split("?")[0];
 
-      this.checkTheLink(url.split("#")[0], element);
-    });
+    if (!url) {
+      return;
+    }
+
+    // URL.parse returns null for internal links (because not absolutely resolvable)
+    if (URL.parse(url) !== null) {
+      return;
+    }
+
+    this.checkTheLink(url, target);
   }
 }
