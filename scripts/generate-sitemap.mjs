@@ -95,6 +95,6 @@ function generateAndWriteSitemap(lastmodDate) {
   // Write sitemap XML to file
   fs.writeFile(sitemapPath, sitemapXML, (err) => {
     if (err) throw err;
-    console.log("Sitemap.xml generated successfully!");
+    console.log("✅ Sitemap.xml generated successfully!");
   });
 }

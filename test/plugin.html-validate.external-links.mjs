@@ -172,8 +172,6 @@ export default class ExternalLinksRule extends Rule {
       return;
     }
 
-    console.log(`Checking external link: ${url}`);
-
     // Use cache if the URL is in there
     const row = this.db.prepare("SELECT * FROM urls WHERE url = ?").get(url);
     if (row) {
