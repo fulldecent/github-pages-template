@@ -140,7 +140,19 @@ const requiredResults = {
       selector: "html > head > script",
     },
   ],
-  "test/fixtures/image-missing-alt.html": [],
+  "test/fixtures/image-missing-alt.html": [
+    {
+      ruleId: "wcag/h37",
+      severity: 2,
+      message: "<img> cannot have empty \"alt\" attribute",
+      offset: 249,
+      line: 9,
+      column: 59,
+      size: 3,
+      selector: "html > body > img",
+      ruleUrl: "https://html-validate.org/rules/wcag/h37.html",
+    },
+  ],
 };
 
 const outcomes = Object.entries(requiredResults).map(async ([filePath, messages]) => {
