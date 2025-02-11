@@ -1,6 +1,12 @@
-# How to run this application locally
+# Horses website (🔨 UPDATE THIS AFTER YOU COPY TEMPLATE)
 
-## Setup environment
+## Updating content
+
+🔨 Add specific notes here about content style guides or how contributors can work together to update content on your site.
+
+## How to run this application locally
+
+### Setup environment
 
 _In production (GitHub Actions), environment is setup by by workflows in [.github/workflows/](.github/workflows/)._
 
@@ -24,7 +30,7 @@ _For local testing (try VS Code + Dev Containers extension, Podman Desktop), the
    yarn install
    ```
 
-## Build the site
+### Build the site
 
 Build the HTML website (see available localhost:#### port in the console output):
 
@@ -32,7 +38,7 @@ Build the HTML website (see available localhost:#### port in the console output)
 bundle exec jekyll build
 ```
 
-## Serve/run the site
+### Serve/run the site
 
 ```sh
 bundle exec jekyll serve
@@ -50,7 +56,7 @@ You can run PHP or similar on the built site. Here's how.
 (cd build; php -S localhost:4001)
 ```
 
-## Testing
+### Testing
 
 All testing is performed using Node scripts:
 
@@ -58,7 +64,7 @@ All testing is performed using Node scripts:
 yarn test
 ```
 
-## VS Code
+### VS Code
 
 Open this folder in VS Code and install recommended extensions. Then use "Reload Window" to activate them.
 
