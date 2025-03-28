@@ -28,7 +28,7 @@ layout: null
       href="{% if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{% else %}{{site.url}}{{page.url | escape}}{% endif %}"
     >
     <script>
-      const experimentId = '{{page.experiment_id}}';
+      const experimentId = {{ page.experiment_id | jsonify }};
       const targets = {{ page.variants | jsonify }};
 
       async function redirectToTarget() {
