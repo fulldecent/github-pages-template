@@ -11,10 +11,12 @@ export default defineConfig({
     "pacific-medical-training/latest-packages": "error",
     "pacific-medical-training/https-links": "error",
     "pacific-medical-training/internal-links": "error",
-    "wcag/h37": ["error", {
+    "wcag/h37": [
+      "error",
+      {
         allowEmpty: false,
-        alias: []
-      }
+        alias: [],
+      },
     ],
   },
 });
