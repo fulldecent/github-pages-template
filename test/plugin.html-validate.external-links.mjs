@@ -71,7 +71,7 @@ export default class ExternalLinksRule extends Rule {
   setup() {
     this.db = this.setupDatabase();
     this.skipUrlsRegex = this.loadSkipUrls();
-    this.on("dom:ready", this.domReady.bind(this));
+    this.on("tag:ready", this.tagReady.bind(this));
   }
 
   setupDatabase() {
@@ -175,51 +175,53 @@ export default class ExternalLinksRule extends Rule {
     }
   }
 
-  domReady({ document }) {
-    const aElements = document.getElementsByTagName("a");
-    for (const aElement of aElements) {
-      if (!aElement.hasAttribute("href")) {
-        continue;
-      }
+  // Check for href external links
+  tagReady({ target }) {
+    // TODO: also check image.src, link.href, script.src
+    if (target.tagName !== "a") {
+      return;
+    }
 
-      const href = aElement.getAttribute("href").value;
-      if (!href || !/^https?:\/\//i.test(href)) {
-        continue;
-      }
+    if (!target.hasAttribute("href")) {
+      return;
+    }
 
-      // Skip URLs that match the skip URLs regex
-      const url = href;
-      if (this.skipUrlsRegex.some((regex) => regex.test(url))) {
-        continue;
-      }
+    // Decode the URL from the href attribute, see https://gitlab.com/html-validate/html-validate/-/issues/218
+    // Quickly replace a few common HTML entities, TODO use a real approach for this
+    const url = target.getAttribute("href").value.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<");
 
-      // Normalize URL before checking cache
-      const normalizedUrl = normalizeUrl(url);
+    if (/^https?:\/\//i.test(url) === false) {
+      return;
+    }
 
-      // Use cache if the URL is in there
-      const row = this.db.prepare("SELECT * FROM urls WHERE url = ?").get(normalizedUrl);
-      if (row) {
-        if (row.redirect_to) {
-          this.report({
-            node: aElement,
-            message: `external link ${url} redirects to: ${row.redirect_to}`,
-          });
-          continue;
-        }
-        if (row.status < 200 || row.status >= 300) {
-          this.report({
-            node: aElement,
-            message: `external link is broken with status ${row.status}: ${url}`,
-          });
-          continue;
-        }
-      }
+    if (this.skipUrlsRegex.some((regex) => regex.test(url))) {
+      return;
+    }
 
-      if (PROXY_URL !== null) {
-        this.checkWithProxy(url, aElement);
-      } else {
-        this.check(url, aElement);
+    const normalizedUrl = normalizeUrl(url);
+    // Use cache if the URL is in there
+    const row = this.db.prepare("SELECT * FROM urls WHERE url = ?").get(normalizedUrl);
+    if (row) {
+      if (row.redirect_to) {
+        this.report({
+          node: target,
+          message: `external link ${url} redirects to: ${row.redirect_to}`,
+        });
+        return;
       }
+      if (row.status < 200 || row.status >= 300) {
+        this.report({
+          node: target,
+          message: `external link is broken with status ${row.status}: ${url}`,
+        });
+        return;
+      }
+    }
+
+    if (PROXY_URL !== null) {
+      this.checkWithProxy(url, target);
+    } else {
+      this.check(url, target);
     }
   }
 }
