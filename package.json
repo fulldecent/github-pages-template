@@ -20,7 +20,7 @@
     "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.9.1",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"
