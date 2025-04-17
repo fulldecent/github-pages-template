@@ -84,36 +84,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/liquid-html-parser@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@shopify/liquid-html-parser@npm:2.2.0"
+"@shopify/liquid-html-parser@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "@shopify/liquid-html-parser@npm:2.8.1"
   dependencies:
     line-column: "npm:^1.0.2"
     ohm-js: "npm:^16.3.0"
-  checksum: 10c0/c4dffc607c8611217232f3e7c5d0125d514fa66ea4a0731ef5da94f86183d9c4edcf9192b5595696c759909cd6379d8fbd6be4a3988e18e5eceb3f201821ecdb
+  checksum: 10c0/74b3416472b5e5b5bb1b9f595da59501e2ec23f7e3497d2e3b724be5d1a70eea9ff54528c06a21b996ac0aa6864e3e5831c4e7b209958800a120732a6b381ea1
   languageName: node
   linkType: hard
 
-"@shopify/prettier-plugin-liquid@npm:^1.6.3":
-  version: 1.6.3
-  resolution: "@shopify/prettier-plugin-liquid@npm:1.6.3"
+"@shopify/prettier-plugin-liquid@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "@shopify/prettier-plugin-liquid@npm:1.9.2"
   dependencies:
-    "@shopify/liquid-html-parser": "npm:^2.2.0"
+    "@shopify/liquid-html-parser": "npm:^2.8.1"
     html-styles: "npm:^1.0.0"
   peerDependencies:
     prettier: ^2.0.0 || ^3.0.0
-  checksum: 10c0/7a53bc4eeb3a83b19350f2130948e004b14d4de43f8125f30381942542490a765f2aab80f53620e03ccb80eb569ececfb9c080f151cf5d717f34f196855b0548
+  checksum: 10c0/60db75bad23885e74947f3e31e3004e26bfba4e252e65a573d0571c5c6e427608c8e5e83b2c36de3ff8c7b1d39741abd2b0a198e21f05e494c961062538e9940
   languageName: node
   linkType: hard
 
-"@sidvind/better-ajv-errors@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@sidvind/better-ajv-errors@npm:3.0.1"
+"@sidvind/better-ajv-errors@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@sidvind/better-ajv-errors@npm:4.0.0"
   dependencies:
     kleur: "npm:^4.1.0"
   peerDependencies:
-    ajv: ^6.12.3 || ^7.0.0 || ^8.0.0
-  checksum: 10c0/0d151b0a08bb178ea196025affd8a466621a265778e2214f1e4d2d329e6c1c694b2b61fbb68c3169708f37cb4d116d1c609140de16e23bf35669ce5a34cc488a
+    ajv: ^7.0.0 || ^8.0.0
+  checksum: 10c0/ca17a19cccd64d7f3d9805ff9618d53ffdb1253191b45fe3a583950651b3ac47fca05aa9430f6377e93c4e045d6ec19e0aa951c4bddaa51587616ba9e7eaacc5
   languageName: node
   linkType: hard
 
@@ -252,14 +252,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "better-sqlite3@npm:11.7.0"
+"better-sqlite3@npm:^11.9.1":
+  version: 11.9.1
+  resolution: "better-sqlite3@npm:11.9.1"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 10c0/66e78fb7e12f55dd78469efec7f6fcf69079e149e974be9ea24befac7c67b8fe0e23a419cae412ac4ea025c73841d8d54bd222eece1c007485e3f6bd56fd1c94
+  checksum: 10c0/87079d95f76898ec57922cf19d375d22dcdf65a4e1f52a71022231bbee9c80f90b9eb9fa80ac7dc00bca25673fdeba89b27f5f36bb82479dbe220be4dc20071d
   languageName: node
   linkType: hard
 
@@ -691,9 +691,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "glob@npm:11.0.0"
+"glob@npm:^11.0.1":
+  version: 11.0.1
+  resolution: "glob@npm:11.0.1"
   dependencies:
     foreground-child: "npm:^3.1.0"
     jackspeak: "npm:^4.0.1"
@@ -703,7 +703,7 @@ __metadata:
     path-scurry: "npm:^2.0.0"
   bin:
     glob: dist/esm/bin.mjs
-  checksum: 10c0/419866015d8795258a8ac51de5b9d1a99c72634fc3ead93338e4da388e89773ab21681e494eac0fbc4250b003451ca3110bb4f1c9393d15d14466270094fdb4e
+  checksum: 10c0/2b32588be52e9e90f914c7d8dec32f3144b81b84054b0f70e9adfebf37cd7014570489f2a79d21f7801b9a4bd4cca94f426966bfd00fb64a5b705cfe10da3a03
   languageName: node
   linkType: hard
 
@@ -735,12 +735,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "html-validate@npm:9.1.0"
+"html-validate@npm:^9.5.3":
+  version: 9.5.3
+  resolution: "html-validate@npm:9.5.3"
   dependencies:
     "@html-validate/stylish": "npm:^4.1.0"
-    "@sidvind/better-ajv-errors": "npm:3.0.1"
+    "@sidvind/better-ajv-errors": "npm:4.0.0"
     ajv: "npm:^8.0.0"
     glob: "npm:^10.0.0"
     kleur: "npm:^4.1.0"
@@ -751,7 +751,7 @@ __metadata:
     jest: ^27.1 || ^28.1.3 || ^29.0.3
     jest-diff: ^27.1 || ^28.1.3 || ^29.0.3
     jest-snapshot: ^27.1 || ^28.1.3 || ^29.0.3
-    vitest: ^0.34.0 || ^1.0.0 || ^2.0.0
+    vitest: ^0.34.0 || ^1.0.0 || ^2.0.0 || ^3.0.0
   peerDependenciesMeta:
     jest:
       optional: true
@@ -763,7 +763,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.mjs
-  checksum: 10c0/e3c54d8ab0d84809f1c479deb0de7c161ac29a748b7e7a9201445fc478a1e887f92ea425d1c957877677f86402e23a6941fdeb4035e93e287520849cdbcc8e72
+  checksum: 10c0/29b0a0bcda81e2a6f9be6e33dd3f29985880cda76c026e035a45e6d0b97a6f79111b522a5fa1fbb16c6ffffb5b31b436047d49641b912c864172aa6ae05b0fe9
   languageName: node
   linkType: hard
 
@@ -1122,25 +1122,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdownlint-cli2@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "markdownlint-cli2@npm:0.17.1"
+"markdownlint-cli2@npm:^0.17.2":
+  version: 0.17.2
+  resolution: "markdownlint-cli2@npm:0.17.2"
   dependencies:
     globby: "npm:14.0.2"
     js-yaml: "npm:4.1.0"
     jsonc-parser: "npm:3.3.1"
-    markdownlint: "npm:0.37.3"
+    markdownlint: "npm:0.37.4"
     markdownlint-cli2-formatter-default: "npm:0.0.5"
     micromatch: "npm:4.0.8"
   bin:
     markdownlint-cli2: markdownlint-cli2-bin.mjs
-  checksum: 10c0/e7add987daf4eb3f7eb81e78d2a6094185d9673e638b75d37c42a7a944b08811bf6c9cdbe83d9996ab5a25d321881037ae0ccabe8971c444b45f58bfd6d2a93c
+  checksum: 10c0/dda9710adfa09c32f10b621e3d5fa691a7ff58d0aceeca5b751021953f56051f649e52132e55e076f1876683c8cdeb2448cad107d82ed95f8c127ce94b0b89eb
   languageName: node
   linkType: hard
 
-"markdownlint@npm:0.37.3":
-  version: 0.37.3
-  resolution: "markdownlint@npm:0.37.3"
+"markdownlint@npm:0.37.4":
+  version: 0.37.4
+  resolution: "markdownlint@npm:0.37.4"
   dependencies:
     markdown-it: "npm:14.1.0"
     micromark: "npm:4.0.1"
@@ -1151,7 +1151,7 @@ __metadata:
     micromark-extension-gfm-table: "npm:2.1.0"
     micromark-extension-math: "npm:3.1.0"
     micromark-util-types: "npm:2.0.1"
-  checksum: 10c0/55db705a9fe08d35876918cde4dc37efc15fc03a7abd4f5874b9cc2db699200c9ac7fde45d31ca846ae88c79ec264679f9f19fd8649d430a0a7cba488bec3dcc
+  checksum: 10c0/831c2aefac6b2386254eed371296d15944a9ca50abe057b46124727acee386f79bbb407d73447982269ec82b367f2d492ceb89dbc550eecf0f9e7c59a41efbc8
   languageName: node
   linkType: hard
 
@@ -1777,12 +1777,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.4.2":
-  version: 3.4.2
-  resolution: "prettier@npm:3.4.2"
+"prettier@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "prettier@npm:3.5.3"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/99e076a26ed0aba4ebc043880d0f08bbb8c59a4c6641cdee6cdadf2205bdd87aa1d7823f50c3aea41e015e99878d37c58d7b5f0e663bba0ef047f94e36b96446
+  checksum: 10c0/3880cb90b9dc0635819ab52ff571518c35bd7f15a6e80a2054c05dbc8a3aa6e74f135519e91197de63705bcb38388ded7e7230e2178432a1468005406238b877
   languageName: node
   linkType: hard
 
@@ -1887,13 +1887,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@shopify/prettier-plugin-liquid": "npm:^1.6.3"
-    better-sqlite3: "npm:^11.7.0"
+    "@shopify/prettier-plugin-liquid": "npm:^1.9.2"
+    better-sqlite3: "npm:^11.9.1"
     front-matter: "npm:^4.0.2"
-    glob: "npm:^11.0.0"
-    html-validate: "npm:^9.1.0"
-    markdownlint-cli2: "npm:^0.17.1"
-    prettier: "npm:^3.4.2"
+    glob: "npm:^11.0.1"
+    html-validate: "npm:^9.5.3"
+    markdownlint-cli2: "npm:^0.17.2"
+    prettier: "npm:^3.5.3"
     shell-quote: "npm:^1.8.2"
     xml2js: "npm:^0.6.2"
   dependenciesMeta:

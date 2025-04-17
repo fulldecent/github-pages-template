@@ -40,6 +40,26 @@ async function runPromiseFunctionsWithParallelism(promiseFunctions, parallelism)
   return Promise.all(promisesInProgress);
 }
 
+/**
+ * Normalize URLs to ensure consistent casing for domain names
+ * URLs like https://ExAmple.com and https://example.com will be treated as the same URL
+ * https://github.com/fulldecent/github-pages-template/issues/123
+ *
+ * @param {string} url - The URL to normalize
+ * @returns {string} The normalized URL with lowercase domain
+ */
+function normalizeUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    // Convert hostname to lowercase but keep path, query, and fragment with original casing
+    urlObj.hostname = urlObj.hostname.toLowerCase();
+    return urlObj.toString();
+  } catch (e) {
+    // If URL parsing fails, return the original URL
+    return url;
+  }
+}
+
 export default class ExternalLinksRule extends Rule {
   documentation() {
     return {
@@ -77,6 +97,9 @@ export default class ExternalLinksRule extends Rule {
   }
 
   check(url, element) {
+    // Normalize URL to handle case-insensitive domains
+    const normalizedUrl = normalizeUrl(url);
+
     // Use shell-quote to safely escape the URL
     const escapedUrl = shellEscape([url]);
 
@@ -95,7 +118,7 @@ export default class ExternalLinksRule extends Rule {
 
     this.db
       .prepare("REPLACE INTO urls (url, status, redirect_to, time) VALUES (?, ?, ?, unixepoch())")
-      .run(url, statusCodeFolded, redirectTo);
+      .run(normalizedUrl, statusCodeFolded, redirectTo);
     if (statusCodeFolded < 200 || statusCodeFolded >= 300) {
       if (redirectTo) {
         this.report({
@@ -116,6 +139,9 @@ export default class ExternalLinksRule extends Rule {
    */
   // Access with proxy
   checkWithProxy(url, element) {
+    // Normalize URL to handle case-insensitive domains
+    const normalizedUrl = normalizeUrl(url);
+
     const urlWithQuery = `${PROXY_URL}?url=${encodeURIComponent(url)}`;
     // Use shell-quote to safely escape the URL
     const escapedUrl = shellEscape([urlWithQuery]);
@@ -133,7 +159,7 @@ export default class ExternalLinksRule extends Rule {
 
     this.db
       .prepare("REPLACE INTO urls (url, status, redirect_to, time) VALUES (?, ?, ?, unixepoch())")
-      .run(url, statusCode, redirectTo);
+      .run(normalizedUrl, statusCode, redirectTo);
     if (statusCode < 200 || statusCode >= 300) {
       if (redirectTo) {
         this.report({
@@ -172,8 +198,9 @@ export default class ExternalLinksRule extends Rule {
       return;
     }
 
+    const normalizedUrl = normalizeUrl(url);
     // Use cache if the URL is in there
-    const row = this.db.prepare("SELECT * FROM urls WHERE url = ?").get(url);
+    const row = this.db.prepare("SELECT * FROM urls WHERE url = ?").get(normalizedUrl);
     if (row) {
       if (row.redirect_to) {
         this.report({
