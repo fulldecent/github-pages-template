@@ -1,4 +1,4 @@
-name: Prettier and Markdownlint test
+name: Code lint
 
 # This action works with pull requests and pushes
 on: push
@@ -7,6 +7,7 @@ permissions: read-all
 
 jobs:
   prettier:
+    name: Prettier code lint
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +30,7 @@ jobs:
         run: yarn run prettier-check
 
   markdownlint:
+    name: Markdownlint code lint
     runs-on: ubuntu-latest
 
     steps:
