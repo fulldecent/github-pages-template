@@ -5,8 +5,8 @@
     "esbenp.prettier-vscode", // Prettier for consistent formatting
     "redhat.vscode-yaml", // YAML for front matter
     "eliostruyf.vscode-front-matter", // Front Matter management
-    "davidanson.vscode-markdownlint",
+    "DavidAnson.vscode-markdownlint", // Markdown linting and formatting
     "dbaeumer.vscode-eslint",
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs" // Required to use Prettier with Yarn in VS Code
   ]
 }

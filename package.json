@@ -11,6 +11,8 @@
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs",
+    "lint": "yarn prettier-check && yarn markdownlint-check",
+    "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
     "prettier-check": "yarn prettier --check .",
     "markdownlint-check": "yarn markdownlint-cli2 '**/*.md'",
@@ -18,7 +20,7 @@
     "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.9.1",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"
