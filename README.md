@@ -96,3 +96,4 @@ bundle update --conservative # "--consersative" ignores updates that GitHub Page
 1. This website is built based on [best practices documented in github-pages-template](https://github.com/fulldecent/github-pages-template).
 2. Setting up Docker
    1. We would prefer an open-source-licensed Docker implementation that runs at native speed on Mac, Linux and Windows. For Mac, you may prefer to [install Colima](https://github.com/abiosoft/colima?tab=readme-ov-file#installation) which is open source but about 5x slower than the OrbStack recommended above.
+3. We use the github-pages gem instead of Jekyll because GitHub Pages [uses those specific versions](https://pages.github.com/versions/) instead of what is in your Gemfile.lock. This is also why we add Gemfile.lock to .gitignore.
