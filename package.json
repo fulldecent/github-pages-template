@@ -11,6 +11,8 @@
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs",
+    "lint": "yarn prettier-check && yarn markdownlint-check",
+    "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
     "prettier-check": "yarn prettier --check .",
     "markdownlint-check": "yarn markdownlint-cli2 '**/*.md'",
