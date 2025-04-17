@@ -26,7 +26,7 @@ const requiredResults = {
       ruleId: "pacific-medical-training/external-links",
       severity: 2,
       message:
-        "external link is broken with status 500: https://freehorses.example.com/free-horses-on-1998-04-01-only.html",
+        "external link is broken with status 404: https://freehorses.example.com/free-horses-on-1998-04-01-only.html",
       offset: 271,
       line: 9,
       column: 81,
@@ -60,7 +60,7 @@ const requiredResults = {
       ruleId: "pacific-medical-training/external-links",
       severity: 2,
       message:
-        "external link https://httpbin.org/redirect-to?url=https://example.com&status_code=301 redirects to: https://example.com",
+        "external link is broken with status 404: https://httpbin.org/redirect-to?url=https://example.com&status_code=301",
       offset: 655,
       line: 14,
       column: 86,
@@ -118,7 +118,7 @@ const requiredResults = {
     {
       ruleId: "pacific-medical-training/external-links",
       severity: 2,
-      message: "external link http://en.wikipedia.org/wiki/Horse redirects to: https://en.wikipedia.org/wiki/Horse",
+      message: "external link is broken with status 404: http://en.wikipedia.org/wiki/Horse",
       offset: 239,
       line: 9,
       column: 49,
