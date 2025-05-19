@@ -1,4 +1,4 @@
-# Horses website (🔨 UPDATE THIS AFTER YOU COPY TEMPLATE)
+# Horses website (🔨 UPDATE THIS AFTER YOU "USE TEMPLATE")
 
 ## Updating content
 
