@@ -1,0 +1,20 @@
+[
+  {
+    "regexp": "\\?utm_source=chatgpt.com",
+    "severity": "error",
+    "ignoreCase": true,
+    "note": "Copied a link from Chat GPT without reviewing it"
+  },
+  {
+    "regexp": "<\\s*title\\s*>[^<]*\\&amp;amp;[^<]*",
+    "severity": "error",
+    "ignoreCase": true,
+    "note": "Double-escaped HTML quoting"
+  },
+  {
+    "regexp": "href\\s*=\\s*\"[^:]+\\.htm[l]?\"",
+    "severity": "error",
+    "ignoreCase": true,
+    "note": "Linking to an HTML page with the extension .html or .htm"
+  }
+]
