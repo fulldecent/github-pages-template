@@ -1,4 +1,4 @@
-# Horses website (🔨 UPDATE THIS AFTER YOU COPY TEMPLATE)
+# Horses website (🔨 UPDATE THIS AFTER YOU "USE TEMPLATE")
 
 ## Updating content
 
@@ -8,7 +8,7 @@
 
 ### Setup local environment
 
-_In production (GitHub Actions), environment is setup by by workflows in [.github/workflows/](.github/workflows/)._
+_In production (GitHub Actions), environment is setup by workflows in [.github/workflows/](.github/workflows/)._
 
 Use VS Code and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), install a Docker host (on Mac, use [OrbStack](https://orbstack.dev/)) then run VS Code command "Reopen in Container".
 
