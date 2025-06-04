@@ -16,9 +16,25 @@ function loadConfig() {
   }
 }
 
+// Define file patterns to check
+const FILE_PATTERNS = [
+  "**/*.html",
+  "**/*.md",
+  "**/*.txt",
+  "**/*.js",
+  "**/*.json",
+  "**/*.xml",
+  "!**/node_modules/**", // Exclude node_modules
+  "!**/.git/**", // Exclude .git
+];
+
 // Find all HTML files in the build directory
-function findHtmlFiles() {
-  return glob.sync("**/*.html", { cwd: BUILD_DIR });
+function findTargetFiles() {
+  return glob.sync(FILE_PATTERNS, {
+    cwd: BUILD_DIR,
+    nocase: true,
+    dot: false,
+  });
 }
 
 // Check a single file against all patterns
@@ -44,11 +60,10 @@ function checkFile(filePath, patterns) {
   return violations;
 }
 
-
-console.log("🧪 Testing pages for dirty words");
+console.log("🧪 Testing files for dirty words");
 
 const config = loadConfig();
-const files = findHtmlFiles();
+const files = findTargetFiles();
 let hasErrors = false;
 
 files.forEach((file) => {
@@ -60,11 +75,12 @@ files.forEach((file) => {
 
     violations.forEach((violation) => {
       const { pattern, matches, count } = violation;
-      console.log(`   ${pattern.severity.toUpperCase()}: ${pattern.note}`);
+      console.error(`\n   ${pattern.severity.toUpperCase()}: ${pattern.note}`);
       console.log(`   Found ${count} matches:`);
       matches.forEach((match) => {
         console.log(`     "${match}"`);
       });
+      console.log("");
     });
   } else {
     console.log(`✅ ${file}`);
