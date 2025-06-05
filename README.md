@@ -1,6 +1,6 @@
 # Horses website (🔨 UPDATE THIS AFTER YOU "USE TEMPLATE")
 
-## Updating content
+##   Updating content
 
 🔨 Add specific notes here about content style guides or how contributors can work together to update content on your site.
 
