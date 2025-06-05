@@ -12,10 +12,7 @@
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter.notebook.ipynb"
   },
-  "intelephense.environment.includePaths": [
-    "/var/www/vhosts/library-PMTDASHBOARDS",
-    "/var/www/vhosts/vendor"
-  ],
+  "intelephense.environment.includePaths": ["/var/www/vhosts/library-PMTDASHBOARDS", "/var/www/vhosts/vendor"],
   "cSpell.userWords": [
     "AION",
     "Algorand",

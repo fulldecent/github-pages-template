@@ -7,10 +7,10 @@ import path from "path";
 const resolver = esmResolver();
 const loader = new FileSystemConfigLoader([resolver]);
 const htmlValidate = new HtmlValidate(loader);
-const requiredResultsPath = path.resolve('./test/fixtures/required-results.json');
-const actualResultsPath = path.resolve('./test/fixtures/actual-results.json');
+const requiredResultsPath = path.resolve("./test/fixtures/required-results.json");
+const actualResultsPath = path.resolve("./test/fixtures/actual-results.json");
 let allTestsPassed = true;
-const requiredResults = JSON.parse(readFileSync(requiredResultsPath, 'utf8'));
+const requiredResults = JSON.parse(readFileSync(requiredResultsPath, "utf8"));
 let actualResults = {};
 
 console.log("🧪 Testing fixtures");
@@ -43,7 +43,7 @@ for (const filePath in requiredResults) {
 }
 
 // Write out actual results to fixtures/required-results.json
-writeFileSync(actualResultsPath, JSON.stringify(actualResults, null, 4), 'utf8');
+writeFileSync(actualResultsPath, JSON.stringify(actualResults, null, 4), "utf8");
 
 // Summary
 if (allTestsPassed) {
