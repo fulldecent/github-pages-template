@@ -10,7 +10,7 @@
     "shell-quote": "^1.8.3"
   },
   "scripts": {
-    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs",
+    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs && node test/dirty-file-extensions-checker.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
@@ -20,7 +20,7 @@
     "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "yarn@4.9.2",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"

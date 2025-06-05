@@ -1,0 +1,50 @@
+[
+  {
+    "extension": "png",
+    "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
+  },
+  {
+    "extension": "jpg",
+    "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
+  },
+  {
+    "extension": "jpeg",
+    "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
+  },
+  {
+    "extension": "gif",
+    "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
+  },
+  {
+    "extension": "ico",
+    "advice": "Check browser support for favicon.webp"
+  },
+  {
+    "extension": "woff",
+    "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
+  },
+  {
+    "extension": "eot",
+    "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
+  },
+  {
+    "extension": "ttf",
+    "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
+  },
+  {
+    "extension": "htm",
+    "advice": "Prefer to use .html file extension"
+  },
+  {
+    "extension": "ogv",
+    "advice": "Only use .webm for video files"
+  },
+  {
+    "extension": "mp4",
+    "advice": "Only use .webm for video files"
+  },
+  {
+    "extension": "mp3",
+    "advice": "Only use .webm for video files"
+  }
+]

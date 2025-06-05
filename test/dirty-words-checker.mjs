@@ -18,14 +18,16 @@ function loadConfig() {
 
 // Check all files in the build directory
 function findTargetFiles() {
-  return glob.sync("**/*", {
-    cwd: BUILD_DIR,
-    nocase: true,
-    dot: false,
-  }).filter(file => {
-    const fullPath = path.join(BUILD_DIR, file);
-    return fs.lstatSync(fullPath).isFile();
-  });
+  return glob
+    .sync("**/*", {
+      cwd: BUILD_DIR,
+      nocase: true,
+      dot: false,
+    })
+    .filter((file) => {
+      const fullPath = path.join(BUILD_DIR, file);
+      return fs.lstatSync(fullPath).isFile();
+    });
 }
 
 // Check a single file against all patterns
@@ -71,10 +73,7 @@ files.forEach((file) => {
       matches.forEach((match) => {
         console.log(`     "${match}"`);
       });
-      console.log("");
     });
-  } else {
-    console.log(`✅ ${file}`);
   }
 });
 
@@ -82,5 +81,5 @@ if (hasErrors) {
   console.error("\n❌ Dirty words check failed");
   process.exit(1);
 } else {
-  console.log("\n✨ All files passed dirty words check!");
+  console.log("✨ All files passed dirty words check!\n");
 }
