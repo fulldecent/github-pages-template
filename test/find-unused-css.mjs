@@ -10,16 +10,20 @@ const BUILD_DIR = path.join(process.cwd(), "build");
 // Find all CSS and HTML files in the build directory
 function findTargetFiles() {
   return {
-    cssFiles: glob.sync("**/*.css", {
-      cwd: BUILD_DIR,
-      nocase: true,
-      dot: false,
-    }).filter(file => fs.lstatSync(path.join(BUILD_DIR, file)).isFile()),
-    htmlFiles: glob.sync("**/*.html", {
-      cwd: BUILD_DIR,
-      nocase: true,
-      dot: false,
-    }).filter(file => fs.lstatSync(path.join(BUILD_DIR, file)).isFile()),
+    cssFiles: glob
+      .sync("**/*.css", {
+        cwd: BUILD_DIR,
+        nocase: true,
+        dot: false,
+      })
+      .filter((file) => fs.lstatSync(path.join(BUILD_DIR, file)).isFile()),
+    htmlFiles: glob
+      .sync("**/*.html", {
+        cwd: BUILD_DIR,
+        nocase: true,
+        dot: false,
+      })
+      .filter((file) => fs.lstatSync(path.join(BUILD_DIR, file)).isFile()),
   };
 }
 
@@ -29,14 +33,14 @@ function extractSelectors(cssFile) {
   const parsed = css.parse(content);
   const selectors = new Set();
 
-  parsed.stylesheet.rules.forEach(rule => {
+  parsed.stylesheet.rules.forEach((rule) => {
     if (rule.type === "rule" && rule.selectors) {
-      rule.selectors.forEach(selector => {
+      rule.selectors.forEach((selector) => {
         // Extract class (.class) and ID (#id) selectors
         const classMatches = selector.match(/\.[\w-]+/g) || [];
         const idMatches = selector.match(/#[\w-]+/g) || [];
-        classMatches.forEach(cls => selectors.add(cls));
-        idMatches.forEach(id => selectors.add(id));
+        classMatches.forEach((cls) => selectors.add(cls));
+        idMatches.forEach((id) => selectors.add(id));
       });
     }
   });
@@ -49,11 +53,11 @@ function checkSelectorsInHtml(selectors, htmlFiles) {
   const unusedSelectors = new Set(selectors);
   const usedSelectors = new Set();
 
-  htmlFiles.forEach(htmlFile => {
+  htmlFiles.forEach((htmlFile) => {
     const content = fs.readFileSync(path.join(BUILD_DIR, htmlFile), "utf-8");
     const $ = load(content); // Use named import 'load' from cheerio
 
-    selectors.forEach(selector => {
+    selectors.forEach((selector) => {
       if (selector.startsWith(".")) {
         const className = selector.slice(1);
         if ($(`[class~="${className}"]`).length > 0) {
@@ -62,7 +66,8 @@ function checkSelectorsInHtml(selectors, htmlFiles) {
         }
       } else if (selector.startsWith("#")) {
         const idName = selector.slice(1);
-        if ($(`#${idName}`).length > 0) { // Fixed typo: '# Meters[idName]' to '#${idName}'
+        if ($(`#${idName}`).length > 0) {
+          // Fixed typo: '# Meters[idName]' to '#${idName}'
           unusedSelectors.delete(selector);
           usedSelectors.add(selector);
         }
@@ -88,7 +93,7 @@ if (htmlFiles.length === 0) {
 
 let hasUnused = false;
 
-cssFiles.forEach(cssFile => {
+cssFiles.forEach((cssFile) => {
   console.log(`\n📄 Analyzing ${cssFile}:`);
   const selectors = extractSelectors(cssFile);
   if (selectors.size === 0) {
@@ -101,7 +106,7 @@ cssFiles.forEach(cssFile => {
   if (unusedSelectors.size > 0) {
     hasUnused = true;
     console.log("   ❌ Unused selectors:");
-    unusedSelectors.forEach(selector => {
+    unusedSelectors.forEach((selector) => {
       console.log(`     ${selector}`);
     });
   }

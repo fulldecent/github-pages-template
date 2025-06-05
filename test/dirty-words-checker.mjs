@@ -18,14 +18,16 @@ function loadConfig() {
 
 // Check all files in the build directory
 function findTargetFiles() {
-  return glob.sync("**/*", {
-    cwd: BUILD_DIR,
-    nocase: true,
-    dot: false,
-  }).filter(file => {
-    const fullPath = path.join(BUILD_DIR, file);
-    return fs.lstatSync(fullPath).isFile();
-  });
+  return glob
+    .sync("**/*", {
+      cwd: BUILD_DIR,
+      nocase: true,
+      dot: false,
+    })
+    .filter((file) => {
+      const fullPath = path.join(BUILD_DIR, file);
+      return fs.lstatSync(fullPath).isFile();
+    });
 }
 
 // Check a single file against all patterns
