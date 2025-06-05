@@ -735,9 +735,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^9.5.3":
-  version: 9.5.3
-  resolution: "html-validate@npm:9.5.3"
+"html-validate@npm:^9.5.5":
+  version: 9.5.5
+  resolution: "html-validate@npm:9.5.5"
   dependencies:
     "@html-validate/stylish": "npm:^4.1.0"
     "@sidvind/better-ajv-errors": "npm:4.0.0"
@@ -763,7 +763,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.mjs
-  checksum: 10c0/29b0a0bcda81e2a6f9be6e33dd3f29985880cda76c026e035a45e6d0b97a6f79111b522a5fa1fbb16c6ffffb5b31b436047d49641b912c864172aa6ae05b0fe9
+  checksum: 10c0/ee1becce55d39aef19884509da887bdf7aea2952ece69c9ab1919c24690b673b22e4c76e2b5b65535a58da501d56e2441c639559bd88be472694d0381630a3b0
   languageName: node
   linkType: hard
 
@@ -1922,10 +1922,10 @@ __metadata:
     better-sqlite3: "npm:^11.10.0"
     front-matter: "npm:^4.0.2"
     glob: "npm:^11.0.2"
-    html-validate: "npm:^9.5.3"
+    html-validate: "npm:^9.5.5"
     markdownlint-cli2: "npm:^0.18.1"
     prettier: "npm:^3.5.3"
-    shell-quote: "npm:^1.8.2"
+    shell-quote: "npm:^1.8.3"
     xml2js: "npm:^0.6.2"
   dependenciesMeta:
     "@shopify/prettier-plugin-liquid@1.5.0":
@@ -1988,10 +1988,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:^1.8.2":
-  version: 1.8.2
-  resolution: "shell-quote@npm:1.8.2"
-  checksum: 10c0/85fdd44f2ad76e723d34eb72c753f04d847ab64e9f1f10677e3f518d0e5b0752a176fd805297b30bb8c3a1556ebe6e77d2288dbd7b7b0110c7e941e9e9c20ce1
+"shell-quote@npm:^1.8.3":
+  version: 1.8.3
+  resolution: "shell-quote@npm:1.8.3"
+  checksum: 10c0/bee87c34e1e986cfb4c30846b8e6327d18874f10b535699866f368ade11ea4ee45433d97bf5eada22c4320c27df79c3a6a7eb1bf3ecfc47f2c997d9e5e2672fd
   languageName: node
   linkType: hard
 
