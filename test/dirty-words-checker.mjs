@@ -20,12 +20,7 @@ function loadConfig() {
 const FILE_PATTERNS = [
   "**/*.html",
   "**/*.md",
-  "**/*.txt",
   "**/*.js",
-  "**/*.json",
-  "**/*.xml",
-  "!**/node_modules/**", // Exclude node_modules
-  "!**/.git/**", // Exclude .git
 ];
 
 // Find all HTML files in the build directory
