@@ -1,16 +1,16 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.9.2",
-    "better-sqlite3": "^11.9.1",
-    "glob": "^11.0.1",
+    "@shopify/prettier-plugin-liquid": "^1.9.3",
+    "better-sqlite3": "^11.10.0",
+    "glob": "^11.0.2",
     "html-validate": "^9.5.3",
-    "markdownlint-cli2": "^0.17.2",
+    "markdownlint-cli2": "^0.18.1",
     "prettier": "^3.5.3",
     "shell-quote": "^1.8.2"
   },
   "scripts": {
-    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs",
+    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",

@@ -1,194 +1,29 @@
 // Documentation: https://html-validate.org/dev/using-api.html
 import { HtmlValidate, FileSystemConfigLoader, esmResolver } from "html-validate";
+import { readFileSync, writeFileSync } from "fs";
+import path from "path";
 
-// Initialize HtmlValidate instance
+// Setup
 const resolver = esmResolver();
 const loader = new FileSystemConfigLoader([resolver]);
 const htmlValidate = new HtmlValidate(loader);
+const requiredResultsPath = path.resolve('./test/fixtures/required-results.json');
+const actualResultsPath = path.resolve('./test/fixtures/actual-results.json');
 let allTestsPassed = true;
+const requiredResults = JSON.parse(readFileSync(requiredResultsPath, 'utf8'));
+let actualResults = {};
 
-const requiredResults = {
-  "test/fixtures/mailto-not-awesome.html": [
-    {
-      ruleId: "pacific-medical-training/mailto-awesome",
-      severity: 2,
-      message: "mailto link must have a subject and body",
-      offset: 196,
-      line: 9,
-      column: 6,
-      size: 1,
-      selector: "html > body > a",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#mailto-awesome",
-    },
-  ],
-  "test/fixtures/external-link-broken.html": [
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message:
-        "external link is broken with status 404: https://freehorses.example.com/free-horses-on-1998-04-01-only.html",
-      offset: 271,
-      line: 9,
-      column: 81,
-      size: 1,
-      selector: "html > body > a:nth-child(1)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message: "external link is broken with status 404: https://----.example.com?a=b&c=d",
-      offset: 348,
-      line: 10,
-      column: 51,
-      size: 1,
-      selector: "html > body > a:nth-child(2)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message: "external link is broken with status 404: https://-..-..-.-.-",
-      offset: 413,
-      line: 11,
-      column: 34,
-      size: 1,
-      selector: "html > body > a:nth-child(3)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message:
-        "external link is broken with status 404: https://httpbin.org/redirect-to?url=https://example.com&status_code=301",
-      offset: 655,
-      line: 14,
-      column: 86,
-      size: 1,
-      selector: "html > body > a:nth-child(6)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message: "external link is broken with status 404: https://ExAmple.com",
-      offset: 717,
-      line: 15,
-      column: 34,
-      size: 1,
-      selector: "html > body > a:nth-child(7)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message: "external link is broken with status 404: https://example.com",
-      offset: 767,
-      line: 16,
-      column: 34,
-      size: 1,
-      selector: "html > body > a:nth-child(8)",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-  ],
-  "test/fixtures/internal-link-broken.html": [
-    {
-      ruleId: "pacific-medical-training/internal-links",
-      severity: 2,
-      message: 'internal link "/free-horses-on-1998-04-01-only.html" is broken.',
-      offset: 241,
-      line: 9,
-      column: 51,
-      size: 1,
-      selector: "html > body > a",
-    },
-  ],
-  "test/fixtures/ensure-https.html": [
-    {
-      ruleId: "pacific-medical-training/https-links",
-      severity: 2,
-      message: "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
-      offset: 196,
-      line: 9,
-      column: 6,
-      size: 1,
-      selector: "html > body > a",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#https-links",
-    },
-    {
-      ruleId: "pacific-medical-training/external-links",
-      severity: 2,
-      message: "external link is broken with status 404: http://en.wikipedia.org/wiki/Horse",
-      offset: 239,
-      line: 9,
-      column: 49,
-      size: 1,
-      selector: "html > body > a",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#external-links",
-    },
-  ],
-  "test/fixtures/using-jquery.html": [
-    {
-      ruleId: "pacific-medical-training/no-jquery",
-      severity: 2,
-      message: "script tag with src including jQuery",
-      offset: 123,
-      line: 6,
-      column: 6,
-      size: 6,
-      selector: "html > head > script",
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#no-jquery",
-    },
-  ],
-  "test/fixtures/canonical-link-missing.html": [
-    {
-      ruleId: "pacific-medical-training/canonical-link",
-      severity: 2,
-      message: '<head> is missing <link rel="canonical" ...>',
-      size: 0,
-      selector: null,
-      ruleUrl: "https://github.com/fulldecent/github-pages-template/#canonical",
-    },
-  ],
-  "test/fixtures/old-package.html": [
-    {
-      ruleId: "pacific-medical-training/latest-packages",
-      severity: 2,
-      message: "using outdated package version https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js",
-      offset: 123,
-      line: 6,
-      column: 6,
-      size: 6,
-      selector: "html > head > script",
-    },
-  ],
-  "test/fixtures/image-missing-alt.html": [
-    {
-      ruleId: "wcag/h37",
-      severity: 2,
-      message: '<img> cannot have empty "alt" attribute',
-      offset: 249,
-      line: 9,
-      column: 59,
-      size: 3,
-      selector: "html > body > img",
-      ruleUrl: "https://html-validate.org/rules/wcag/h37.html",
-    },
-  ],
-};
+console.log("🧪 Testing fixtures");
 
-const outcomes = Object.entries(requiredResults).map(async ([filePath, messages]) => {
-  const report = await htmlValidate.validateFile(filePath);
-  const expectedString = JSON.stringify(messages, null, 2);
-  const actualString = report.results.length === 0 ? "[]" : JSON.stringify(report.results[0].messages, null, 2);
+for (const filePath in requiredResults) {
+  const actualReport = await htmlValidate.validateFile(filePath);
+  const actualResult = actualReport.results.length === 0 ? [] : actualReport.results[0].messages;
 
-  if (expectedString === actualString) {
-    console.log(`✅ ${filePath}`);
-  } else {
+  if (JSON.stringify(actualResult) !== JSON.stringify(requiredResults[filePath])) {
     console.error(`❌ ${filePath} did not produce expected result.`);
     console.error(
       `\x1b[31m` +
-        expectedString
+        JSON.stringify(requiredResults[filePath], null, 2)
           .split("\n")
           .map((line) => `- ${line}`)
           .join("\n") +
@@ -196,22 +31,24 @@ const outcomes = Object.entries(requiredResults).map(async ([filePath, messages]
     );
     console.error(
       `\x1b[32m` +
-        actualString
+        JSON.stringify(actualResult, null, 2)
           .split("\n")
-          .map((line) => `+ ${line}`)
+          .map((line) => `- ${line}`)
           .join("\n") +
         `\x1b[0m`,
     );
     allTestsPassed = false;
   }
-});
+  actualResults[filePath] = actualResult;
+}
 
-console.log("🧪 Testing fixtures");
-Promise.all(outcomes).then(() => {
-  if (allTestsPassed) {
-    console.log("✨ All fixtures produced required results!\n");
-  } else {
-    console.error("❌ Tests of fixtures did not produce expected results.");
-    process.exit(1);
-  }
-});
+// Write out actual results to fixtures/required-results.json
+writeFileSync(actualResultsPath, JSON.stringify(actualResults, null, 4), 'utf8');
+
+// Summary
+if (allTestsPassed) {
+  console.log("✨ All fixtures produced required results!\n");
+} else {
+  console.error("❌ Tests of fixtures did not produce expected results. Saved actual results to " + actualResultsPath);
+  process.exit(1);
+}

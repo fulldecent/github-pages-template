@@ -81,6 +81,8 @@ jobs:
         with:
           path: cache/
           key: test-cache
+      - name: Report external-links cache size
+        run: '[ -f cache/external-links.db ] && echo "Number of URLs in cache: $(sqlite3 cache/external-links.db "SELECT COUNT(*) FROM urls")" || echo "No cache found"'
       - name: Test suite
         run: yarn run test
       - name: Save testing cache

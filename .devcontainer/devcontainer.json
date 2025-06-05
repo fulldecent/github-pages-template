@@ -13,7 +13,7 @@
       "installYarnUsingApt": false // We use Yarn 3, so we don't want to install Yarn using apt
     }
   },
-  "postCreateCommand": "corepack enable && corepack prepare yarn@stable --activate && yarn set version stable && yarn install --immutable",
+  "postCreateCommand": "/bin/sh -c 'corepack enable && corepack pack && yarn install --immutable'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]
