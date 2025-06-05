@@ -16,16 +16,9 @@ function loadConfig() {
   }
 }
 
-// Define file patterns to check
-const FILE_PATTERNS = [
-  "**/*.html",
-  "**/*.md",
-  "**/*.js",
-];
-
-// Find all HTML files in the build directory
+// Check all files in the build directory
 function findTargetFiles() {
-  return glob.sync(FILE_PATTERNS, {
+  return glob.sync("**/*", {
     cwd: BUILD_DIR,
     nocase: true,
     dot: false,
