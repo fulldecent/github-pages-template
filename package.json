@@ -4,10 +4,10 @@
     "@shopify/prettier-plugin-liquid": "^1.9.3",
     "better-sqlite3": "^11.10.0",
     "glob": "^11.0.2",
-    "html-validate": "^9.5.3",
+    "html-validate": "^9.5.5",
     "markdownlint-cli2": "^0.18.1",
     "prettier": "^3.5.3",
-    "shell-quote": "^1.8.2"
+    "shell-quote": "^1.8.3"
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs",
