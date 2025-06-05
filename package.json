@@ -10,7 +10,7 @@
     "shell-quote": "^1.8.2"
   },
   "scripts": {
-    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs",
+    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
