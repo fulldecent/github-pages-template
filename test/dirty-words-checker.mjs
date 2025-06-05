@@ -22,6 +22,9 @@ function findTargetFiles() {
     cwd: BUILD_DIR,
     nocase: true,
     dot: false,
+  }).filter(file => {
+    const fullPath = path.join(BUILD_DIR, file);
+    return fs.lstatSync(fullPath).isFile();
   });
 }
 
