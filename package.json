@@ -4,6 +4,7 @@
     "@shopify/prettier-plugin-liquid": "^1.9.3",
     "better-sqlite3": "^11.10.0",
     "cheerio": "^1.1.0",
+    "cli-progress": "^3.12.0",
     "css": "^3.0.0",
     "glob": "^11.0.2",
     "html-validate": "^9.5.5",
