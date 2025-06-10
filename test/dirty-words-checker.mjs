@@ -64,11 +64,11 @@ files.forEach((file) => {
 
   if (violations.length > 0) {
     hasErrors = true;
-    console.log(`\n❌ ${file}:`);
+    console.log(`❌ ${file}:`);
 
     violations.forEach((violation) => {
       const { pattern, matches, count } = violation;
-      console.error(`\n   ${pattern.severity.toUpperCase()}: ${pattern.note}`);
+      console.error(`   ${pattern.severity.toUpperCase()}: ${pattern.note}`);
       console.log(`   Found ${count} matches:`);
       matches.forEach((match) => {
         console.log(`     "${match}"`);
