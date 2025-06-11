@@ -31,16 +31,22 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Build site
         run: bundle exec jekyll build
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Setup Node.js
+
+      # Installing Node + modern Yarn on GitHub Actions requires hack
+      # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: "yarn"
-          check-latest: true
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Configure dependency cache
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
       - name: Install dependencies
         run: yarn install --immutable
+
       - name: Generate sitemap
         run: yarn run generate-sitemap
       - name: Upload build artifact, ready for GitHub Pages deployment
