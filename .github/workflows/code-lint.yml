@@ -29,6 +29,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
+      - name: Install dependencies
+        run: yarn install --immutable
 
       - name: Prettify code # Use yarn script instead of a prettier action, in order to load plugins from .prettierrc.js
         run: yarn run prettier-check
@@ -55,6 +57,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
+      - name: Install dependencies
+        run: yarn install --immutable
 
       - name: Run markdownlint
         run: yarn run markdownlint-check
