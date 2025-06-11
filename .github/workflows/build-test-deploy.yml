@@ -67,16 +67,22 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Setup Node.js
+
+      # Installing Node + modern Yarn on GitHub Actions requires hack
+      # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: "yarn"
-          check-latest: true
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Configure dependency cache
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
       - name: Install dependencies
         run: yarn install --immutable
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
