@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Prettify code # Use yarn script instead of a prettier action, in order to load plugins from .prettierrc.js
+      - name: Check with prettier # Use yarn script instead of a prettier action, in order to load plugins from .prettierrc.js
         run: yarn run prettier-check
 
   markdownlint:
@@ -60,5 +60,5 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run markdownlint
+      - name: Check with markdownlint
         run: yarn run markdownlint-check
