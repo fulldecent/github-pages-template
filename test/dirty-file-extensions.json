@@ -16,10 +16,6 @@
     "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
   },
   {
-    "extension": "ico",
-    "advice": "Check browser support for favicon.webp"
-  },
-  {
     "extension": "woff",
     "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
   },
