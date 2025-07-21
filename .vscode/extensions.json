@@ -2,10 +2,10 @@
   "recommendations": [
     // Do not add GitHub.copilot here, that should instead be in your personal "always-installed extensions"
     // See https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions
-    "esbenp.prettier-vscode", // Prettier for consistent formatting
     "redhat.vscode-yaml", // YAML for front matter
     "eliostruyf.vscode-front-matter", // Front Matter management
     "DavidAnson.vscode-markdownlint", // Markdown linting and formatting
+    // "esbenp.prettier-vscode", // Prettier for consistent formatting / not maintained and causes crashes https://github.com/prettier/prettier-vscode/issues/3743
     "dbaeumer.vscode-eslint",
     "arcanis.vscode-zipfs" // Required to use Prettier with Yarn in VS Code
   ]
