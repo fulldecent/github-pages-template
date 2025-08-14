@@ -31,7 +31,7 @@ const advancedScenarios = [
     <a href="https://httpbin.org/status/404">404 Link</a>
   </body>
 </html>`,
-    description: "Tests handling of multiple external links with different statuses"
+    description: "Tests handling of multiple external links with different statuses",
   },
   {
     name: "Complex mailto scenarios",
@@ -49,7 +49,7 @@ const advancedScenarios = [
     <a href="mailto:test@example.com">Missing Both</a>
   </body>
 </html>`,
-    description: "Tests various mailto link configurations"
+    description: "Tests various mailto link configurations",
   },
   {
     name: "Mixed HTTP/HTTPS links",
@@ -66,7 +66,7 @@ const advancedScenarios = [
     <a href="http://insecure-only.example.com">HTTP Only</a>
   </body>
 </html>`,
-    description: "Tests HTTP vs HTTPS link validation"
+    description: "Tests HTTP vs HTTPS link validation",
   },
   {
     name: "CDN package links",
@@ -84,7 +84,7 @@ const advancedScenarios = [
     <h1>Test Page</h1>
   </body>
 </html>`,
-    description: "Tests package version validation for CDN links"
+    description: "Tests package version validation for CDN links",
   },
   {
     name: "Internal links with various paths",
@@ -102,58 +102,57 @@ const advancedScenarios = [
     <a href="/nonexistent.html">Broken Internal Link</a>
   </body>
 </html>`,
-    description: "Tests internal link validation with various path formats"
-  }
+    description: "Tests internal link validation with various path formats",
+  },
 ];
 
 let testsRun = 0;
 let testsPassed = 0;
 
-console.log(`\n📊 Environment: ${shouldSkipNetworkChecks() ? 'Network-disabled' : 'Network-enabled'}`);
+console.log(`\n📊 Environment: ${shouldSkipNetworkChecks() ? "Network-disabled" : "Network-enabled"}`);
 console.log("🏃 Running advanced scenarios:");
 
 for (const scenario of advancedScenarios) {
   testsRun++;
   console.log(`\n  Test ${testsRun}: ${scenario.name}`);
   console.log(`    Description: ${scenario.description}`);
-  
+
   // Create temporary HTML file
   const tempPath = `/tmp/advanced-test-${testsRun}.html`;
   writeFileSync(tempPath, scenario.html);
-  
+
   try {
     const report = await htmlValidate.validateFile(tempPath);
     const errors = report.results.length > 0 ? report.results[0].messages : [];
-    
+
     console.log(`    Errors found: ${errors.length}`);
-    
+
     if (errors.length > 0) {
       console.log(`    Error breakdown:`);
       const errorsByRule = {};
-      errors.forEach(error => {
+      errors.forEach((error) => {
         if (!errorsByRule[error.ruleId]) {
           errorsByRule[error.ruleId] = 0;
         }
         errorsByRule[error.ruleId]++;
       });
-      
+
       Object.entries(errorsByRule).forEach(([rule, count]) => {
         console.log(`      - ${rule}: ${count} error(s)`);
       });
     }
-    
+
     // Test passes if it completes without throwing
     console.log(`    ✅ Test completed successfully`);
     testsPassed++;
-    
+
     // Clean up temp file
     if (existsSync(tempPath)) {
       unlinkSync(tempPath);
     }
-    
   } catch (error) {
     console.log(`    ❌ Test failed with error: ${error.message}`);
-    
+
     // Clean up temp file even on error
     if (existsSync(tempPath)) {
       unlinkSync(tempPath);
@@ -182,7 +181,7 @@ for (let i = 1; i <= stressTestCount; i++) {
 
   const tempPath = `/tmp/stress-test-${i}.html`;
   writeFileSync(tempPath, simpleHtml);
-  
+
   try {
     const report = await htmlValidate.validateFile(tempPath);
     stressTestsPassed++;
@@ -212,9 +211,10 @@ const performanceHtml = `<!DOCTYPE html>
   </head>
   <body>
     <h1>Performance Test</h1>
-    ${Array.from({length: 50}, (_, i) => 
-      `<a href="mailto:user${i}@example.com?subject=Test${i}&body=Message${i}">Contact ${i}</a>`
-    ).join('\n    ')}
+    ${Array.from(
+      { length: 50 },
+      (_, i) => `<a href="mailto:user${i}@example.com?subject=Test${i}&body=Message${i}">Contact ${i}</a>`,
+    ).join("\n    ")}
   </body>
 </html>`;
 
@@ -226,12 +226,12 @@ try {
   const report = await htmlValidate.validateFile(perfTempPath);
   const endTime = Date.now();
   const duration = endTime - startTime;
-  
+
   console.log(`    ✅ Performance test completed in ${duration}ms`);
   console.log(`    Validated HTML with 50 mailto links`);
   testsPassed++;
   testsRun++;
-  
+
   unlinkSync(perfTempPath);
 } catch (error) {
   console.log(`    ❌ Performance test failed: ${error.message}`);

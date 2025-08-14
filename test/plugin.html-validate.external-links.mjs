@@ -109,7 +109,7 @@ export default class ExternalLinksRule extends Rule {
 
     // Use the safe curl command
     const result = safeCurlCommand(url, { timeout: TIMEOUT_SECONDS });
-    
+
     if (!result.success) {
       // If network call failed, log but don't fail the test
       console.log(`⚠️  Could not check external link ${url}: ${result.error}`);
@@ -122,7 +122,7 @@ export default class ExternalLinksRule extends Rule {
     this.db
       .prepare("REPLACE INTO urls (url, status, redirect_to, time) VALUES (?, ?, ?, unixepoch())")
       .run(normalizedUrl, statusCodeFolded, redirectTo);
-      
+
     if (statusCodeFolded < 200 || statusCodeFolded >= 300) {
       if (redirectTo) {
         this.report({

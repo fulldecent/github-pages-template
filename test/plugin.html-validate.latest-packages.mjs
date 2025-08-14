@@ -62,7 +62,7 @@ export default class LatestPackages extends Rule {
       try {
         const result = execSync(
           `curl --silent --fail --location "https://data.jsdelivr.com/v1/package/npm/${packageName}"`,
-          { timeout: 10000 }
+          { timeout: 10000 },
         );
         const data = JSON.parse(result.toString());
 

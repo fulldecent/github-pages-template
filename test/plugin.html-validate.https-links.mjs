@@ -63,9 +63,9 @@ export default class EnsureHttpsRules extends Rule {
       const httpsUrl = url.replace(/^http:/, "https:");
 
       // Use the safe curl command
-      const result = safeCurlCommand(httpsUrl, { 
+      const result = safeCurlCommand(httpsUrl, {
         timeout: TIMEOUT_SECONDS,
-        followRedirects: true 
+        followRedirects: true,
       });
 
       if (!result.success) {
