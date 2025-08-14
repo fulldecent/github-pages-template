@@ -7,8 +7,7 @@
     "DavidAnson.vscode-markdownlint", // Markdown linting and formatting
     // "esbenp.prettier-vscode", // Prettier for consistent formatting / not maintained and causes crashes https://github.com/prettier/prettier-vscode/issues/3743
     "dbaeumer.vscode-eslint",
-    "arcanis.vscode-zipfs" // Required to use Prettier with Yarn in VS Code
-    ,
+    "arcanis.vscode-zipfs", // Required to use Prettier with Yarn in VS Code
     "esbenp.prettier-vscode"
   ]
 }
