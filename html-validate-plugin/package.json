@@ -1,0 +1,40 @@
+{
+  "name": "html-validate-github-pages",
+  "version": "1.0.0",
+  "description": "HTML validation plugin for GitHub Pages best practices",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "html-validate",
+    "plugin",
+    "github-pages",
+    "validation",
+    "accessibility",
+    "seo",
+    "best-practices"
+  ],
+  "author": "William Entriken",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fulldecent/github-pages-template.git",
+    "directory": "html-validate-plugin"
+  },
+  "homepage": "https://github.com/fulldecent/github-pages-template#html-validate-plugin",
+  "bugs": "https://github.com/fulldecent/github-pages-template/issues",
+  "peerDependencies": {
+    "html-validate": "^10.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.2.0",
+    "shell-quote": "^1.8.3"
+  },
+  "scripts": {
+    "test": "echo \"Tests run from parent project\" && exit 0"
+  },
+  "files": [
+    "*.js",
+    "*.mjs",
+    "README.md"
+  ]
+}

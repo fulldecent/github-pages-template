@@ -4,7 +4,7 @@ export default class CanonicalLinkRule extends Rule {
   documentation() {
     return {
       description: "Require a <link rel='canonical'> in <head> with specific href format.",
-      url: "https://github.com/fulldecent/github-pages-template/#canonical",
+      url: "https://github.com/fulldecent/github-pages-template/tree/main/html-validate-plugin#canonical-link",
     };
   }
 

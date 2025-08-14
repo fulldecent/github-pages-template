@@ -91,6 +91,43 @@ Also you can run this to update your environment to match the GitHub Pages (no P
 bundle update --conservative # "--consersative" ignores updates that GitHub Pages is not using
 ```
 
+## HTML Validation Plugin
+
+This project includes a comprehensive HTML validation plugin called `html-validate-github-pages` that enforces best practices for GitHub Pages websites. The plugin is available in the [`html-validate-plugin/`](html-validate-plugin/) directory and can be used in other projects.
+
+### Plugin Features
+
+The plugin includes the following validation rules:
+
+- **External Links** (`github-pages/external-links`): Validates that external links are reachable
+- **HTTPS Links** (`github-pages/https-links`): Ensures external links use HTTPS when available  
+- **Internal Links** (`github-pages/internal-links`): Validates that internal links point to existing files
+- **Mailto Awesome** (`github-pages/mailto-awesome`): Ensures mailto links include subject and body parameters
+- **No jQuery** (`github-pages/no-jquery`): Detects usage of jQuery library
+- **Canonical Link** (`github-pages/canonical-link`): Validates presence and format of canonical link elements
+- **Latest Packages** (`github-pages/latest-packages`): Checks if external JavaScript/CSS packages are up to date
+
+### Using the Plugin
+
+To use this plugin in your own project:
+
+```bash
+npm install html-validate-github-pages
+```
+
+Then configure it in your `.htmlvalidate.mjs`:
+
+```javascript
+import { defineConfig } from "html-validate";
+
+export default defineConfig({
+  plugins: ["html-validate-github-pages"],
+  extends: ["html-validate-github-pages:recommended"],
+});
+```
+
+For detailed documentation, see the [plugin README](html-validate-plugin/README.md).
+
 ## References
 
 1. This website is built based on [best practices documented in github-pages-template](https://github.com/fulldecent/github-pages-template).

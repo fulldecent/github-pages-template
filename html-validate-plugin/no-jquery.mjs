@@ -4,7 +4,7 @@ export default class NoJquery extends Rule {
   documentation() {
     return {
       description: "Disallow script tag with src including jQuery",
-      url: "https://github.com/fulldecent/github-pages-template/#no-jquery",
+      url: "https://github.com/fulldecent/github-pages-template/tree/main/html-validate-plugin#no-jquery",
     };
   }
 

@@ -15,7 +15,7 @@ export default class EnsureHttpsRules extends Rule {
   documentation() {
     return {
       description: "Report insecure HTTP links that are accessible via HTTPS.",
-      url: "https://github.com/fulldecent/github-pages-template/#https-links",
+      url: "https://github.com/fulldecent/github-pages-template/tree/main/html-validate-plugin#https-links",
     };
   }
 

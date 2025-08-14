@@ -4,7 +4,7 @@ export default class MailtoAwesomeRule extends Rule {
   documentation() {
     return {
       description: "Every mailto: link must have a subject and body",
-      url: "https://github.com/fulldecent/github-pages-template/#mailto-awesome",
+      url: "https://github.com/fulldecent/github-pages-template/tree/main/html-validate-plugin#mailto-awesome",
     };
   }
 

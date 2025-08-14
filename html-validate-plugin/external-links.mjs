@@ -64,7 +64,7 @@ export default class ExternalLinksRule extends Rule {
   documentation() {
     return {
       description: "Require all external links to be live.",
-      url: "https://github.com/fulldecent/github-pages-template/#external-links",
+      url: "https://github.com/fulldecent/github-pages-template/tree/main/html-validate-plugin#external-links",
     };
   }
 

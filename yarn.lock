@@ -912,6 +912,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-validate-github-pages@file:./html-validate-plugin::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 1.0.0
+  resolution: "html-validate-github-pages@file:./html-validate-plugin#./html-validate-plugin::hash=bf1d38&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    better-sqlite3: "npm:^12.2.0"
+    shell-quote: "npm:^1.8.3"
+  peerDependencies:
+    html-validate: ^10.0.0
+  checksum: 10c0/dbcc784206692c374a9079f580359b4e8cbd8ab404e9c2de9017406e3668516b9133332f68910fad19f361a3ebd8aa16cb4a0b454c9de5e13c268844429e43e7
+  languageName: node
+  linkType: hard
+
 "html-validate@npm:^10.0.0":
   version: 10.0.0
   resolution: "html-validate@npm:10.0.0"
@@ -2152,6 +2164,7 @@ __metadata:
     front-matter: "npm:^4.0.2"
     glob: "npm:^11.0.3"
     html-validate: "npm:^10.0.0"
+    html-validate-github-pages: "file:./html-validate-plugin"
     markdownlint-cli2: "npm:^0.18.1"
     prettier: "npm:^3.6.2"
     shell-quote: "npm:^1.8.3"
