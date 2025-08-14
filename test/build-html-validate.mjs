@@ -40,12 +40,33 @@ async function validateParallel() {
     status: "Starting..."
   });
 
-  let allTestsPassed = true;
   let completedTasks = 0;
+  let allTestsPassed = true;
   const results = [];
-
   const workers = [];
   const taskQueue = [...targets];
+
+  let isDone = false;
+  function completeParallelProcessing() {
+    if (isDone) return;
+    isDone = true;
+
+    multibar.stop();
+    workers.forEach(worker => worker.terminate());
+
+    const failedResults = results.filter(r => !r.isValid);
+    const passedCount = results.length - failedResults.length;
+
+    console.log("\n📊 Results summary:");
+    console.log(`✅ ${passedCount} files passed validation`);
+
+    if (failedResults.length > 0) {
+      console.log(`❌ ${failedResults.length} files failed validation`);
+      process.exit(1);
+    } else {
+      console.log("✨ All tests passed!\n");
+    }
+  }
 
   function createWorker(workerId) {
     const worker = new Worker(WORKER_SCRIPT_PATH);
@@ -54,10 +75,9 @@ async function validateParallel() {
       completedTasks++;
       results.push(result);
 
-      // Log error if validation failed
       if (!result.isValid) {
         allTestsPassed = false;
-        multibar.log(`❌ ${path.relative(process.cwd(), result.filePath)}\n${result.message}\n`);
+        multibar.log(`❌ ${path.relative(process.cwd(), result.filePath)}\n${result.message.trim()}\n\n`);
       }
 
       overallBar.increment(1, {
@@ -66,11 +86,10 @@ async function validateParallel() {
 
       if (taskQueue.length > 0) {
         const nextTask = taskQueue.shift();
-        worker.postMessage({
-          filePath: nextTask,
-          workerId
-        });
-      } else if (completedTasks === targets.length) {
+        worker.postMessage({ filePath: nextTask, workerId });
+      }
+
+      if (completedTasks === targets.length) {
         completeParallelProcessing();
       }
     });
@@ -93,31 +112,7 @@ async function validateParallel() {
     const initialTasks = Math.min(MAX_WORKERS, taskQueue.length);
     for (let i = 0; i < initialTasks; i++) {
       const task = taskQueue.shift();
-      workers[i].postMessage({
-        filePath: task,
-        workerId: i,
-      });
-    }
-  }
-
-  function completeParallelProcessing() {
-    multibar.stop();
-
-    workers.forEach(worker => {
-      worker.terminate();
-    });
-
-    const failedResults = results.filter(r => !r.isValid);
-    const passedCount = results.length - failedResults.length;
-
-    console.log("\n📊 Results summary:");
-    console.log(`✅ ${passedCount} files passed validation`);
-
-    if (failedResults.length > 0) {
-      console.log(`❌ ${failedResults.length} files failed validation`);
-      process.exit(1);
-    } else {
-      console.log("✨ All tests passed!\n");
+      workers[i].postMessage({ filePath: task, workerId: i });
     }
   }
 

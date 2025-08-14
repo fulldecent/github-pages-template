@@ -5,7 +5,7 @@ import { HtmlValidate, FileSystemConfigLoader, formatterFactory, esmResolver } f
 const resolver = esmResolver();
 const loader = new FileSystemConfigLoader([resolver]);
 const htmlValidate = new HtmlValidate(loader);
-const formatter = formatterFactory("stylish");
+const formatter = formatterFactory("text");
 
 // Listen for messages from parent thread
 parentPort.on("message", async (data) => {
@@ -28,7 +28,7 @@ parentPort.on("message", async (data) => {
       workerId,
       filePath,
       success: false,
-      message: `❌ Error validating ${filePath}: ${error.message}`,
+      message: `❌ Error validating`,
       isValid: false
     };
     
