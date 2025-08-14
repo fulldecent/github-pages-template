@@ -28,16 +28,19 @@ console.log(`🧪 Validating ${targets.length} files with ${MAX_WORKERS} paralle
 await validateParallel();
 
 async function validateParallel() {
-  const multibar = new cliProgress.MultiBar({
-    format: "[{bar}] {percentage}% | {value}/{total} | {status}",
-    hideCursor: true,
-    clearOnComplete: false,
-    stopOnComplete: true,
-    forceRedraw: false,
-  }, cliProgress.Presets.shades_classic);
+  const multibar = new cliProgress.MultiBar(
+    {
+      format: "[{bar}] {percentage}% | {value}/{total} | {status}",
+      hideCursor: true,
+      clearOnComplete: false,
+      stopOnComplete: true,
+      forceRedraw: false,
+    },
+    cliProgress.Presets.shades_classic,
+  );
 
   const overallBar = multibar.create(targets.length, 0, {
-    status: "Starting..."
+    status: "Starting...",
   });
 
   let completedTasks = 0;
@@ -52,9 +55,9 @@ async function validateParallel() {
     isDone = true;
 
     multibar.stop();
-    workers.forEach(worker => worker.terminate());
+    workers.forEach((worker) => worker.terminate());
 
-    const failedResults = results.filter(r => !r.isValid);
+    const failedResults = results.filter((r) => !r.isValid);
     const passedCount = results.length - failedResults.length;
 
     console.log("\n📊 Results summary:");
