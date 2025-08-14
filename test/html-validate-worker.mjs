@@ -14,6 +14,9 @@ parentPort.on("message", async (data) => {
   try {
     const report = await htmlValidate.validateFile(filePath);
     
+    // Add 1 second delay for testing parallel processing visualization
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     const result = {
       workerId,
       filePath,
@@ -24,6 +27,9 @@ parentPort.on("message", async (data) => {
     
     parentPort.postMessage(result);
   } catch (error) {
+    // Add 1 second delay for testing parallel processing visualization
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     const result = {
       workerId,
       filePath,

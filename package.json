@@ -14,9 +14,6 @@
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs && node test/dirty-file-extensions-checker.mjs",
-    "test-parallel": "HTML_VALIDATE_PARALLEL=true yarn test",
-    "test-multithread": "node test/build-html-validate-parallel.mjs",
-    "setup-multithread-test": "node test/setup-multithread-test.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
