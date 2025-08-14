@@ -2,18 +2,24 @@
 import { HtmlValidate, FileSystemConfigLoader, esmResolver } from "html-validate";
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
+import { shouldSkipNetworkChecks } from "./network-utils.mjs";
 
 // Setup
 const resolver = esmResolver();
 const loader = new FileSystemConfigLoader([resolver]);
 const htmlValidate = new HtmlValidate(loader);
-const requiredResultsPath = path.resolve("./test/fixtures/required-results.json");
+const adaptiveResultsPath = path.resolve("./test/fixtures/required-results-adaptive.json");
 const actualResultsPath = path.resolve("./test/fixtures/actual-results.json");
 let allTestsPassed = true;
-const requiredResults = JSON.parse(readFileSync(requiredResultsPath, "utf8"));
-let actualResults = {};
+const adaptiveResults = JSON.parse(readFileSync(adaptiveResultsPath, "utf8"));
 
-console.log("🧪 Testing fixtures");
+// Determine which set of expectations to use based on network availability
+const networkMode = shouldSkipNetworkChecks() ? "network-disabled" : "network-available";
+const requiredResults = adaptiveResults[networkMode];
+
+console.log(`🧪 Testing fixtures (mode: ${networkMode})`);
+
+let actualResults = {};
 
 for (const filePath in requiredResults) {
   const actualReport = await htmlValidate.validateFile(filePath);

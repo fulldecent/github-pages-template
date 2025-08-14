@@ -3,6 +3,7 @@ import { Rule } from "html-validate";
 import Database from "better-sqlite3";
 import fs from "fs";
 import { execSync } from "child_process";
+import { shouldSkipNetworkChecks, safeCurlCommand } from "./network-utils.mjs";
 
 // Constants for cache expiry and timeout settings
 const CACHE_FOUND_EXPIRY = 60 * 60 * 24 * 30; // 30 days
@@ -51,18 +52,32 @@ export default class EnsureHttpsRules extends Rule {
 
   // Method to check if an HTTP link is accessible via HTTPS
   checkTheLink(url, element) {
+    // Skip network checks if in sandboxed environment without connectivity
+    if (shouldSkipNetworkChecks()) {
+      console.log(`⚠️  Skipping HTTPS check for ${url} (network unavailable or disabled)`);
+      return;
+    }
+
     try {
       // Replace 'http' with 'https' in the URL
       const httpsUrl = url.replace(/^http:/, "https:");
 
-      // Build and execute the 'curl' command to check the link
-      const curlCommand = `curl --head --silent --fail --max-time ${TIMEOUT_SECONDS} --location "${httpsUrl}"`;
-      const curlOutput = execSync(curlCommand, { encoding: "utf-8" });
+      // Use the safe curl command
+      const result = safeCurlCommand(httpsUrl, { 
+        timeout: TIMEOUT_SECONDS,
+        followRedirects: true 
+      });
+
+      if (!result.success) {
+        // If network call failed, log but don't fail the test
+        console.log(`⚠️  Could not check HTTPS for ${url}: ${result.error}`);
+        this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
+        return;
+      }
 
       // If the link is accessible via HTTPS, report it as insecure
-      if (curlOutput.includes("HTTP/2 200")) {
+      if (result.statusCode >= 200 && result.statusCode < 300) {
         this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
-        const insecureRow = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
         this.report({
           node: element,
           message: `external link is insecure and accessible via HTTPS: ${url}`,
@@ -73,7 +88,7 @@ export default class EnsureHttpsRules extends Rule {
       }
     } catch (error) {
       // Handle errors during the link checking process
-      console.error(`Error checking HTTPS for ${url}:`, error);
+      console.log(`⚠️  Error checking HTTPS for ${url}: ${error.message}`);
       this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
     }
   }
@@ -102,6 +117,11 @@ export default class EnsureHttpsRules extends Rule {
   }
 
   domReady({ document }) {
+    // Skip network checks if in sandboxed environment without connectivity
+    if (shouldSkipNetworkChecks()) {
+      return;
+    }
+
     const aElements = document.getElementsByTagName("a");
     for (const aElement of aElements) {
       if (!aElement.hasAttribute("href")) continue;
