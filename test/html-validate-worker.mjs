@@ -10,28 +10,29 @@ const formatter = formatterFactory("text");
 // Listen for messages from parent thread
 parentPort.on("message", async (data) => {
   const { filePath, workerId } = data;
-  
+
   try {
     const report = await htmlValidate.validateFile(filePath);
-    
+
     const result = {
       workerId,
       filePath,
       success: report.valid,
       message: report.valid ? `✅ ${filePath}` : formatter(report.results),
       isValid: report.valid,
-      report: report
+      report: report,
     };
-    
+
     parentPort.postMessage(result);
-  } catch (error) {    const result = {
+  } catch (error) {
+    const result = {
       workerId,
       filePath,
       success: false,
       message: `❌ Error validating`,
-      isValid: false
+      isValid: false,
     };
-    
+
     parentPort.postMessage(result);
   }
 });

@@ -40,10 +40,10 @@ function normalizePathForMatching(filePath) {
 // Check a single file's path against the dirty path rules
 function checkFile(filePath, config) {
   const normalizedPath = normalizePathForMatching(filePath);
-  
+
   // Process rules in order, later rules take precedence
   let finalRule = null;
-  
+
   for (const rule of config) {
     try {
       const regex = new RegExp(rule.path);
@@ -55,12 +55,12 @@ function checkFile(filePath, config) {
       process.exit(1);
     }
   }
-  
+
   // Return violation only if the final matching rule is dirty
   if (finalRule && finalRule.dirty) {
     return { path: normalizedPath, advice: finalRule.advice };
   }
-  
+
   return null;
 }
 
