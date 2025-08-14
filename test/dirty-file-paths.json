@@ -1,46 +1,67 @@
 [
   {
-    "extension": "png",
+    "path": "/.*\\.png$",
+    "dirty": true,
     "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
   },
   {
-    "extension": "jpg",
+    "path": "/.*\\.jpg$",
+    "dirty": true,
     "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
   },
   {
-    "extension": "jpeg",
+    "path": "/.*\\.jpeg$",
+    "dirty": true,
     "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
   },
   {
-    "extension": "gif",
+    "path": "/.*\\.gif$",
+    "dirty": true,
     "advice": "Only use WebP for bitmap images https://web.dev/articles/choose-the-right-image-format"
   },
   {
-    "extension": "woff",
+    "path": "/.*\\.woff$",
+    "dirty": true,
     "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
   },
   {
-    "extension": "eot",
+    "path": "/.*\\.eot$",
+    "dirty": true,
     "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
   },
   {
-    "extension": "ttf",
+    "path": "/.*\\.ttf$",
+    "dirty": true,
     "advice": "Only use WOFF2 for fonts https://web.dev/learn/performance/optimize-web-fonts"
   },
   {
-    "extension": "htm",
+    "path": "/.*\\.htm$",
+    "dirty": true,
     "advice": "Prefer to use .html file extension"
   },
   {
-    "extension": "ogv",
+    "path": "/.*\\.ogv$",
+    "dirty": true,
     "advice": "Only use .webm for video files"
   },
   {
-    "extension": "mp4",
+    "path": "/.*\\.mp4$",
+    "dirty": true,
     "advice": "Only use .webm for video files"
   },
   {
-    "extension": "mp3",
+    "path": "/.*\\.mp3$",
+    "dirty": true,
     "advice": "Only use .webm for video files"
+  },
+  {
+    "path": "/[^/]*/[^.]*\\.ico$",
+    "dirty": true,
+    "advice": "ICO files are not recommended for modern web development"
+  },
+  {
+    "path": "/favicon\\.ico$",
+    "dirty": false,
+    "advice": "Favicon.ico is allowed for browser compatibility"
   }
 ]
