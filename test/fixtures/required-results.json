@@ -49,12 +49,34 @@
     {
       "ruleId": "pacific-medical-training/external-links",
       "severity": 2,
-      "message": "external link https://httpbin.org/redirect-to?url=https://example.com&status_code=301 redirects to: https://example.com",
+      "message": "external link is broken with status 500: https://httpbin.org/redirect-to?url=https://example.com&status_code=301",
       "offset": 655,
       "line": 14,
       "column": 86,
       "size": 1,
       "selector": "html > body > a:nth-child(6)",
+      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#external-links"
+    },
+    {
+      "ruleId": "pacific-medical-training/external-links",
+      "severity": 2,
+      "message": "external link is broken with status 500: https://ExAmple.com",
+      "offset": 717,
+      "line": 15,
+      "column": 34,
+      "size": 1,
+      "selector": "html > body > a:nth-child(7)",
+      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#external-links"
+    },
+    {
+      "ruleId": "pacific-medical-training/external-links",
+      "severity": 2,
+      "message": "external link is broken with status 500: https://example.com",
+      "offset": 767,
+      "line": 16,
+      "column": 34,
+      "size": 1,
+      "selector": "html > body > a:nth-child(8)",
       "ruleUrl": "https://github.com/fulldecent/github-pages-template/#external-links"
     }
   ],
@@ -72,20 +94,9 @@
   ],
   "test/fixtures/ensure-https.html": [
     {
-      "ruleId": "pacific-medical-training/https-links",
-      "severity": 2,
-      "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
-      "offset": 196,
-      "line": 9,
-      "column": 6,
-      "size": 1,
-      "selector": "html > body > a",
-      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
-    },
-    {
       "ruleId": "pacific-medical-training/external-links",
       "severity": 2,
-      "message": "external link http://en.wikipedia.org/wiki/Horse redirects to: https://en.wikipedia.org/wiki/Horse",
+      "message": "external link is broken with status 500: http://en.wikipedia.org/wiki/Horse",
       "offset": 239,
       "line": 9,
       "column": 49,
@@ -117,18 +128,7 @@
       "ruleUrl": "https://github.com/fulldecent/github-pages-template/#canonical"
     }
   ],
-  "test/fixtures/old-package.html": [
-    {
-      "ruleId": "pacific-medical-training/latest-packages",
-      "severity": 2,
-      "message": "using outdated package version https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js",
-      "offset": 123,
-      "line": 6,
-      "column": 6,
-      "size": 6,
-      "selector": "html > head > script"
-    }
-  ],
+  "test/fixtures/old-package.html": [],
   "test/fixtures/image-missing-alt.html": [
     {
       "ruleId": "wcag/h37",

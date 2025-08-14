@@ -118,7 +118,7 @@ export default class ExternalLinksRule extends Rule {
 
     let statusCode = 0;
     let output = "";
-    
+
     try {
       // Execute the curl command to fetch only the headers synchronously and capture the status code
       const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
@@ -139,7 +139,7 @@ export default class ExternalLinksRule extends Rule {
         throw error;
       }
     }
-    
+
     // Normalize status code for consistent test results
     const statusCodeFolded = normalizeStatusCode(statusCode);
     const locationMatch = output.match(/Location: (.+)/i);
@@ -177,7 +177,7 @@ export default class ExternalLinksRule extends Rule {
 
     let statusCode = 500; // Default to server error
     let output = "";
-    
+
     try {
       // Execute the curl command to fetch only the headers synchronously and capture the status code
       const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
@@ -196,7 +196,7 @@ export default class ExternalLinksRule extends Rule {
         throw error;
       }
     }
-    
+
     // Normalize status code for consistent test results
     const normalizedStatusCode = normalizeStatusCode(statusCode);
     const locationMatch = output.match(/Location: (.+)/i);

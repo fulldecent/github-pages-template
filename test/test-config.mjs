@@ -16,26 +16,22 @@ const isCI = !!(
 );
 
 // Detect if we're in offline mode (no network access expected)
-const isOffline = !!(
-  process.env.OFFLINE_MODE ||
-  process.env.NO_NETWORK ||
-  process.env.TEST_OFFLINE
-);
+const isOffline = !!(process.env.OFFLINE_MODE || process.env.NO_NETWORK || process.env.TEST_OFFLINE);
 
 // Network timeout settings
 const NETWORK_TIMEOUTS = {
   // Shorter timeouts in CI to fail fast
   SHORT: isCI ? 3 : 5,
-  MEDIUM: isCI ? 5 : 10, 
-  LONG: isCI ? 10 : 15
+  MEDIUM: isCI ? 5 : 10,
+  LONG: isCI ? 10 : 15,
 };
 
 // Cache expiry settings
 const CACHE_EXPIRY = {
   // Longer cache in CI to reduce network dependencies
-  FOUND: isCI ? (60 * 60 * 24 * 90) : (60 * 60 * 24 * 30), // 90 days in CI, 30 days locally
-  NOT_FOUND: isCI ? (60 * 60 * 24 * 14) : (60 * 60 * 24 * 3), // 14 days in CI, 3 days locally
-  PACKAGE_CHECK: isCI ? (60 * 60 * 24 * 7) : (60 * 60 * 24 * 2) // 7 days in CI, 2 days locally
+  FOUND: isCI ? 60 * 60 * 24 * 90 : 60 * 60 * 24 * 30, // 90 days in CI, 30 days locally
+  NOT_FOUND: isCI ? 60 * 60 * 24 * 14 : 60 * 60 * 24 * 3, // 14 days in CI, 3 days locally
+  PACKAGE_CHECK: isCI ? 60 * 60 * 24 * 7 : 60 * 60 * 24 * 2, // 7 days in CI, 2 days locally
 };
 
 // Error handling configuration
@@ -44,7 +40,7 @@ const ERROR_HANDLING = {
   NORMALIZE_NETWORK_FAILURES: isCI || isOffline,
   // Retry settings
   MAX_RETRIES: isCI ? 1 : 2,
-  RETRY_DELAY: 1000 // ms
+  RETRY_DELAY: 1000, // ms
 };
 
 // Test behavior configuration
@@ -56,17 +52,10 @@ const TEST_CONFIG = {
   // Whether to normalize status codes for network failures
   NORMALIZE_STATUS_CODES: true,
   // Default status code for network failures
-  DEFAULT_NETWORK_FAILURE_STATUS: 500
+  DEFAULT_NETWORK_FAILURE_STATUS: 500,
 };
 
-export {
-  isCI,
-  isOffline,
-  NETWORK_TIMEOUTS,
-  CACHE_EXPIRY,
-  ERROR_HANDLING,
-  TEST_CONFIG
-};
+export { isCI, isOffline, NETWORK_TIMEOUTS, CACHE_EXPIRY, ERROR_HANDLING, TEST_CONFIG };
 
 export default {
   isCI,
@@ -74,5 +63,5 @@ export default {
   NETWORK_TIMEOUTS,
   CACHE_EXPIRY,
   ERROR_HANDLING,
-  TEST_CONFIG
+  TEST_CONFIG,
 };

@@ -20,15 +20,17 @@ let actualResults = {};
  */
 function normalizeTestResults(results) {
   if (!Array.isArray(results)) return results;
-  
-  return results.map(result => {
-    if (result.ruleId === "pacific-medical-training/external-links" && 
-        result.message.includes("status 0:") && 
-        TEST_CONFIG.NORMALIZE_STATUS_CODES) {
+
+  return results.map((result) => {
+    if (
+      result.ruleId === "pacific-medical-training/external-links" &&
+      result.message.includes("status 0:") &&
+      TEST_CONFIG.NORMALIZE_STATUS_CODES
+    ) {
       // Normalize status 0 to status 500 for network failures
       return {
         ...result,
-        message: result.message.replace("status 0:", "status 500:")
+        message: result.message.replace("status 0:", "status 500:"),
       };
     }
     return result;
@@ -43,10 +45,10 @@ if (testConfig.isCI) {
 for (const filePath in requiredResults) {
   const actualReport = await htmlValidate.validateFile(filePath);
   let actualResult = actualReport.results.length === 0 ? [] : actualReport.results[0].messages;
-  
+
   // Normalize results for consistent testing
   actualResult = normalizeTestResults(actualResult);
-  
+
   // Also normalize expected results for comparison
   const expectedResult = normalizeTestResults(requiredResults[filePath]);
 
