@@ -1,67 +1,127 @@
-import { HtmlValidate, FileSystemConfigLoader, formatterFactory, esmResolver } from "html-validate";
 import { glob } from "glob";
 import cliProgress from "cli-progress";
+import { Worker } from "worker_threads";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // In the future, the CLI may improve and this script may be unnecessary.
 // SEE: https://gitlab.com/html-validate/html-validate/-/issues/273
 
+// Configuration
+const MAX_WORKERS = parseInt(process.env.HTML_VALIDATE_WORKERS) || 4;
+const WORKER_SCRIPT_PATH = path.join(__dirname, "html-validate-worker.mjs");
+
 // Find and sort all HTML files in the 'build' directory
 const targets = glob.sync("build/**/*.html").sort();
 
-// Initialize HtmlValidate instance
-const resolver = esmResolver();
-const loader = new FileSystemConfigLoader([resolver]);
-const htmlValidate = new HtmlValidate(loader);
-const formatter = formatterFactory("stylish");
-let allTestsPassed = true;
-
-// Initialize progress bar
-const bar = new cliProgress.SingleBar({
-  format: "🧪 [{bar}] {percentage}% | {value}/{total} | ETA: {eta}s | {file}",
-  forceRedraw: true,
-});
-// Monkey-patch in logging support https://github.com/npkgz/cli-progress/issues/159#issuecomment-2959578474
-bar.loggingBuffer = [];
-bar.log = function (message) {
-  bar.loggingBuffer.push(message);
-};
-bar.on("redraw-pre", (data) => {
-  if (bar.loggingBuffer.length > 0) {
-    bar.terminal.clearLine();
-    bar.terminal.cursorTo(0);
-    while (bar.loggingBuffer.length > 0) {
-      bar.terminal.write(bar.loggingBuffer.shift());
-      bar.terminal.write("\n");
-    }
-  }
-});
-
-console.log("🧪 Validating files...");
-bar.start(targets.length, 0, { file: "Starting..." });
-
-for (const target of targets) {
-  try {
-    bar.increment(0, { file: target });
-    const report = await htmlValidate.validateFile(target);
-    if (!report.valid) {
-      bar.log(formatter(report.results));
-      allTestsPassed = false;
-    } else {
-      bar.log(`✅ ${target}`);
-    }
-  } catch (error) {
-    bar.log(`❌ Error validating ${target}: ${error.message}`);
-    allTestsPassed = false;
-  }
-  bar.increment(1);
+if (targets.length === 0) {
+  console.log("⚠️  No HTML files found in build directory");
+  console.log("   Make sure to build the site first");
+  process.exit(0);
 }
 
-bar.stop();
+console.log(`🧪 Validating ${targets.length} files with ${MAX_WORKERS} parallel workers...`);
 
-// Display final result
-if (allTestsPassed) {
-  console.log("✨ All tests passed!\n");
-} else {
-  console.log("❌ Some tests failed.\n");
-  process.exit(1);
+await validateParallel();
+
+async function validateParallel() {
+  const multibar = new cliProgress.MultiBar({
+    format: "[{bar}] {percentage}% | {value}/{total} | {status}",
+    hideCursor: true,
+    clearOnComplete: false,
+    stopOnComplete: true,
+    forceRedraw: false,
+  }, cliProgress.Presets.shades_classic);
+
+  const overallBar = multibar.create(targets.length, 0, {
+    status: "Starting..."
+  });
+
+  let completedTasks = 0;
+  let allTestsPassed = true;
+  const results = [];
+  const workers = [];
+  const taskQueue = [...targets];
+
+  let isDone = false;
+  function completeParallelProcessing() {
+    if (isDone) return;
+    isDone = true;
+
+    multibar.stop();
+    workers.forEach(worker => worker.terminate());
+
+    const failedResults = results.filter(r => !r.isValid);
+    const passedCount = results.length - failedResults.length;
+
+    console.log("\n📊 Results summary:");
+    console.log(`✅ ${passedCount} files passed validation`);
+
+    if (failedResults.length > 0) {
+      console.log(`❌ ${failedResults.length} files failed validation`);
+      process.exit(1);
+    } else {
+      console.log("✨ All tests passed!\n");
+    }
+  }
+
+  function createWorker(workerId) {
+    const worker = new Worker(WORKER_SCRIPT_PATH);
+
+    worker.on("message", (result) => {
+      completedTasks++;
+      results.push(result);
+
+      if (!result.isValid) {
+        allTestsPassed = false;
+        multibar.log(`❌ ${path.relative(process.cwd(), result.filePath)}\n${result.message.trim()}\n\n`);
+      }
+
+      overallBar.increment(1, {
+        status: path.basename(result.filePath),
+      });
+
+      if (taskQueue.length > 0) {
+        const nextTask = taskQueue.shift();
+        worker.postMessage({ filePath: nextTask, workerId });
+      }
+
+      if (completedTasks === targets.length) {
+        completeParallelProcessing();
+      }
+    });
+
+    worker.on("error", (error) => {
+      console.error(`Worker ${workerId} error:`, error);
+      allTestsPassed = false;
+      completeParallelProcessing();
+    });
+
+    return worker;
+  }
+
+  function startParallelProcessing() {
+    for (let i = 0; i < MAX_WORKERS; i++) {
+      const worker = createWorker(i);
+      workers.push(worker);
+    }
+
+    const initialTasks = Math.min(MAX_WORKERS, taskQueue.length);
+    for (let i = 0; i < initialTasks; i++) {
+      const task = taskQueue.shift();
+      workers[i].postMessage({ filePath: task, workerId: i });
+    }
+  }
+
+  return new Promise((resolve) => {
+    const originalComplete = completeParallelProcessing;
+    completeParallelProcessing = () => {
+      originalComplete();
+      resolve();
+    };
+    startParallelProcessing();
+  });
 }

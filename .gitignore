@@ -6,6 +6,7 @@
 # For our testing scripts
 /cache
 /test/fixtures/actual-results.json
+/test/fixtures-multithread
 
 # For DS Store
 **/.DS_Store
