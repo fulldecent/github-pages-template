@@ -3,11 +3,12 @@ import { Rule } from "html-validate";
 import Database from "better-sqlite3";
 import fs from "fs";
 import { execSync } from "child_process";
+import testConfig, { NETWORK_TIMEOUTS, CACHE_EXPIRY, ERROR_HANDLING, TEST_CONFIG } from "./test-config.mjs";
 
 // Constants for cache expiry and timeout settings
-const CACHE_FOUND_EXPIRY = 60 * 60 * 24 * 30; // 30 days
-const CACHE_NOT_FOUND_EXPIRY = 60 * 60 * 24 * 3; // 3 days
-const TIMEOUT_SECONDS = 10;
+const CACHE_FOUND_EXPIRY = CACHE_EXPIRY.FOUND;
+const CACHE_NOT_FOUND_EXPIRY = CACHE_EXPIRY.NOT_FOUND;
+const TIMEOUT_SECONDS = NETWORK_TIMEOUTS.MEDIUM;
 
 // Class definition for the custom HTML validation rule
 export default class EnsureHttpsRules extends Rule {
@@ -60,9 +61,8 @@ export default class EnsureHttpsRules extends Rule {
       const curlOutput = execSync(curlCommand, { encoding: "utf-8" });
 
       // If the link is accessible via HTTPS, report it as insecure
-      if (curlOutput.includes("HTTP/2 200")) {
+      if (curlOutput.includes("HTTP/2 200") || curlOutput.includes("HTTP/1.1 200")) {
         this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
-        const insecureRow = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
         this.report({
           node: element,
           message: `external link is insecure and accessible via HTTPS: ${url}`,
@@ -73,8 +73,14 @@ export default class EnsureHttpsRules extends Rule {
       }
     } catch (error) {
       // Handle errors during the link checking process
-      console.error(`Error checking HTTPS for ${url}:`, error);
-      this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
+      if (ERROR_HANDLING.NORMALIZE_NETWORK_FAILURES) {
+        // In CI or offline mode, gracefully handle network failures
+        console.warn(`Network error checking HTTPS for ${url}:`, error.message);
+        this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
+      } else {
+        console.error(`Error checking HTTPS for ${url}:`, error);
+        this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 0, unixepoch())").run(url);
+      }
     }
   }
 

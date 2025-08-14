@@ -3,11 +3,12 @@ import Database from "better-sqlite3";
 import fs from "fs";
 import { execSync } from "child_process";
 import { quote as shellEscape } from "shell-quote";
+import testConfig, { NETWORK_TIMEOUTS, CACHE_EXPIRY, ERROR_HANDLING, TEST_CONFIG } from "./test-config.mjs";
 
-const CACHE_FOUND_EXPIRY = 60 * 60 * 24 * 30; // 30 days
-const CACHE_NOT_FOUND_EXPIRY = 60 * 60 * 24 * 3; // 3 days
+const CACHE_FOUND_EXPIRY = CACHE_EXPIRY.FOUND;
+const CACHE_NOT_FOUND_EXPIRY = CACHE_EXPIRY.NOT_FOUND;
 const TASK_PARALLELISM = 10;
-const TIMEOUT_SECONDS = 5;
+const TIMEOUT_SECONDS = NETWORK_TIMEOUTS.MEDIUM;
 // Look like modern Chrome
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.999 Safari/537.36";
@@ -15,7 +16,19 @@ const USER_AGENT =
 // Use your proxy server to check external links
 // This URL must accept a query parameter `url` and return the status code and possibly location: header in the response.
 // Status code 500 is returned if the server is down or timeout.
-const PROXY_URL = "https://api.PacificMedicalTraining.com/public/link-check/status";
+// Disable proxy in CI environments for more predictable testing
+const PROXY_URL = testConfig.isCI ? null : "https://api.PacificMedicalTraining.com/public/link-check/status";
+
+/**
+ * Normalize status codes for consistent test results
+ * Network failures (status 0) should be reported as 500 for deterministic testing
+ */
+function normalizeStatusCode(statusCode) {
+  if (TEST_CONFIG.NORMALIZE_STATUS_CODES && statusCode === 0) {
+    return TEST_CONFIG.DEFAULT_NETWORK_FAILURE_STATUS;
+  }
+  return statusCode;
+}
 
 // html-validate runs check() synchronously, so we can't use async functions like fetch here. Maybe after their
 // version 9 release we can use the fetch API and this parallel approach.
@@ -103,16 +116,32 @@ export default class ExternalLinksRule extends Rule {
     // Use shell-quote to safely escape the URL
     const escapedUrl = shellEscape([url]);
 
-    // Execute the curl command to fetch only the headers synchronously and capture the status code
-    const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
+    let statusCode = 0;
+    let output = "";
+    
+    try {
+      // Execute the curl command to fetch only the headers synchronously and capture the status code
+      const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
     --user-agent "${USER_AGENT}" \
     --header "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" \
     --write-out "%{http_code}" --dump-header - --output /dev/null ${escapedUrl} || true`);
 
-    // Convert output to string and split by newline
-    const output = result.toString();
-    const statusCode = parseInt(output.match(/(\d{3})$/)[1], 10); // The last 3 digits in output
-    const statusCodeFolded = statusCode === 0 ? 500 : statusCode;
+      // Convert output to string and split by newline
+      output = result.toString();
+      const statusCodeMatch = output.match(/(\d{3})$/); // The last 3 digits in output
+      statusCode = statusCodeMatch ? parseInt(statusCodeMatch[1], 10) : 0;
+    } catch (error) {
+      // Handle network errors gracefully
+      if (ERROR_HANDLING.NORMALIZE_NETWORK_FAILURES) {
+        console.warn(`Network error checking ${url}, treating as network failure:`, error.message);
+        statusCode = 0; // Will be normalized to 500 below
+      } else {
+        throw error;
+      }
+    }
+    
+    // Normalize status code for consistent test results
+    const statusCodeFolded = normalizeStatusCode(statusCode);
     const locationMatch = output.match(/Location: (.+)/i);
     const redirectTo = locationMatch ? locationMatch[1].trim() : null;
 
@@ -146,21 +175,37 @@ export default class ExternalLinksRule extends Rule {
     // Use shell-quote to safely escape the URL
     const escapedUrl = shellEscape([urlWithQuery]);
 
-    // Execute the curl command to fetch only the headers synchronously and capture the status code
-    const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
+    let statusCode = 500; // Default to server error
+    let output = "";
+    
+    try {
+      // Execute the curl command to fetch only the headers synchronously and capture the status code
+      const result = execSync(`curl --head --silent --max-time ${TIMEOUT_SECONDS} --max-redirs 0 \
     --write-out "%{http_code}" --dump-header - --output /dev/null ${escapedUrl} || true`);
 
-    // Convert output to string and split by newline
-    const output = result.toString();
-    const statusCodeMatch = output.match(/(\d{3})$/); // The last 3 digits in output
-    const statusCode = statusCodeMatch ? parseInt(statusCodeMatch[1], 10) : 500;
+      // Convert output to string and split by newline
+      output = result.toString();
+      const statusCodeMatch = output.match(/(\d{3})$/); // The last 3 digits in output
+      statusCode = statusCodeMatch ? parseInt(statusCodeMatch[1], 10) : 0;
+    } catch (error) {
+      // Handle network errors gracefully
+      if (ERROR_HANDLING.NORMALIZE_NETWORK_FAILURES) {
+        console.warn(`Network error checking ${url} via proxy, treating as network failure:`, error.message);
+        statusCode = 0; // Will be normalized below
+      } else {
+        throw error;
+      }
+    }
+    
+    // Normalize status code for consistent test results
+    const normalizedStatusCode = normalizeStatusCode(statusCode);
     const locationMatch = output.match(/Location: (.+)/i);
     const redirectTo = locationMatch ? locationMatch[1].trim() : null;
 
     this.db
       .prepare("REPLACE INTO urls (url, status, redirect_to, time) VALUES (?, ?, ?, unixepoch())")
-      .run(normalizedUrl, statusCode, redirectTo);
-    if (statusCode < 200 || statusCode >= 300) {
+      .run(normalizedUrl, normalizedStatusCode, redirectTo);
+    if (normalizedStatusCode < 200 || normalizedStatusCode >= 300) {
       if (redirectTo) {
         this.report({
           node: element,
@@ -169,7 +214,7 @@ export default class ExternalLinksRule extends Rule {
       } else {
         this.report({
           node: element,
-          message: `external link is broken with status ${statusCode}: ${url}`,
+          message: `external link is broken with status ${normalizedStatusCode}: ${url}`,
         });
       }
     }
