@@ -21,26 +21,25 @@ for (const target of targets) {
   try {
     // Use structured-data-testing-tool CLI to test the file
     const result = execSync(`yarn dlx structured-data-testing-tool --file "${target}"`, {
-      encoding: 'utf8',
-      stdio: 'pipe'
+      encoding: "utf8",
+      stdio: "pipe",
     });
-    
+
     // Check if there are JSON-LD parse errors or failed tests in the output
-    if (result.includes('Error in jsonld parse') || 
-        (result.includes('Failed:') && !result.includes('Failed: 0'))) {
+    if (result.includes("Error in jsonld parse") || (result.includes("Failed:") && !result.includes("Failed: 0"))) {
       console.log("❌ " + target);
       console.log(result);
       hasErrors = true;
     } else {
       console.log("✅ " + target);
       // Show a summary of structured data found
-      const lines = result.split('\n');
-      const schemaLine = lines.find(line => line.includes('Schema.org schemas:'));
-      if (schemaLine && !schemaLine.includes('Schema.org schemas: 0')) {
+      const lines = result.split("\n");
+      const schemaLine = lines.find((line) => line.includes("Schema.org schemas:"));
+      if (schemaLine && !schemaLine.includes("Schema.org schemas: 0")) {
         console.log(`    📋 ${schemaLine.trim()}`);
       }
       // Only show detailed output if there are warnings
-      if (result.includes('Warnings:') && !result.includes('Warnings: 0')) {
+      if (result.includes("Warnings:") && !result.includes("Warnings: 0")) {
         console.log("⚠️  Warnings found:");
         console.log(result);
       }

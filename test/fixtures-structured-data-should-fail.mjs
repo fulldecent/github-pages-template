@@ -7,13 +7,13 @@ const fixtures = [
   {
     file: "test/fixtures/valid-jsonld.html",
     shouldPass: true,
-    description: "valid JSON-LD"
+    description: "valid JSON-LD",
   },
   {
-    file: "test/fixtures/invalid-jsonld.html", 
+    file: "test/fixtures/invalid-jsonld.html",
     shouldPass: false,
-    description: "invalid JSON-LD (syntax error)"
-  }
+    description: "invalid JSON-LD (syntax error)",
+  },
 ];
 
 let allTestsPassed = true;
@@ -21,23 +21,24 @@ let allTestsPassed = true;
 for (const fixture of fixtures) {
   try {
     const result = execSync(`yarn dlx structured-data-testing-tool --file "${fixture.file}"`, {
-      encoding: 'utf8',
-      stdio: 'pipe'
+      encoding: "utf8",
+      stdio: "pipe",
     });
-    
-    const hasError = result.includes('Error in jsonld parse') || 
-                     (result.includes('Failed:') && !result.includes('Failed: 0'));
-    
+
+    const hasError =
+      result.includes("Error in jsonld parse") || (result.includes("Failed:") && !result.includes("Failed: 0"));
+
     const actuallyPassed = !hasError;
-    
+
     if (actuallyPassed === fixture.shouldPass) {
-      console.log(`✅ ${fixture.file}: ${fixture.description} - ${actuallyPassed ? 'passed' : 'failed'} as expected`);
+      console.log(`✅ ${fixture.file}: ${fixture.description} - ${actuallyPassed ? "passed" : "failed"} as expected`);
     } else {
-      console.error(`❌ ${fixture.file}: ${fixture.description} - expected ${fixture.shouldPass ? 'pass' : 'fail'} but got ${actuallyPassed ? 'pass' : 'fail'}`);
+      console.error(
+        `❌ ${fixture.file}: ${fixture.description} - expected ${fixture.shouldPass ? "pass" : "fail"} but got ${actuallyPassed ? "pass" : "fail"}`,
+      );
       console.error("Output:", result);
       allTestsPassed = false;
     }
-    
   } catch (error) {
     // execSync throws on non-zero exit codes, but structured-data-testing-tool doesn't always exit with error codes
     console.error(`❌ ${fixture.file}: ${fixture.description} - execution error`);
