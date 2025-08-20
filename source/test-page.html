@@ -1,0 +1,35 @@
+---
+title: Test Page
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title }}</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="preload" href="/assets/fonts/test.woff2" as="font" type="font/woff2" crossorigin>
+    <style>
+        @font-face {
+            font-family: 'TestFont';
+            src: url('assets/fonts/test.woff2') format('woff2');
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Page</h1>
+    <p>This page tests various asset references.</p>
+    <!-- External links should be ignored -->
+    <a href="https://example.com">External link</a>
+    <img src="https://example.com/image.png" alt="External image">
+    
+    <!-- Fragment links should work -->
+    <a href="#section1">Internal anchor</a>
+    
+    <!-- Relative link to another page -->
+    <a href="../">Home</a>
+    
+    <!-- Extensionless link that should map to .html -->
+    <a href="/experiment-template/page-to-test">Test page</a>
+</body>
+</html>

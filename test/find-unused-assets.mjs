@@ -36,7 +36,7 @@ function findHtmlFiles() {
     .filter((file) => fs.lstatSync(path.join(BUILD_DIR, file)).isFile());
 }
 
-// Extract all asset references from HTML files
+// Extract all asset references from HTML and CSS files
 function extractAssetReferences(htmlFiles) {
   const references = new Set();
 
@@ -61,13 +61,57 @@ function extractAssetReferences(htmlFiles) {
             if (!path.extname(resolvedPath)) {
               references.add(resolvedPath + ".html");
             }
+            
+            // If this is a CSS file, parse it for url() references
+            if (resolvedPath.endsWith('.css')) {
+              parseCssFile(resolvedPath, references);
+            }
           }
         }
       });
     });
+    
+    // Also scan the entire HTML content for CSS url() references
+    const urlMatches = content.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
+    urlMatches.forEach(match => {
+      const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
+      if (urlMatch && urlMatch[1]) {
+        const url = urlMatch[1];
+        if (!isExternalUrl(url) && !isDataUrl(url)) {
+          const resolvedPath = resolveRelativeUrl(url, htmlDir);
+          if (resolvedPath) {
+            references.add(resolvedPath);
+          }
+        }
+      }
+    });
   });
 
   return references;
+}
+
+// Parse CSS file for url() references
+function parseCssFile(cssFilePath, references) {
+  try {
+    const cssContent = fs.readFileSync(path.join(BUILD_DIR, cssFilePath), "utf-8");
+    const cssDir = path.dirname(cssFilePath);
+    
+    const urlMatches = cssContent.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
+    urlMatches.forEach(match => {
+      const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
+      if (urlMatch && urlMatch[1]) {
+        const url = urlMatch[1];
+        if (!isExternalUrl(url) && !isDataUrl(url)) {
+          const resolvedPath = resolveRelativeUrl(url, cssDir);
+          if (resolvedPath) {
+            references.add(resolvedPath);
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.warn(`Warning: Could not parse CSS file ${cssFilePath}:`, error.message);
+  }
 }
 
 // Check if URL is external (starts with http/https or //)

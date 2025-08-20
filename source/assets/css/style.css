@@ -6,3 +6,8 @@ body {
 .test-class {
   color: red;
 }
+
+@font-face {
+  font-family: 'UnusedFont';
+  src: url('../fonts/unused.ttf') format('truetype');
+}
