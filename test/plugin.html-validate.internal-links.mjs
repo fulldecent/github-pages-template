@@ -76,7 +76,7 @@ export default class CheckInternalLinks extends Rule {
       ) {
         return;
       }
-      
+
       // Do NOT automatically check directories for links not ending with "/"
       // This ensures bare directory names like "directory-with-index" are treated as broken
     }
