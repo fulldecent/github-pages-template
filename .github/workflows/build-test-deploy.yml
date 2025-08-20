@@ -110,19 +110,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download build artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: build/  
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+          path: build/
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
-      - name: run Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.15.x
-          lhci autorun
+          node-version: '20'
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.15.x
+      - name: Run Lighthouse CI
+        run: lhci autorun
 
   # Deploy the GitHub Pages artifact
   deploy-github-pages:
