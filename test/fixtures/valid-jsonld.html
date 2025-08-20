@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Test page with valid JSON-LD</title>
+  </head>
+  <body>
+    <h1>Test page with valid JSON-LD</h1>
+    <p>This page has valid JSON-LD structured data.</p>
+    
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "ReportageNewsArticle",
+        "url": "https://www.bbc.co.uk/news/world-us-canada-49060410",
+        "publisher": {
+          "@type": "NewsMediaOrganization",
+          "name": "BBC News",
+          "publishingPrinciples": "http://www.bbc.co.uk/news/help-41670342",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png"
+          }
+        },
+        "datePublished": "2019-07-20T23:07:27.000Z",
+        "dateModified": "2019-07-21T00:41:12.000Z",
+        "description": "On 20 July 1969, Apollo 11 landed - and hours later Neil Armstrong took his historic first steps.",
+        "headline": "Apollo 11: World celebrates 50th anniversary of first Moon landing",
+        "image": {
+          "@type": "ImageObject",
+          "width": 1200,
+          "height": 675,
+          "url": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5509/production/_107896712_moonlanding3getty.jpg"
+        },
+        "thumbnailUrl": "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/5509/production/_107896712_moonlanding3getty.jpg",
+        "mainEntityOfPage": "https://www.bbc.co.uk/news/world-us-canada-49060410",
+        "author": {
+          "@type": "NewsMediaOrganization",
+          "name": "BBC News",
+          "noBylinesPolicy": "http://www.bbc.co.uk/news/help-41670342#authorexpertise",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://static.files.bbci.co.uk/ws/simorgh-assets/public/news/images/metadata/poster-1024x576.png"
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

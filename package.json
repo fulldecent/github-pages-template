@@ -14,7 +14,8 @@
     "structured-data-testing-tool": "^4.5.0"
   },
   "scripts": {
-    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs && node test/dirty-file-paths-checker.mjs",
+    "test": "node test/fixtures-html-validate-should-fail.mjs && node test/fixtures-structured-data-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs && node test/dirty-file-paths-checker.mjs && node test/build-structured-data-validate.mjs",
+    "test-structured-data": "node test/build-structured-data-validate.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
