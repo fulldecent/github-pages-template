@@ -10,7 +10,8 @@
     "html-validate": "^10.0.0",
     "markdownlint-cli2": "^0.18.1",
     "prettier": "^3.6.2",
-    "shell-quote": "^1.8.3"
+    "shell-quote": "^1.8.3",
+    "structured-data-testing-tool": "^4.5.0"
   },
   "scripts": {
     "test": "node test/fixtures-html-validate-should-fail.mjs && node test/build-html-validate.mjs && node test/dirty-words-checker.mjs && node test/dirty-file-paths-checker.mjs",
