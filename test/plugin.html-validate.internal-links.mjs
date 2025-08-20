@@ -44,7 +44,7 @@ export default class CheckInternalLinks extends Rule {
       return this.fileExistsCache.get(path);
     }
 
-    const exists = fs.existsSync(path);
+    const exists = fs.existsSync(path) && fs.lstatSync(path).isFile();
     this.fileExistsCache.set(path, exists);
     return exists;
   }
@@ -60,17 +60,25 @@ export default class CheckInternalLinks extends Rule {
     const basePath = path.dirname(element.location.filename);
     let resolvedPath = path.resolve(basePath, resolvedLink);
 
-    // If it's a directory, append the index file
-    if (fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory()) {
-      resolvedPath = path.join(resolvedPath, this.indexFile);
-    }
+    // Handle links ending with "/" - these should only work if directory has index file
+    if (internalLink.endsWith("/")) {
+      if (fs.existsSync(resolvedPath) && fs.lstatSync(resolvedPath).isDirectory()) {
+        resolvedPath = path.join(resolvedPath, this.indexFile);
+        if (this.doesFileExist(resolvedPath)) {
+          return;
+        }
+      }
+    } else {
+      // Handle links not ending with "/" - first check for file with extensions
+      if (
+        this.doesFileExist(resolvedPath) ||
+        this.alternativeExtensions.some((ext) => this.doesFileExist(`${resolvedPath}${ext}`))
+      ) {
+        return;
+      }
 
-    // Pass if the URL matches a file or an alternative extension
-    if (
-      this.doesFileExist(resolvedPath) ||
-      this.alternativeExtensions.some((ext) => this.doesFileExist(`${resolvedPath}${ext}`))
-    ) {
-      return;
+      // Do NOT automatically check directories for links not ending with "/"
+      // This ensures bare directory names like "directory-with-index" are treated as broken
     }
 
     // Report an error with the resolved path
