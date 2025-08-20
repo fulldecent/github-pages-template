@@ -197,9 +197,9 @@
       "ruleId": "pacific-medical-training/internal-links",
       "severity": 2,
       "message": "internal link \"directory-with-no-index-with-twin/index\" is broken.",
-      "offset": 1191,
-      "line": 20,
-      "column": 60,
+      "offset": 1200,
+      "line": 21,
+      "column": 58,
       "size": 1,
       "selector": "html > body > ul > li:nth-child(9) > a"
     }
