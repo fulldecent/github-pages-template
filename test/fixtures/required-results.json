@@ -72,17 +72,6 @@
   ],
   "test/fixtures/ensure-https.html": [
     {
-      "ruleId": "pacific-medical-training/https-links",
-      "severity": 2,
-      "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
-      "offset": 196,
-      "line": 9,
-      "column": 6,
-      "size": 1,
-      "selector": "html > body > a",
-      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
-    },
-    {
       "ruleId": "pacific-medical-training/external-links",
       "severity": 2,
       "message": "external link http://en.wikipedia.org/wiki/Horse redirects to: https://en.wikipedia.org/wiki/Horse",
@@ -140,6 +129,29 @@
       "size": 3,
       "selector": "html > body > img",
       "ruleUrl": "https://html-validate.org/rules/wcag/h37.html"
+    }
+  ],
+  "test/fixtures/valid-jsonld.html": [
+    {
+      "ruleId": "pacific-medical-training/canonical-link",
+      "severity": 2,
+      "message": "<head> is missing <link rel=\"canonical\" ...>",
+      "size": 0,
+      "selector": null,
+      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#canonical"
+    }
+  ],
+  "test/fixtures/invalid-jsonld.html": [
+    {
+      "ruleId": "pacific-medical-training/structured-data",
+      "severity": 2,
+      "message": "JSON-LD parse error in structured data",
+      "offset": 279,
+      "line": 11,
+      "column": 39,
+      "size": 1,
+      "selector": "html > body > script",
+      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#structured-data"
     }
   ]
 }
