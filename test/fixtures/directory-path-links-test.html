@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Directory Path Links Test</title>
+    <link rel="canonical" href="http://example.com/directory-path-links-test">
+  </head>
+  <body>
+    <h1>Testing Directory Path Links</h1>
+    <p>This page tests various directory link scenarios:</p>
+    <ul>
+      <li><a href="directory-with-no-index">directory-with-no-index (should be broken)</a></li>
+      <li><a href="directory-with-no-index/">directory-with-no-index/ (should be broken)</a></li>
+      <li><a href="directory-with-no-index/index">directory-with-no-index/index (should be broken)</a></li>
+      <li><a href="directory-with-index">directory-with-index (should be broken)</a></li>
+      <li><a href="directory-with-index/">directory-with-index/ (should be OK)</a></li>
+      <li><a href="directory-with-index/index">directory-with-index/index (should be OK)</a></li>
+      <li><a href="directory-with-no-index-with-twin">directory-with-no-index-with-twin (should be OK)</a></li>
+      <li><a href="directory-with-no-index-with-twin/">directory-with-no-index-with-twin/ (should be broken)</a></li>
+      <li><a href="directory-with-no-index-with-twin/index">directory-with-no-index-with-twin/index (should be broken)</a></li>
+    </ul>
+  </body>
+</html>
