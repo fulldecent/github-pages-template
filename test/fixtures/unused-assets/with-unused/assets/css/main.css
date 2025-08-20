@@ -1,8 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
-    background: url('../images/background.jpg') no-repeat;
+  font-family: Arial, sans-serif;
+  background: url("../images/background.jpg") no-repeat;
 }
 
 h1 {
-    color: #333;
+  color: #333;
 }

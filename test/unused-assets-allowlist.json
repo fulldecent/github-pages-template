@@ -1,6 +1,1 @@
-[
-  "assets/js/unused\\.js",
-  "assets/images/dynamically-loaded.*",
-  "^robots\\.txt$",
-  "^\\.well-known/.*"
-]
+["assets/js/unused\\.js", "assets/images/dynamically-loaded.*", "^robots\\.txt$", "^\\.well-known/.*"]

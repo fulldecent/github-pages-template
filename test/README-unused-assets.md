@@ -60,7 +60,7 @@ yarn test
 
 ## Example output
 
-```
+```text
 🧪 Checking for unused asset files
 📄 Found 6 asset files and 4 HTML files
 

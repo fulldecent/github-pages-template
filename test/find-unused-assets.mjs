@@ -8,31 +8,51 @@ import { load } from "cheerio";
 const TARGET_DIR = process.argv[2] ? path.resolve(process.argv[2]) : path.join(process.cwd(), "build");
 
 // Show usage if help is requested
-if (process.argv[2] === '--help' || process.argv[2] === '-h') {
-  console.log('Usage: node find-unused-assets.mjs [directory]');
-  console.log('');
-  console.log('Finds asset files that are not referenced from any HTML file in the target directory.');
-  console.log('');
-  console.log('Arguments:');
+if (process.argv[2] === "--help" || process.argv[2] === "-h") {
+  console.log("Usage: node find-unused-assets.mjs [directory]");
+  console.log("");
+  console.log("Finds asset files that are not referenced from any HTML file in the target directory.");
+  console.log("");
+  console.log("Arguments:");
   console.log('  directory  Directory to scan (default: "./build")');
-  console.log('');
-  console.log('Examples:');
-  console.log('  node find-unused-assets.mjs                        # Scan ./build directory');
-  console.log('  node find-unused-assets.mjs /path/to/site          # Scan custom directory');  
-  console.log('  node find-unused-assets.mjs test/fixtures/clean    # Scan test fixtures');
+  console.log("");
+  console.log("Examples:");
+  console.log("  node find-unused-assets.mjs                        # Scan ./build directory");
+  console.log("  node find-unused-assets.mjs /path/to/site          # Scan custom directory");
+  console.log("  node find-unused-assets.mjs test/fixtures/clean    # Scan test fixtures");
   process.exit(0);
 }
 
 // Asset file extensions to check
 const ASSET_EXTENSIONS = [
-  "css", "js", "jpg", "jpeg", "png", "gif", "svg", "webp",
-  "woff", "woff2", "ttf", "otf", "eot", "ico", "mp4", "webm",
-  "mp3", "wav", "ogg", "pdf", "zip", "tar", "gz"
+  "css",
+  "js",
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "svg",
+  "webp",
+  "woff",
+  "woff2",
+  "ttf",
+  "otf",
+  "eot",
+  "ico",
+  "mp4",
+  "webm",
+  "mp3",
+  "wav",
+  "ogg",
+  "pdf",
+  "zip",
+  "tar",
+  "gz",
 ];
 
 // Find all asset files in the target directory
 function findAssetFiles() {
-  const extensions = ASSET_EXTENSIONS.map(ext => `**/*.${ext}`);
+  const extensions = ASSET_EXTENSIONS.map((ext) => `**/*.${ext}`);
   return glob
     .sync(extensions, {
       cwd: TARGET_DIR,
@@ -67,30 +87,30 @@ function extractAssetReferences(htmlFiles) {
       const $el = $(element);
       const src = $el.attr("src");
       const href = $el.attr("href");
-      
-      [src, href].forEach(url => {
+
+      [src, href].forEach((url) => {
         if (url && !isExternalUrl(url) && !isDataUrl(url)) {
           const resolvedPath = resolveRelativeUrl(url, htmlDir);
           if (resolvedPath) {
             references.add(resolvedPath);
-            
+
             // If the URL is extensionless, also check for .html version
             if (!path.extname(resolvedPath)) {
               references.add(resolvedPath + ".html");
             }
-            
+
             // If this is a CSS file, parse it for url() references
-            if (resolvedPath.endsWith('.css')) {
+            if (resolvedPath.endsWith(".css")) {
               parseCssFile(resolvedPath, references);
             }
           }
         }
       });
     });
-    
+
     // Also scan the entire HTML content for CSS url() references
     const urlMatches = content.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
-    urlMatches.forEach(match => {
+    urlMatches.forEach((match) => {
       const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
       if (urlMatch && urlMatch[1]) {
         const url = urlMatch[1];
@@ -112,9 +132,9 @@ function parseCssFile(cssFilePath, references) {
   try {
     const cssContent = fs.readFileSync(path.join(TARGET_DIR, cssFilePath), "utf-8");
     const cssDir = path.dirname(cssFilePath);
-    
+
     const urlMatches = cssContent.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
-    urlMatches.forEach(match => {
+    urlMatches.forEach((match) => {
       const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
       if (urlMatch && urlMatch[1]) {
         const url = urlMatch[1];
@@ -146,7 +166,7 @@ function resolveRelativeUrl(url, htmlDir) {
   try {
     // Remove query string and fragment
     const cleanUrl = url.split("?")[0].split("#")[0];
-    
+
     let resolvedPath;
     if (cleanUrl.startsWith("/")) {
       // Absolute path relative to site root
@@ -155,7 +175,7 @@ function resolveRelativeUrl(url, htmlDir) {
       // Relative path
       resolvedPath = path.join(htmlDir, cleanUrl);
     }
-    
+
     // Normalize the path (resolve .. and . segments)
     return path.normalize(resolvedPath);
   } catch (error) {
@@ -179,7 +199,7 @@ function loadConfig() {
 
 // Check if a file should be ignored based on configuration
 function shouldIgnoreFile(filePath, config) {
-  return config.some(pattern => {
+  return config.some((pattern) => {
     try {
       const regex = new RegExp(pattern);
       return regex.test(filePath);
@@ -221,7 +241,7 @@ const unusedAssets = [];
 
 assetFiles.forEach((assetFile) => {
   const normalizedPath = path.normalize(assetFile);
-  
+
   if (!referencedAssets.has(normalizedPath) && !shouldIgnoreFile(normalizedPath, config)) {
     unusedAssets.push(normalizedPath);
   }
@@ -232,7 +252,7 @@ if (unusedAssets.length > 0) {
   unusedAssets.forEach((asset) => {
     console.log(`   ${asset}`);
   });
-  
+
   console.error(`\n❌ Found ${unusedAssets.length} unused asset files`);
   process.exit(1);
 } else {
