@@ -70,15 +70,11 @@ Perform website testing (you must have already [built the site](#build-the-site)
 yarn test
 ```
 
-#### Structured Data Testing
-
-Test structured data (JSON-LD) validation specifically:
-
-```sh
-yarn test-structured-data
-```
-
-This validates that any `application/ld+json` scripts in `build/**/*.html` files have correct schema.org formats and valid JSON syntax.
+This includes validation of:
+- HTML structure and accessibility
+- External and internal links  
+- Structured data (JSON-LD) validation using schema.org standards
+- Content quality checks
 
 ## Notes for VS Code
 

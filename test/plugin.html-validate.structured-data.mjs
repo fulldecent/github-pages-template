@@ -18,7 +18,7 @@ export default class StructuredDataRule extends Rule {
   tagReady({ target }) {
     if (target.tagName === "script") {
       const type = target.getAttribute("type")?.value;
-      
+
       // Only process script tags with type="application/ld+json"
       if (type === "application/ld+json") {
         this.validateJsonLd(target);
@@ -30,28 +30,28 @@ export default class StructuredDataRule extends Rule {
     // Try to read the file content directly and extract the script
     if (scriptElement.location && scriptElement.location.filename) {
       try {
-        const fileContent = fs.readFileSync(scriptElement.location.filename, 'utf8');
-        const lines = fileContent.split('\n');
-        
+        const fileContent = fs.readFileSync(scriptElement.location.filename, "utf8");
+        const lines = fileContent.split("\n");
+
         // Find script tag boundaries
         let startLine = -1;
         let endLine = -1;
         let inScript = false;
-        
+
         for (let i = 0; i < lines.length; i++) {
           const line = lines[i];
           if (line.includes('<script type="application/ld+json">')) {
             startLine = i + 1; // Start after the opening tag
             inScript = true;
-          } else if (inScript && line.includes('</script>')) {
+          } else if (inScript && line.includes("</script>")) {
             endLine = i;
             break;
           }
         }
-        
+
         if (startLine >= 0 && endLine >= 0) {
-          const scriptContent = lines.slice(startLine, endLine).join('\n').trim();
-          
+          const scriptContent = lines.slice(startLine, endLine).join("\n").trim();
+
           if (scriptContent) {
             this.testStructuredData(scriptContent, scriptElement);
             return;
@@ -65,7 +65,7 @@ export default class StructuredDataRule extends Rule {
         return;
       }
     }
-    
+
     this.report({
       node: scriptElement,
       message: "JSON-LD script tag is empty or cannot be read",
@@ -73,12 +73,11 @@ export default class StructuredDataRule extends Rule {
   }
 
   testStructuredData(content, scriptElement) {
-
     // Create a temporary HTML file with just this JSON-LD script
     const tempDir = "/tmp";
     const tempFileName = `structured-data-${Date.now()}-${Math.random().toString(36).substr(2, 9)}.html`;
     const tempFilePath = path.join(tempDir, tempFileName);
-    
+
     try {
       // Create minimal HTML with just the JSON-LD script
       const tempHtml = `<!DOCTYPE html>
@@ -114,7 +113,6 @@ ${content}
         });
       }
       // Note: We don't report warnings as errors, only actual failures
-
     } catch (error) {
       this.report({
         node: scriptElement,
