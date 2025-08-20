@@ -4,7 +4,24 @@ import path from "path";
 import { glob } from "glob";
 import { load } from "cheerio";
 
-const BUILD_DIR = path.join(process.cwd(), "build");
+// Get target directory from command line argument or default to "build"
+const TARGET_DIR = process.argv[2] ? path.resolve(process.argv[2]) : path.join(process.cwd(), "build");
+
+// Show usage if help is requested
+if (process.argv[2] === '--help' || process.argv[2] === '-h') {
+  console.log('Usage: node find-unused-assets.mjs [directory]');
+  console.log('');
+  console.log('Finds asset files that are not referenced from any HTML file in the target directory.');
+  console.log('');
+  console.log('Arguments:');
+  console.log('  directory  Directory to scan (default: "./build")');
+  console.log('');
+  console.log('Examples:');
+  console.log('  node find-unused-assets.mjs                        # Scan ./build directory');
+  console.log('  node find-unused-assets.mjs /path/to/site          # Scan custom directory');  
+  console.log('  node find-unused-assets.mjs test/fixtures/clean    # Scan test fixtures');
+  process.exit(0);
+}
 
 // Asset file extensions to check
 const ASSET_EXTENSIONS = [
@@ -13,27 +30,27 @@ const ASSET_EXTENSIONS = [
   "mp3", "wav", "ogg", "pdf", "zip", "tar", "gz"
 ];
 
-// Find all asset files in the build directory
+// Find all asset files in the target directory
 function findAssetFiles() {
   const extensions = ASSET_EXTENSIONS.map(ext => `**/*.${ext}`);
   return glob
     .sync(extensions, {
-      cwd: BUILD_DIR,
+      cwd: TARGET_DIR,
       nocase: true,
       dot: false,
     })
-    .filter((file) => fs.lstatSync(path.join(BUILD_DIR, file)).isFile());
+    .filter((file) => fs.lstatSync(path.join(TARGET_DIR, file)).isFile());
 }
 
-// Find all HTML files in the build directory
+// Find all HTML files in the target directory
 function findHtmlFiles() {
   return glob
     .sync("**/*.html", {
-      cwd: BUILD_DIR,
+      cwd: TARGET_DIR,
       nocase: true,
       dot: false,
     })
-    .filter((file) => fs.lstatSync(path.join(BUILD_DIR, file)).isFile());
+    .filter((file) => fs.lstatSync(path.join(TARGET_DIR, file)).isFile());
 }
 
 // Extract all asset references from HTML and CSS files
@@ -41,7 +58,7 @@ function extractAssetReferences(htmlFiles) {
   const references = new Set();
 
   htmlFiles.forEach((htmlFile) => {
-    const content = fs.readFileSync(path.join(BUILD_DIR, htmlFile), "utf-8");
+    const content = fs.readFileSync(path.join(TARGET_DIR, htmlFile), "utf-8");
     const $ = load(content);
     const htmlDir = path.dirname(htmlFile);
 
@@ -93,7 +110,7 @@ function extractAssetReferences(htmlFiles) {
 // Parse CSS file for url() references
 function parseCssFile(cssFilePath, references) {
   try {
-    const cssContent = fs.readFileSync(path.join(BUILD_DIR, cssFilePath), "utf-8");
+    const cssContent = fs.readFileSync(path.join(TARGET_DIR, cssFilePath), "utf-8");
     const cssDir = path.dirname(cssFilePath);
     
     const urlMatches = cssContent.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
@@ -175,17 +192,24 @@ function shouldIgnoreFile(filePath, config) {
 
 // Main execution
 console.log("🧪 Checking for unused asset files");
+console.log(`📁 Scanning directory: ${TARGET_DIR}`);
+
+// Verify target directory exists
+if (!fs.existsSync(TARGET_DIR)) {
+  console.error(`❌ Target directory does not exist: ${TARGET_DIR}`);
+  process.exit(1);
+}
 
 const assetFiles = findAssetFiles();
 const htmlFiles = findHtmlFiles();
 
 if (assetFiles.length === 0) {
-  console.log("✨ No asset files found in build directory");
+  console.log("✨ No asset files found in target directory");
   process.exit(0);
 }
 
 if (htmlFiles.length === 0) {
-  console.log("❌ No HTML files found in build directory");
+  console.log("❌ No HTML files found in target directory");
   process.exit(1);
 }
 
