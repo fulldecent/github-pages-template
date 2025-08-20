@@ -1,0 +1,52 @@
+name: Lighthouse
+
+on:
+  # Run after deployment to main branch
+  workflow_run:
+    workflows: ["Build, test, deploy to GitHub Pages"]
+    types:
+      - completed
+    branches:
+      - main
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit
+    runs-on: ubuntu-latest
+    # Only run if the triggering workflow succeeded (or on manual trigger)
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wait for GitHub Pages deployment
+        # Give GitHub Pages some time to deploy the new content
+        if: github.event_name == 'workflow_run'
+        run: sleep 60
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@fcd65974f7c4c2bf0ee9d09b84d2489183c29726 # v12.6.1
+        with:
+          configPath: './.lighthouserc.json'
+          urls: |
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/experiment-template/page-to-test.html
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: |
+            .lighthouseci/
+            lhci_reports/
+          retention-days: 30

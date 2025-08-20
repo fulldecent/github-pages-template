@@ -80,6 +80,24 @@ yarn test-structured-data
 
 This validates that any `application/ld+json` scripts in `build/**/*.html` files have correct schema.org formats and valid JSON syntax.
 
+#### Lighthouse Testing
+
+Run Lighthouse performance, accessibility, best practices, and SEO audits locally:
+
+```sh
+yarn test-lighthouse
+```
+
+This requires the site to be running locally. First start the development server:
+
+```sh
+bundle exec jekyll serve
+```
+
+Then in another terminal, run the lighthouse tests. This will generate HTML reports in the `.lighthouseci/` directory.
+
+Note: Lighthouse testing is also automatically run via GitHub Actions after each deployment to the main branch, with reports uploaded as workflow artifacts.
+
 ## Notes for VS Code
 
 Open this folder in VS Code, allow the "Reopen in Container" and install recommended extensions.

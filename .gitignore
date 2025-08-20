@@ -8,6 +8,9 @@
 /test/fixtures/actual-results.json
 /test/fixtures-multithread
 
+# Lighthouse reports
+.lighthouseci/
+
 # For DS Store
 **/.DS_Store
 
