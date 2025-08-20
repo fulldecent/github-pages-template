@@ -7,13 +7,13 @@ const testFixtures = [
     name: "clean fixture (no unused assets)",
     path: "test/fixtures/unused-assets/clean",
     expectedExitCode: 0,
-    shouldContain: ["✨ No unused asset files found!"],
+    shouldContain: ["✨ No unused files found!"],
   },
   {
     name: "with-unused fixture (has unused assets)",
     path: "test/fixtures/unused-assets/with-unused",
     expectedExitCode: 1,
-    shouldContain: ["Found 2 unused asset files", "assets/js/really-unused.js", "assets/images/unused.png"],
+    shouldContain: ["Found 2 unused files", "assets/js/really-unused.js", "assets/images/unused.png"],
   },
 ];
 

@@ -11,7 +11,8 @@ const TARGET_DIR = process.argv[2] ? path.resolve(process.argv[2]) : path.join(p
 if (process.argv[2] === "--help" || process.argv[2] === "-h") {
   console.log("Usage: node find-unused-assets.mjs [directory]");
   console.log("");
-  console.log("Finds asset files that are not referenced from any HTML file in the target directory.");
+  console.log("Finds files that are not referenced from any HTML file in the target directory.");
+  console.log("Files matching patterns in test/unused-assets-allowlist.json are ignored.");
   console.log("");
   console.log("Arguments:");
   console.log('  directory  Directory to scan (default: "./build")');
@@ -23,41 +24,13 @@ if (process.argv[2] === "--help" || process.argv[2] === "-h") {
   process.exit(0);
 }
 
-// Asset file extensions to check
-const ASSET_EXTENSIONS = [
-  "css",
-  "js",
-  "jpg",
-  "jpeg",
-  "png",
-  "gif",
-  "svg",
-  "webp",
-  "woff",
-  "woff2",
-  "ttf",
-  "otf",
-  "eot",
-  "ico",
-  "mp4",
-  "webm",
-  "mp3",
-  "wav",
-  "ogg",
-  "pdf",
-  "zip",
-  "tar",
-  "gz",
-];
-
-// Find all asset files in the target directory
-function findAssetFiles() {
-  const extensions = ASSET_EXTENSIONS.map((ext) => `**/*.${ext}`);
+// Find all files in the target directory (excluding directories)
+function findAllFiles() {
   return glob
-    .sync(extensions, {
+    .sync("**/*", {
       cwd: TARGET_DIR,
       nocase: true,
-      dot: false,
+      dot: true,
     })
     .filter((file) => fs.lstatSync(path.join(TARGET_DIR, file)).isFile());
 }
@@ -211,7 +184,7 @@ function shouldIgnoreFile(filePath, config) {
 }
 
 // Main execution
-console.log("🧪 Checking for unused asset files");
+console.log("🧪 Checking for unused files");
 console.log(`📁 Scanning directory: ${TARGET_DIR}`);
 
 // Verify target directory exists
@@ -220,11 +193,15 @@ if (!fs.existsSync(TARGET_DIR)) {
   process.exit(1);
 }
 
-const assetFiles = findAssetFiles();
+const allFiles = findAllFiles();
 const htmlFiles = findHtmlFiles();
 
-if (assetFiles.length === 0) {
-  console.log("✨ No asset files found in target directory");
+// Filter files to get potential unused files (excluding those in allowlist)
+const config = loadConfig();
+const candidateFiles = allFiles.filter((file) => !shouldIgnoreFile(file, config));
+
+if (candidateFiles.length === 0) {
+  console.log("✨ No candidate files found to check (all files are in allowlist)");
   process.exit(0);
 }
 
@@ -233,28 +210,27 @@ if (htmlFiles.length === 0) {
   process.exit(1);
 }
 
-console.log(`📄 Found ${assetFiles.length} asset files and ${htmlFiles.length} HTML files`);
+console.log(`📄 Found ${candidateFiles.length} candidate files and ${htmlFiles.length} HTML files`);
 
 const referencedAssets = extractAssetReferences(htmlFiles);
-const config = loadConfig();
 const unusedAssets = [];
 
-assetFiles.forEach((assetFile) => {
-  const normalizedPath = path.normalize(assetFile);
+candidateFiles.forEach((file) => {
+  const normalizedPath = path.normalize(file);
 
-  if (!referencedAssets.has(normalizedPath) && !shouldIgnoreFile(normalizedPath, config)) {
+  if (!referencedAssets.has(normalizedPath)) {
     unusedAssets.push(normalizedPath);
   }
 });
 
 if (unusedAssets.length > 0) {
-  console.log("\n❌ Found unused asset files:");
+  console.log("\n❌ Found unused files:");
   unusedAssets.forEach((asset) => {
     console.log(`   ${asset}`);
   });
 
-  console.error(`\n❌ Found ${unusedAssets.length} unused asset files`);
+  console.error(`\n❌ Found ${unusedAssets.length} unused files`);
   process.exit(1);
 } else {
-  console.log("\n✨ No unused asset files found!");
+  console.log("\n✨ No unused files found!");
 }

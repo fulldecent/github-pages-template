@@ -1,1 +1,10 @@
-["assets/js/unused\\.js", "assets/images/dynamically-loaded.*", "^robots\\.txt$", "^\\.well-known/.*"]
+[
+  "assets/js/unused\\.js",
+  "assets/images/dynamically-loaded.*",
+  "^robots\\.txt$",
+  "^\\.well-known/.*",
+  "^.*\\.html$",
+  "^.*\\.php$",
+  "^.*\\.htaccess$",
+  "^favicon\\.ico$"
+]
