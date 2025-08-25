@@ -153,5 +153,67 @@
       "selector": "html > body > script",
       "ruleUrl": "https://github.com/fulldecent/github-pages-template/#structured-data"
     }
+  ],
+  "test/fixtures/directory-path-links-test.html": [
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-no-index\" is broken.",
+      "offset": 367,
+      "line": 12,
+      "column": 44,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(1) > a"
+    },
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-no-index/\" is broken.",
+      "offset": 464,
+      "line": 13,
+      "column": 45,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(2) > a"
+    },
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-no-index/index\" is broken.",
+      "offset": 567,
+      "line": 14,
+      "column": 50,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(3) > a"
+    },
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-index\" is broken.",
+      "offset": 666,
+      "line": 15,
+      "column": 41,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(4) > a"
+    },
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-no-index-with-twin/\" is broken.",
+      "offset": 1068,
+      "line": 19,
+      "column": 55,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(8) > a"
+    },
+    {
+      "ruleId": "pacific-medical-training/internal-links",
+      "severity": 2,
+      "message": "internal link \"directory-with-no-index-with-twin/index\" is broken.",
+      "offset": 1200,
+      "line": 21,
+      "column": 58,
+      "size": 1,
+      "selector": "html > body > ul > li:nth-child(9) > a"
+    }
   ]
 }

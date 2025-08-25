@@ -60,7 +60,7 @@ export default class EnsureHttpsRules extends Rule {
       const curlOutput = execSync(curlCommand, { encoding: "utf-8" });
 
       // If the link is accessible via HTTPS, report it as insecure
-      if (curlOutput.includes("HTTP/2 200")) {
+      if (curlOutput.includes("200")) {
         this.db.prepare("REPLACE INTO urls (url, found, time) VALUES (?, 1, unixepoch())").run(url);
         const insecureRow = this.db.prepare("SELECT found, time FROM urls WHERE url = ?").get(url);
         this.report({
