@@ -7,6 +7,7 @@ import CanonicalLinkRule from "./plugin.html-validate.canonical-link.mjs";
 import LatestPackagesRules from "./plugin.html-validate.latest-packages.mjs";
 import EnsureHttpsRules from "./plugin.html-validate.https-links.mjs";
 import CheckInternalLinks from "./plugin.html-validate.internal-links.mjs";
+import StructuredDataRule from "./plugin.html-validate.structured-data.mjs";
 
 export default definePlugin({
   name: "pacific-medical-training",
@@ -18,6 +19,7 @@ export default definePlugin({
     "pacific-medical-training/latest-packages": LatestPackagesRules,
     "pacific-medical-training/https-links": EnsureHttpsRules,
     "pacific-medical-training/internal-links": CheckInternalLinks,
+    "pacific-medical-training/structured-data": StructuredDataRule,
   },
   configs: {
     recommended: {
@@ -29,6 +31,7 @@ export default definePlugin({
         "pacific-medical-training/latest-packages": "error",
         "pacific-medical-training/https-links": "error",
         "pacific-medical-training/internal-links": "error",
+        "pacific-medical-training/structured-data": "error",
       },
     },
   },
