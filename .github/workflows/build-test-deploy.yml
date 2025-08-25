@@ -49,6 +49,8 @@ jobs:
 
       - name: Generate sitemap
         run: yarn run generate-sitemap
+      - name: Create extensionless symlinks for HTML files
+        run: yarn run create-extensionless-symlinks
       - name: Upload build artifact, ready for GitHub Pages deployment
         uses: actions/upload-pages-artifact@v3
         with:
@@ -122,8 +124,6 @@ jobs:
           node-version: '20'
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.15.x
-      - name: Create extensionless symlinks for HTML files
-        run: node scripts/create-extensionless-symlinks.mjs
       - name: Run Lighthouse CI
         run: lhci autorun
 
