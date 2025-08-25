@@ -110,6 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v4
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -121,6 +122,8 @@ jobs:
           node-version: '20'
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.15.x
+      - name: Create extensionless symlinks for HTML files
+        run: node scripts/create-extensionless-symlinks.mjs
       - name: Run Lighthouse CI
         run: lhci autorun
 
