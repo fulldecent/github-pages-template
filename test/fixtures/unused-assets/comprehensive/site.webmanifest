@@ -1,0 +1,10 @@
+{
+  "name": "Comprehensive Test App",
+  "icons": [
+    {
+      "src": "assets/images/manifest-icon.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    }
+  ]
+}

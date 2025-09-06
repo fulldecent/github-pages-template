@@ -1,0 +1,2 @@
+# Htaccess file with image redirects
+RewriteRule ^old-image$ assets/images/htaccess-redirect.png [R=301,L]

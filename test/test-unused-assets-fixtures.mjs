@@ -15,6 +15,30 @@ const testFixtures = [
     expectedExitCode: 1,
     shouldContain: ["Found 2 unused files", "assets/js/really-unused.js", "assets/images/unused.png"],
   },
+  {
+    name: "webmanifest references",
+    path: "test/fixtures/unused-assets/with-webmanifest",
+    expectedExitCode: 0,
+    shouldContain: ["✨ No unused files found!"],
+  },
+  {
+    name: "htaccess references",
+    path: "test/fixtures/unused-assets/with-htaccess",
+    expectedExitCode: 1,
+    shouldContain: ["Found 1 unused files", "assets/images/unused-file.png"],
+  },
+  {
+    name: "JavaScript/script references",
+    path: "test/fixtures/unused-assets/with-scripts",
+    expectedExitCode: 1,
+    shouldContain: ["Found 1 unused files", "assets/images/unused-script-image.png"],
+  },
+  {
+    name: "comprehensive test (all file types)",
+    path: "test/fixtures/unused-assets/comprehensive",
+    expectedExitCode: 1,
+    shouldContain: ["Found 1 unused files", "assets/images/unused-image.png"],
+  },
 ];
 
 console.log("🧪 Testing unused assets checker against fixtures");
@@ -25,7 +49,7 @@ for (const test of testFixtures) {
   console.log(`\n📋 Testing: ${test.name}`);
 
   try {
-    const output = execSync(`yarn node test/find-unused-assets.mjs ${test.path}`, {
+    const output = execSync(`node test/find-unused-assets.mjs ${test.path}`, {
       encoding: "utf8",
       stdio: "pipe",
     });

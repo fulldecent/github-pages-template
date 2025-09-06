@@ -46,73 +46,110 @@ function findHtmlFiles() {
     .filter((file) => fs.lstatSync(path.join(TARGET_DIR, file)).isFile());
 }
 
-// Extract all asset references from HTML and CSS files
-function extractAssetReferences(htmlFiles) {
+// Find files that may contain asset references (HTML, CSS, JSON, JS, .htaccess)
+function findReferenceFiles() {
+  const patterns = [
+    "**/*.html",
+    "**/*.css",
+    "**/*.webmanifest",
+    "**/*.json",
+    "**/*.js",
+    "**/*.mjs",
+    "**/.htaccess",
+    "**/manifest.json",
+  ];
+
+  const allReferenceFiles = new Set();
+
+  patterns.forEach((pattern) => {
+    const files = glob
+      .sync(pattern, {
+        cwd: TARGET_DIR,
+        nocase: true,
+        dot: true, // Include .htaccess files
+      })
+      .filter((file) => fs.lstatSync(path.join(TARGET_DIR, file)).isFile());
+
+    files.forEach((file) => allReferenceFiles.add(file));
+  });
+
+  return Array.from(allReferenceFiles);
+}
+
+// Extract all asset references from HTML, CSS, JSON, JS, and .htaccess files
+function extractAssetReferences(referenceFiles) {
   const references = new Set();
 
-  htmlFiles.forEach((htmlFile) => {
-    const content = fs.readFileSync(path.join(TARGET_DIR, htmlFile), "utf-8");
-    const $ = load(content);
-    const htmlDir = path.dirname(htmlFile);
+  referenceFiles.forEach((refFile) => {
+    const content = fs.readFileSync(path.join(TARGET_DIR, refFile), "utf-8");
+    const refDir = path.dirname(refFile);
+    const fileExt = path.extname(refFile).toLowerCase();
 
-    // Find all elements with src or href attributes that could reference assets
-    $("[src], [href]").each((_, element) => {
-      const $el = $(element);
-      const src = $el.attr("src");
-      const href = $el.attr("href");
+    if (fileExt === ".html") {
+      extractFromHtml(content, refDir, references);
+    } else if (fileExt === ".css") {
+      extractFromCss(content, refDir, references);
+    } else if (fileExt === ".webmanifest" || fileExt === ".json") {
+      extractFromJson(content, refDir, references);
+    } else if (fileExt === ".js" || fileExt === ".mjs") {
+      extractFromJs(content, refDir, references);
+    } else if (refFile.endsWith(".htaccess")) {
+      extractFromHtaccess(content, refDir, references);
+    }
+  });
 
-      [src, href].forEach((url) => {
-        if (url && !isExternalUrl(url) && !isDataUrl(url)) {
-          const resolvedPath = resolveRelativeUrl(url, htmlDir);
-          if (resolvedPath) {
-            references.add(resolvedPath);
+  return references;
+}
 
-            // If the URL is extensionless, also check for .html version
-            if (!path.extname(resolvedPath)) {
-              references.add(resolvedPath + ".html");
-            }
+// Extract asset references from HTML content
+function extractFromHtml(content, htmlDir, references) {
+  const $ = load(content);
 
-            // If this is a CSS file, parse it for url() references
-            if (resolvedPath.endsWith(".css")) {
-              parseCssFile(resolvedPath, references);
-            }
-          }
-        }
-      });
-    });
+  // Find all elements with src or href attributes that could reference assets
+  $("[src], [href]").each((_, element) => {
+    const $el = $(element);
+    const src = $el.attr("src");
+    const href = $el.attr("href");
 
-    // Also scan the entire HTML content for CSS url() references
-    const urlMatches = content.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
-    urlMatches.forEach((match) => {
-      const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
-      if (urlMatch && urlMatch[1]) {
-        const url = urlMatch[1];
-        if (!isExternalUrl(url) && !isDataUrl(url)) {
-          const resolvedPath = resolveRelativeUrl(url, htmlDir);
-          if (resolvedPath) {
-            references.add(resolvedPath);
+    [src, href].forEach((url) => {
+      if (url && !isExternalUrl(url) && !isDataUrl(url)) {
+        const resolvedPath = resolveRelativeUrl(url, htmlDir);
+        if (resolvedPath) {
+          references.add(resolvedPath);
+
+          // If the URL is extensionless, also check for .html version
+          if (!path.extname(resolvedPath)) {
+            references.add(resolvedPath + ".html");
           }
         }
       }
     });
   });
 
-  return references;
+  // Also scan the entire HTML content for CSS url() references
+  extractUrlReferences(content, htmlDir, references);
 }
 
-// Parse CSS file for url() references
-function parseCssFile(cssFilePath, references) {
-  try {
-    const cssContent = fs.readFileSync(path.join(TARGET_DIR, cssFilePath), "utf-8");
-    const cssDir = path.dirname(cssFilePath);
+// Extract asset references from CSS content
+function extractFromCss(content, cssDir, references) {
+  extractUrlReferences(content, cssDir, references);
+}
 
-    const urlMatches = cssContent.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
-    urlMatches.forEach((match) => {
-      const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
-      if (urlMatch && urlMatch[1]) {
-        const url = urlMatch[1];
+// Extract asset references from JSON content (webmanifest, etc.)
+function extractFromJson(content, jsonDir, references) {
+  try {
+    const jsonData = JSON.parse(content);
+    const jsonString = JSON.stringify(jsonData);
+
+    // Look for image/asset paths in JSON string values
+    const pathMatches =
+      jsonString.match(/"([^"]*\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff|woff2|ttf|eot))"[^/\\a-zA-Z]/gi) || [];
+    pathMatches.forEach((match) => {
+      const pathMatch = match.match(/"([^"]+)"/);
+      if (pathMatch && pathMatch[1]) {
+        const url = pathMatch[1];
         if (!isExternalUrl(url) && !isDataUrl(url)) {
-          const resolvedPath = resolveRelativeUrl(url, cssDir);
+          const resolvedPath = resolveRelativeUrl(url, jsonDir);
           if (resolvedPath) {
             references.add(resolvedPath);
           }
@@ -120,8 +157,76 @@ function parseCssFile(cssFilePath, references) {
       }
     });
   } catch (error) {
-    console.warn(`Warning: Could not parse CSS file ${cssFilePath}:`, error.message);
+    // If JSON parsing fails, fall back to regex search
+    extractUrlReferences(content, jsonDir, references);
   }
+}
+
+// Extract asset references from JavaScript content
+function extractFromJs(content, jsDir, references) {
+  // Look for asset paths in strings (single quotes, double quotes, or backticks)
+  const patterns = [
+    /'([^']*\.(png|jpg|jpeg|gif|webp|svg|ico|css|html|js|woff|woff2|ttf|eot))'/gi,
+    /"([^"]*\.(png|jpg|jpeg|gif|webp|svg|ico|css|html|js|woff|woff2|ttf|eot))"/gi,
+    /`([^`]*\.(png|jpg|jpeg|gif|webp|svg|ico|css|html|js|woff|woff2|ttf|eot))`/gi,
+  ];
+
+  patterns.forEach((pattern) => {
+    let match;
+    while ((match = pattern.exec(content)) !== null) {
+      const url = match[1];
+      if (!isExternalUrl(url) && !isDataUrl(url)) {
+        // For JS files, try both relative to JS dir and relative to site root
+        let resolvedPath = resolveRelativeUrl(url, jsDir);
+
+        // If the path doesn't start with / or ./ or ../, and we're not in the root,
+        // also try it as a site-root-relative path
+        if (!url.startsWith("/") && !url.startsWith("./") && !url.startsWith("../") && jsDir !== ".") {
+          const siteRootPath = path.normalize(url);
+          references.add(siteRootPath);
+        }
+
+        if (resolvedPath) {
+          references.add(resolvedPath);
+        }
+      }
+    }
+  });
+
+  // Also check for url() references
+  extractUrlReferences(content, jsDir, references);
+}
+
+// Extract asset references from .htaccess content
+function extractFromHtaccess(content, htaccessDir, references) {
+  // Look for file paths in .htaccess rules
+  const pathMatches =
+    content.match(/[\/\w.-]+\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|html|woff|woff2|ttf|eot|pdf|doc|docx)\b/gi) || [];
+  pathMatches.forEach((path) => {
+    if (!isExternalUrl(path)) {
+      const resolvedPath = resolveRelativeUrl(path, htaccessDir);
+      if (resolvedPath) {
+        references.add(resolvedPath);
+      }
+    }
+  });
+}
+
+// Extract URL references from any content
+function extractUrlReferences(content, contentDir, references) {
+  const urlMatches = content.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/gi) || [];
+  urlMatches.forEach((match) => {
+    const urlMatch = match.match(/url\s*\(\s*['"]?([^'")]+)['"]?\s*\)/i);
+    if (urlMatch && urlMatch[1]) {
+      const url = urlMatch[1];
+      if (!isExternalUrl(url) && !isDataUrl(url)) {
+        const resolvedPath = resolveRelativeUrl(url, contentDir);
+        if (resolvedPath) {
+          references.add(resolvedPath);
+        }
+      }
+    }
+  });
 }
 
 // Check if URL is external (starts with http/https or //)
@@ -194,6 +299,7 @@ if (!fs.existsSync(TARGET_DIR)) {
 }
 
 const allFiles = findAllFiles();
+const referenceFiles = findReferenceFiles();
 const htmlFiles = findHtmlFiles();
 
 // Filter files to get potential unused files (excluding those in allowlist)
@@ -210,9 +316,11 @@ if (htmlFiles.length === 0) {
   process.exit(1);
 }
 
-console.log(`📄 Found ${candidateFiles.length} candidate files and ${htmlFiles.length} HTML files`);
+console.log(
+  `📄 Found ${candidateFiles.length} candidate files, ${referenceFiles.length} reference files, and ${htmlFiles.length} HTML files`,
+);
 
-const referencedAssets = extractAssetReferences(htmlFiles);
+const referencedAssets = extractAssetReferences(referenceFiles);
 const unusedAssets = [];
 
 candidateFiles.forEach((file) => {
