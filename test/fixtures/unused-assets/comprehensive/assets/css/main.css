@@ -1,0 +1,7 @@
+body {
+  background: url("../images/css-bg.jpg");
+}
+
+.icon {
+  background-image: url("../images/css-icon.svg");
+}

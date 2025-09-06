@@ -1,0 +1,11 @@
+# Example .htaccess file with image references
+RewriteEngine On
+
+# Redirect old image paths
+RewriteRule ^old-logo\.png$ assets/images/new-logo.png [R=301,L]
+
+# Custom error page with background image
+ErrorDocument 404 assets/images/error-page.svg
+
+# Some other rules
+RewriteRule ^test$ assets/images/test-image.jpg [R=301,L]

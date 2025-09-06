@@ -1,0 +1,19 @@
+[
+  "assets/js/unused\\.js",
+  "assets/images/dynamically-loaded.*",
+  "^robots\\.txt$",
+  "^\\.well-known/.*",
+  "^.*\\.html$",
+  "^.*\\.php$",
+  "^.*\\.htaccess$",
+  "^favicon\\.ico$",
+  "^.*\\.css\\.map$",
+  "^.*\\.js\\.map$",
+  "images/email-images/.*",
+  "images/.*-es\\.svg$",
+  "scripts/.*\\.(js|mjs)$",
+  "quizassets/.*\\.schema\\.json$",
+  "images/.*\\.xcf$",
+  "images/.*\\.doc$",
+  "images/.*\\.pdf$"
+]
