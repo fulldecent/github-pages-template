@@ -65,6 +65,9 @@ async function validateParallel() {
 
     if (failedResults.length > 0) {
       console.log(`❌ ${failedResults.length} files failed validation`);
+      failedResults.forEach((result) => {
+        console.log(`\n✅ File: ${path.relative(process.cwd(), result.filePath)}\n${result.message.trim()}`);
+      });
       process.exit(1);
     } else {
       console.log("✨ All tests passed!\n");
