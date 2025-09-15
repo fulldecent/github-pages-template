@@ -4,10 +4,10 @@ import { execSync } from "child_process";
 
 const BUILD_DIR = path.join(process.cwd(), "build");
 
-console.log("🧪 Testing extensionless symlinks creation");
+console.log("🧪 Testing extensionless files creation");
 
 /**
- * Test the symlink creation script
+ * Test the extensionless file creation script
  */
 function testSymlinkCreation() {
   let hasErrors = false;
@@ -53,45 +53,29 @@ function testSymlinkCreation() {
       return;
     }
 
-    const symlinkPath = path.join(dir, basename);
-    const expectedTarget = path.basename(htmlFile);
+    const extensionlessPath = path.join(dir, basename);
 
-    // Check if symlink exists
-    if (!fs.existsSync(symlinkPath)) {
-      console.error(`❌ Missing symlink: ${path.relative(BUILD_DIR, symlinkPath)}`);
+    // Check if extensionless file exists
+    if (!fs.existsSync(extensionlessPath)) {
+      console.error(`❌ Missing extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)}`);
       hasErrors = true;
       return;
     }
 
-    // Check if it's actually a symlink
-    if (!fs.lstatSync(symlinkPath).isSymbolicLink()) {
-      console.error(`❌ Not a symlink: ${path.relative(BUILD_DIR, symlinkPath)}`);
-      hasErrors = true;
-      return;
-    }
-
-    // Check if symlink points to correct target
-    const actualTarget = fs.readlinkSync(symlinkPath);
-    if (actualTarget !== expectedTarget) {
-      console.error(`❌ Wrong symlink target: ${path.relative(BUILD_DIR, symlinkPath)} -> ${actualTarget} (expected: ${expectedTarget})`);
-      hasErrors = true;
-      return;
-    }
-
-    // Check if content is accessible through symlink
+    // Check if content is accessible and matches original
     try {
       const originalContent = fs.readFileSync(htmlFile, 'utf8');
-      const symlinkContent = fs.readFileSync(symlinkPath, 'utf8');
+      const extensionlessContent = fs.readFileSync(extensionlessPath, 'utf8');
       
-      if (originalContent !== symlinkContent) {
-        console.error(`❌ Content mismatch through symlink: ${path.relative(BUILD_DIR, symlinkPath)}`);
+      if (originalContent !== extensionlessContent) {
+        console.error(`❌ Content mismatch in extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)}`);
         hasErrors = true;
         return;
       }
 
-      console.log(`✅ ${path.relative(BUILD_DIR, symlinkPath)} -> ${expectedTarget}`);
+      console.log(`✅ ${path.relative(BUILD_DIR, extensionlessPath)}`);
     } catch (error) {
-      console.error(`❌ Cannot read through symlink: ${path.relative(BUILD_DIR, symlinkPath)} - ${error.message}`);
+      console.error(`❌ Cannot read extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)} - ${error.message}`);
       hasErrors = true;
     }
   });
@@ -101,9 +85,9 @@ function testSymlinkCreation() {
 
 // Run the test
 if (testSymlinkCreation()) {
-  console.log("✨ All extensionless symlinks are correctly created!\n");
+  console.log("✨ All extensionless files are correctly created!\n");
   process.exit(0);
 } else {
-  console.error("\n❌ Extensionless symlinks test failed");
+  console.error("\n❌ Extensionless files test failed");
   process.exit(1);
 }

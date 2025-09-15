@@ -25,10 +25,11 @@ function findHtmlFiles(dir, fileList = []) {
 }
 
 /**
- * Create extensionless symlinks for HTML files
+ * Create extensionless copies for HTML files
+ * Using file copies instead of symlinks for better GitHub Actions artifact compatibility
  */
 function createExtensionlessSymlinks() {
-  console.log("🔗 Creating extensionless symlinks for HTML files...");
+  console.log("🔗 Creating extensionless copies for HTML files...");
 
   if (!fs.existsSync(buildDir)) {
     console.error(`❌ Build directory does not exist: ${buildDir}`);
@@ -42,51 +43,38 @@ function createExtensionlessSymlinks() {
     return;
   }
 
-  let symlinksCreated = 0;
+  let filesCreated = 0;
 
   htmlFiles.forEach((htmlFile) => {
     const dir = path.dirname(htmlFile);
     const basename = path.basename(htmlFile, ".html");
     
-    // Skip index.html files as they typically don't need extensionless symlinks
+    // Skip index.html files as they typically don't need extensionless versions
     // (the directory itself serves as the extensionless version)
     if (basename === "index") {
       return;
     }
 
-    const symlinkPath = path.join(dir, basename);
-    const relativeTarget = path.basename(htmlFile);
+    const extensionlessPath = path.join(dir, basename);
 
     try {
-      // Check if symlink already exists
-      if (fs.existsSync(symlinkPath)) {
-        // Check if it's a symlink pointing to the right target
-        if (fs.lstatSync(symlinkPath).isSymbolicLink()) {
-          const currentTarget = fs.readlinkSync(symlinkPath);
-          if (currentTarget === relativeTarget) {
-            console.log(`✅ Symlink already exists: ${path.relative(buildDir, symlinkPath)} -> ${relativeTarget}`);
-            return;
-          } else {
-            // Remove existing symlink with wrong target
-            fs.unlinkSync(symlinkPath);
-          }
-        } else {
-          console.log(`⚠️  File already exists (not a symlink): ${path.relative(buildDir, symlinkPath)}`);
-          return;
-        }
+      // Check if extensionless file already exists
+      if (fs.existsSync(extensionlessPath)) {
+        console.log(`⚠️  File already exists: ${path.relative(buildDir, extensionlessPath)}`);
+        return;
       }
 
-      // Create the symlink
-      fs.symlinkSync(relativeTarget, symlinkPath);
-      console.log(`✅ Created symlink: ${path.relative(buildDir, symlinkPath)} -> ${relativeTarget}`);
-      symlinksCreated++;
+      // Copy the HTML file to create extensionless version
+      fs.copyFileSync(htmlFile, extensionlessPath);
+      console.log(`✅ Created extensionless copy: ${path.relative(buildDir, extensionlessPath)}`);
+      filesCreated++;
 
     } catch (error) {
-      console.error(`❌ Failed to create symlink ${path.relative(buildDir, symlinkPath)}: ${error.message}`);
+      console.error(`❌ Failed to create extensionless copy ${path.relative(buildDir, extensionlessPath)}: ${error.message}`);
     }
   });
 
-  console.log(`🎉 Successfully created ${symlinksCreated} extensionless symlinks`);
+  console.log(`🎉 Successfully created ${filesCreated} extensionless copies`);
 }
 
 // Run the script
