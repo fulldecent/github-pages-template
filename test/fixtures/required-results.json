@@ -72,6 +72,17 @@
   ],
   "test/fixtures/ensure-https.html": [
     {
+      "ruleId": "pacific-medical-training/https-links",
+      "severity": 2,
+      "message": "external link is insecure and accessible via HTTPS: http://en.wikipedia.org/wiki/Horse",
+      "offset": 196,
+      "line": 9,
+      "column": 6,
+      "size": 1,
+      "selector": "html > body > a",
+      "ruleUrl": "https://github.com/fulldecent/github-pages-template/#https-links"
+    },
+    {
       "ruleId": "pacific-medical-training/external-links",
       "severity": 2,
       "message": "external link http://en.wikipedia.org/wiki/Horse redirects to: https://en.wikipedia.org/wiki/Horse",
