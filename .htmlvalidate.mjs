@@ -7,16 +7,16 @@ export default defineConfig({
     "allowed-links": [
       "error",
       {
-        "allowExternal": {
-          "exclude": ["\\\\?utm_source=chatgpt.com", ".htm[l]?$"]
+        allowExternal: {
+          exclude: ["\\\\?utm_source=chatgpt.com", ".htm[l]?$"],
         },
-        "allowRelative": {
-          "exclude": [".htm[l]?$"]
+        allowRelative: {
+          exclude: [".htm[l]?$"],
         },
-        "allowAbsolute": {
-          "exclude": [".htm[l]?$"]
-        }
-      }
+        allowAbsolute: {
+          exclude: [".htm[l]?$"],
+        },
+      },
     ],
     "pacific-medical-training/mailto-awesome": "error",
     "pacific-medical-training/external-links": "error",
