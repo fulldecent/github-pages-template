@@ -69,7 +69,6 @@ export default class ExternalLinksRule extends Rule {
         type: "string",
         description:
           "URL of proxy server to check external links. Must accept a query parameter 'url' and return the status code and possibly location: header in the response.",
-        required: true,
       },
     };
   }
@@ -231,7 +230,7 @@ export default class ExternalLinksRule extends Rule {
       }
     }
 
-    if (this.proxyUrl !== null) {
+    if (this.proxyUrl) {
       this.checkWithProxy(url, target);
     } else {
       this.check(url, target);
