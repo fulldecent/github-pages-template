@@ -12,11 +12,6 @@ const TIMEOUT_SECONDS = 5;
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.999 Safari/537.36";
 
-// Use your proxy server to check external links
-// This URL must accept a query parameter `url` and return the status code and possibly location: header in the response.
-// Status code 500 is returned if the server is down or timeout.
-const PROXY_URL = "https://api.PacificMedicalTraining.com/public/link-check/status";
-
 // html-validate runs check() synchronously, so we can't use async functions like fetch here. Maybe after their
 // version 9 release we can use the fetch API and this parallel approach.
 /**
@@ -61,6 +56,21 @@ function normalizeUrl(url) {
 }
 
 export default class ExternalLinksRule extends Rule {
+  constructor(options) {
+    super(options);
+    this.proxyUrl = options?.proxyUrl;
+  }
+
+  static schema() {
+    return {
+      proxyUrl: {
+        type: "string",
+        description:
+          "URL of proxy server to check external links. Must accept a query parameter 'url' and return the status code and possibly location: header in the response.",
+      },
+    };
+  }
+
   documentation() {
     return {
       description: "Require all external links to be live.",
@@ -142,7 +152,7 @@ export default class ExternalLinksRule extends Rule {
     // Normalize URL to handle case-insensitive domains
     const normalizedUrl = normalizeUrl(url);
 
-    const urlWithQuery = `${PROXY_URL}?url=${encodeURIComponent(url)}`;
+    const urlWithQuery = `${this.proxyUrl}?url=${encodeURIComponent(url)}`;
     // Use shell-quote to safely escape the URL
     const escapedUrl = shellEscape([urlWithQuery]);
 
@@ -218,7 +228,7 @@ export default class ExternalLinksRule extends Rule {
       }
     }
 
-    if (PROXY_URL !== null) {
+    if (this.proxyUrl) {
       this.checkWithProxy(url, target);
     } else {
       this.check(url, target);
