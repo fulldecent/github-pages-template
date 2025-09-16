@@ -13,7 +13,8 @@
     "structured-data-testing-tool": "^4.5.0"
   },
   "scripts": {
-    "test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/fixtures-structured-data-should-fail.mjs && yarn node test/build-html-validate.mjs && yarn node test/dirty-file-paths-checker.mjs && yarn node test/build-structured-data-validate.mjs",
+    "test": "yarn node test/build-html-validate.mjs && yarn node test/dirty-file-paths-checker.mjs && yarn node test/build-structured-data-validate.mjs",
+    "test-test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/fixtures-structured-data-should-fail.mjs",
     "test-structured-data": "yarn node test/build-structured-data-validate.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",

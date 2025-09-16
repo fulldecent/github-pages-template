@@ -1,0 +1,34 @@
+name: Test tools validation
+
+# This action tests the test tools themselves by running them against fixtures
+on: 
+  push:
+  pull_request:
+  workflow_dispatch: # Can run this workflow manually from the Actions tab
+
+permissions: read-all
+
+jobs:
+  test-test:
+    name: Test tools validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installing Node + modern Yarn on GitHub Actions requires hack
+      # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Configure dependency cache
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Test test tools
+        run: yarn run test-test
