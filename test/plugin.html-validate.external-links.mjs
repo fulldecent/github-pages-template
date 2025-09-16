@@ -12,8 +12,7 @@ const TIMEOUT_SECONDS = 5;
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.999 Safari/537.36";
 
-// Default proxy URL if none is provided via options
-const DEFAULT_PROXY_URL = "https://api.PacificMedicalTraining.com/public/link-check/status";
+
 
 // html-validate runs check() synchronously, so we can't use async functions like fetch here. Maybe after their
 // version 9 release we can use the fetch API and this parallel approach.
@@ -61,7 +60,7 @@ function normalizeUrl(url) {
 export default class ExternalLinksRule extends Rule {
   constructor(options) {
     super(options);
-    this.proxyUrl = options?.proxyUrl || DEFAULT_PROXY_URL;
+    this.proxyUrl = options?.proxyUrl;
   }
 
   static schema() {
@@ -70,6 +69,7 @@ export default class ExternalLinksRule extends Rule {
         type: "string",
         description:
           "URL of proxy server to check external links. Must accept a query parameter 'url' and return the status code and possibly location: header in the response.",
+        required: true,
       },
     };
   }

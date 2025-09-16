@@ -23,12 +23,7 @@ export default definePlugin({
     recommended: {
       rules: {
         "pacific-medical-training/mailto-awesome": "error",
-        "pacific-medical-training/external-links": [
-          "error",
-          {
-            proxyUrl: "https://api.PacificMedicalTraining.com/public/link-check/status",
-          },
-        ],
+        "pacific-medical-training/external-links": "error",
         "pacific-medical-training/no-jquery": "error",
         "pacific-medical-training/canonical-link": "error",
         "pacific-medical-training/latest-packages": "error",
