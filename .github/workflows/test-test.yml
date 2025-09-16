@@ -1,7 +1,7 @@
 name: Test tools validation
 
 # This action tests the test tools themselves by running them against fixtures
-on: 
+on:
   push:
   pull_request:
   workflow_dispatch: # Can run this workflow manually from the Actions tab
