@@ -14,6 +14,18 @@
   ],
   "test/fixtures/external-link-broken.html": [
     {
+      "ruleId": "allowed-links",
+      "severity": 2,
+      "message": "External link to this destination is not allowed by current configuration",
+      "offset": 204,
+      "line": 9,
+      "column": 14,
+      "size": 66,
+      "selector": "html > body > a:nth-child(1)",
+      "ruleUrl": "https://html-validate.org/rules/allowed-links.html",
+      "context": "external"
+    },
+    {
       "ruleId": "pacific-medical-training/external-links",
       "severity": 2,
       "message": "external link is broken with status 500: https://freehorses.example.com/free-horses-on-1998-04-01-only.html",
@@ -59,6 +71,18 @@
     }
   ],
   "test/fixtures/internal-link-broken.html": [
+    {
+      "ruleId": "allowed-links",
+      "severity": 2,
+      "message": "Absolute link to this destination is not allowed by current configuration",
+      "offset": 204,
+      "line": 9,
+      "column": 14,
+      "size": 36,
+      "selector": "html > body > a",
+      "ruleUrl": "https://html-validate.org/rules/allowed-links.html",
+      "context": "absolute"
+    },
     {
       "ruleId": "pacific-medical-training/internal-links",
       "severity": 2,

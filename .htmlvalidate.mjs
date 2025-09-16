@@ -4,6 +4,20 @@ export default defineConfig({
   plugins: ["<rootDir>/test/plugin.html-validate.mjs"],
   extends: ["html-validate:prettier", "<rootDir>/test/plugin.html-validate.mjs:recommended"],
   rules: {
+    "allowed-links": [
+      "error",
+      {
+        allowExternal: {
+          exclude: ["\\\\?utm_source=chatgpt.com", ".htm[l]?$"],
+        },
+        allowRelative: {
+          exclude: [".htm[l]?$"],
+        },
+        allowAbsolute: {
+          exclude: [".htm[l]?$"],
+        },
+      },
+    ],
     "pacific-medical-training/mailto-awesome": "error",
     "pacific-medical-training/external-links": [
       "error",
