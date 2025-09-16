@@ -102,21 +102,65 @@ ${content}
 
       // Check for errors in the output
       if (result.includes("Error in jsonld parse")) {
+        // Extract the specific parse error message
+        const errorMatch = result.match(/Error in jsonld parse - (.+)/);
+        const errorDetail = errorMatch ? errorMatch[1] : "Unknown parse error";
         this.report({
           node: scriptElement,
-          message: "JSON-LD parse error in structured data",
+          message: `JSON-LD parse error: ${errorDetail}`,
         });
       } else if (result.includes("Failed:") && !result.includes("Failed: 0")) {
+        // Extract failed test count and any test details
+        const failedMatch = result.match(/Failed: (\d+)/);
+        const failedCount = failedMatch ? failedMatch[1] : "some";
+
+        // Try to extract specific test failure information
+        const testFailures = [];
+        const lines = result.split("\n");
+        let inTestSection = false;
+
+        for (const line of lines) {
+          if (line.includes("Tests")) {
+            inTestSection = true;
+            continue;
+          }
+          if (line.includes("Statistics")) {
+            inTestSection = false;
+            break;
+          }
+          if (inTestSection && line.includes("✗")) {
+            testFailures.push(line.trim());
+          }
+        }
+
+        let message = `Structured data validation failed: ${failedCount} test(s) failed`;
+        if (testFailures.length > 0) {
+          message += ` (${testFailures.join(", ")})`;
+        }
+
         this.report({
           node: scriptElement,
-          message: "Structured data validation failed",
+          message: message,
         });
       }
       // Note: We don't report warnings as errors, only actual failures
     } catch (error) {
+      // Extract more specific error information
+      let errorMessage = error.message;
+
+      // If there's stdout/stderr, try to extract useful information
+      if (error.stdout && error.stdout.includes("Error in jsonld parse")) {
+        const errorMatch = error.stdout.match(/Error in jsonld parse - (.+)/);
+        const parseError = errorMatch ? errorMatch[1] : "Unknown parse error";
+        errorMessage = `JSON-LD parse error: ${parseError}`;
+      } else if (error.stderr) {
+        // Use stderr if available for more detailed error info
+        errorMessage = error.stderr.trim() || errorMessage;
+      }
+
       this.report({
         node: scriptElement,
-        message: `Structured data testing error: ${error.message}`,
+        message: `Structured data testing error: ${errorMessage}`,
       });
     } finally {
       // Clean up temporary file

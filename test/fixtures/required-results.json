@@ -180,7 +180,7 @@
     {
       "ruleId": "pacific-medical-training/structured-data",
       "severity": 2,
-      "message": "JSON-LD parse error in structured data",
+      "message": "JSON-LD parse error: SyntaxError: Expected property name or '}' in JSON at position 11",
       "offset": 279,
       "line": 11,
       "column": 39,
