@@ -3,7 +3,9 @@ import path from "path";
 import https from "https";
 import { parseString } from "xml2js"; // Using xml2js for XML parsing
 
-const site = "https://www.acls.net";
+// Site URL configuration - can be overridden via SITE_URL environment variable
+// For GitHub Pages, this should typically be https://username.github.io/repository-name
+const site = process.env.SITE_URL || "https://www.acls.net";
 const buildFolderPath = path.join(process.cwd(), "build");
 const sitemapPath = path.join(buildFolderPath, "sitemap.xml");
 const daysThreshold = 30; // Number of days to compare for updating lastmod

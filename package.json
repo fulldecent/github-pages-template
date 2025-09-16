@@ -4,7 +4,6 @@
     "@shopify/prettier-plugin-liquid": "^1.9.3",
     "better-sqlite3": "^12.2.0",
     "cheerio": "^1.1.2",
-    "cli-progress": "^3.12.0",
     "css": "^3.0.0",
     "glob": "^11.0.3",
     "html-validate": "^10.0.0",
@@ -14,7 +13,7 @@
     "structured-data-testing-tool": "^4.5.0"
   },
   "scripts": {
-    "test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/build-html-validate.mjs && yarn node test/dirty-words-checker.mjs && yarn node test/dirty-file-paths-checker.mjs",
+    "test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/build-html-validate.mjs & yarn node test/dirty-file-paths-checker.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",

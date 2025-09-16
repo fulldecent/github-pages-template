@@ -1,5 +1,4 @@
 import { glob } from "glob";
-import cliProgress from "cli-progress";
 import { Worker } from "worker_threads";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -28,21 +27,6 @@ console.log(`🧪 Validating ${targets.length} files with ${MAX_WORKERS} paralle
 await validateParallel();
 
 async function validateParallel() {
-  const multibar = new cliProgress.MultiBar(
-    {
-      format: "[{bar}] {percentage}% | {value}/{total} | {status}",
-      hideCursor: true,
-      clearOnComplete: false,
-      stopOnComplete: true,
-      forceRedraw: false,
-    },
-    cliProgress.Presets.shades_classic,
-  );
-
-  const overallBar = multibar.create(targets.length, 0, {
-    status: "Starting...",
-  });
-
   let completedTasks = 0;
   let allTestsPassed = true;
   const results = [];
@@ -54,7 +38,6 @@ async function validateParallel() {
     if (isDone) return;
     isDone = true;
 
-    multibar.stop();
     workers.forEach((worker) => worker.terminate());
 
     const failedResults = results.filter((r) => !r.isValid);
@@ -78,14 +61,19 @@ async function validateParallel() {
       completedTasks++;
       results.push(result);
 
+      const relativeFilePath = path.relative(process.cwd(), result.filePath);
+
       if (!result.isValid) {
         allTestsPassed = false;
-        multibar.log(`❌ ${path.relative(process.cwd(), result.filePath)}\n${result.message.trim()}\n\n`);
+        console.log(`❌ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
+        // Print error messages with indentation
+        const errorLines = result.message.trim().split("\n");
+        errorLines.forEach((line) => {
+          console.log(`- ${line}`);
+        });
+      } else {
+        console.log(`✅ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
       }
-
-      overallBar.increment(1, {
-        status: path.basename(result.filePath),
-      });
 
       if (taskQueue.length > 0) {
         const nextTask = taskQueue.shift();
