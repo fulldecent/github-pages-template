@@ -12,8 +12,6 @@ const TIMEOUT_SECONDS = 5;
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.999 Safari/537.36";
 
-
-
 // html-validate runs check() synchronously, so we can't use async functions like fetch here. Maybe after their
 // version 9 release we can use the fetch API and this parallel approach.
 /**
