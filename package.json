@@ -14,8 +14,10 @@
     "structured-data-testing-tool": "^4.5.0"
   },
   "scripts": {
-    "test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/fixtures-structured-data-should-fail.mjs && yarn node test/build-html-validate.mjs && yarn node test/dirty-words-checker.mjs && yarn node test/dirty-file-paths-checker.mjs && yarn node test/build-structured-data-validate.mjs",
+    "test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/fixtures-structured-data-should-fail.mjs && yarn node test/build-html-validate.mjs && yarn node test/dirty-words-checker.mjs && yarn node test/dirty-file-paths-checker.mjs && yarn node test/build-structured-data-validate.mjs && yarn node test/extensionless-symlinks-checker.mjs",
     "test-structured-data": "yarn node test/build-structured-data-validate.mjs",
+    "test-extensionless-symlinks": "yarn node test/extensionless-symlinks-checker.mjs",
+    "create-extensionless-symlinks": "node scripts/create-extensionless-symlinks.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",

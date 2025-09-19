@@ -80,6 +80,22 @@ yarn test-structured-data
 
 This validates that any `application/ld+json` scripts in `build/**/*.html` files have correct schema.org formats and valid JSON syntax.
 
+#### Extensionless Symlinks Testing
+
+Test that extensionless symlinks are correctly created for HTML files:
+
+```sh
+yarn test-extensionless-symlinks
+```
+
+This verifies that for every `file.html` in the build directory (except `index.html`), there exists a symlink `file` pointing to `file.html`. This allows URLs like `/about` to work alongside `/about.html`.
+
+You can also manually create the symlinks:
+
+```sh
+yarn create-extensionless-symlinks
+```
+
 ## Notes for VS Code
 
 Open this folder in VS Code, allow the "Reopen in Container" and install recommended extensions.

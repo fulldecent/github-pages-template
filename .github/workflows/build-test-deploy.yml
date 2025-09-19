@@ -49,6 +49,8 @@ jobs:
 
       - name: Generate sitemap
         run: yarn run generate-sitemap
+      - name: Create extensionless symlinks for HTML files
+        run: yarn run create-extensionless-symlinks
       - name: Upload build artifact, ready for GitHub Pages deployment
         uses: actions/upload-pages-artifact@v3
         with:
@@ -110,6 +112,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v4
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
@@ -118,7 +121,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.15.x
       - name: Run Lighthouse CI

@@ -32,6 +32,12 @@ function generateSitemap(files, lastmodDate) {
 
 // Recursive function to find HTML files in subdirectories
 function getHTMLFiles(dir, fileList) {
+  // Check if directory exists
+  if (!fs.existsSync(dir)) {
+    console.log(`Build directory ${dir} does not exist. Creating empty sitemap.`);
+    return [];
+  }
+
   const files = fs.readdirSync(dir);
   fileList = fileList || [];
 
@@ -68,6 +74,26 @@ https
           return;
         }
 
+        // Check if the sitemap has the expected structure and URLs
+        if (
+          !result ||
+          !result.urlset ||
+          !result.urlset.url ||
+          !Array.isArray(result.urlset.url) ||
+          result.urlset.url.length === 0
+        ) {
+          console.log("External sitemap exists but has no URLs or unexpected structure, using current date");
+          generateAndWriteSitemap(new Date());
+          return;
+        }
+
+        // Check if the first URL has lastmod information
+        if (!result.urlset.url[0].lastmod || !result.urlset.url[0].lastmod[0]) {
+          console.log("External sitemap URLs don't have lastmod information, using current date");
+          generateAndWriteSitemap(new Date());
+          return;
+        }
+
         // Get the lastmod date of the first URL
         const lastmod = new Date(result.urlset.url[0].lastmod[0]);
         const today = new Date();
@@ -88,6 +114,11 @@ https
 
 // Function to generate and write sitemap
 function generateAndWriteSitemap(lastmodDate) {
+  // Ensure build directory exists
+  if (!fs.existsSync(buildFolderPath)) {
+    fs.mkdirSync(buildFolderPath, { recursive: true });
+  }
+
   // Find all HTML files in build folder and its subdirectories
   const htmlFiles = getHTMLFiles(buildFolderPath);
   // Generate sitemap XML content
