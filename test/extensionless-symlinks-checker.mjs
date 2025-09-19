@@ -47,7 +47,7 @@ function testSymlinkCreation() {
   htmlFiles.forEach((htmlFile) => {
     const dir = path.dirname(htmlFile);
     const basename = path.basename(htmlFile, ".html");
-    
+
     // Skip index.html files
     if (basename === "index") {
       return;
@@ -64,9 +64,9 @@ function testSymlinkCreation() {
 
     // Check if content is accessible and matches original
     try {
-      const originalContent = fs.readFileSync(htmlFile, 'utf8');
-      const extensionlessContent = fs.readFileSync(extensionlessPath, 'utf8');
-      
+      const originalContent = fs.readFileSync(htmlFile, "utf8");
+      const extensionlessContent = fs.readFileSync(extensionlessPath, "utf8");
+
       if (originalContent !== extensionlessContent) {
         console.error(`❌ Content mismatch in extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)}`);
         hasErrors = true;
@@ -75,7 +75,9 @@ function testSymlinkCreation() {
 
       console.log(`✅ ${path.relative(BUILD_DIR, extensionlessPath)}`);
     } catch (error) {
-      console.error(`❌ Cannot read extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)} - ${error.message}`);
+      console.error(
+        `❌ Cannot read extensionless file: ${path.relative(BUILD_DIR, extensionlessPath)} - ${error.message}`,
+      );
       hasErrors = true;
     }
   });

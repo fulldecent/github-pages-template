@@ -48,7 +48,7 @@ function createExtensionlessSymlinks() {
   htmlFiles.forEach((htmlFile) => {
     const dir = path.dirname(htmlFile);
     const basename = path.basename(htmlFile, ".html");
-    
+
     // Skip index.html files as they typically don't need extensionless versions
     // (the directory itself serves as the extensionless version)
     if (basename === "index") {
@@ -68,9 +68,10 @@ function createExtensionlessSymlinks() {
       fs.copyFileSync(htmlFile, extensionlessPath);
       console.log(`✅ Created extensionless copy: ${path.relative(buildDir, extensionlessPath)}`);
       filesCreated++;
-
     } catch (error) {
-      console.error(`❌ Failed to create extensionless copy ${path.relative(buildDir, extensionlessPath)}: ${error.message}`);
+      console.error(
+        `❌ Failed to create extensionless copy ${path.relative(buildDir, extensionlessPath)}: ${error.message}`,
+      );
     }
   });
 

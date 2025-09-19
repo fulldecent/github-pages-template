@@ -121,7 +121,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.15.x
       - name: Run Lighthouse CI
