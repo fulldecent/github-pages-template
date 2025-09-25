@@ -59,7 +59,7 @@ yarn lint
 And automatically fix with:
 
 ```sh
-yarn lint-fix
+yarn format-all
 ```
 
 ### Testing
@@ -70,15 +70,7 @@ Perform website testing (you must have already [built the site](#build-the-site)
 yarn test
 ```
 
-#### Structured Data Testing
-
-Test structured data (JSON-LD) validation specifically:
-
-```sh
-yarn test-structured-data
-```
-
-This validates that any `application/ld+json` scripts in `build/**/*.html` files have correct schema.org formats and valid JSON syntax.
+This tests structured data (JSON+LD), hyperlinks and other best practices on each page. This done using [HTML-validate](https://html-validate.org/) and [Nice Checkers](https://github.com/fulldecent/html-validate-nice-checkers).
 
 ## Notes for VS Code
 
