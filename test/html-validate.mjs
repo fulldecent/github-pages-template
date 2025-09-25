@@ -1,20 +1,56 @@
-import { glob } from "glob";
+import { globSync } from "glob";
 import { Worker } from "worker_threads";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// --- Configuration ---
 // In the future, the CLI may improve and this script may be unnecessary.
 // SEE: https://gitlab.com/html-validate/html-validate/-/issues/273
-
-// Configuration
 const MAX_WORKERS = parseInt(process.env.HTML_VALIDATE_WORKERS) || 4;
 const WORKER_SCRIPT_PATH = path.join(__dirname, "html-validate-worker.mjs");
 
-// Find and sort all HTML files in the 'build' directory
-const targets = glob.sync("build/**/*.html").sort();
+/**
+ * Gathers target HTML files from command-line arguments or a default directory.
+ * @returns {string[]} A sorted and deduplicated array of HTML file paths.
+ */
+function getTargetFiles() {
+  const args = process.argv.slice(2);
+
+  // If no arguments are provided, use the default glob pattern.
+  if (args.length === 0) {
+    console.log("ℹ️  No paths provided. Searching for HTML files in `build/` directory...");
+    return globSync("build/**/*.html").sort();
+  }
+
+  // If arguments are provided, process them into a list of glob patterns.
+  const patterns = args.map((arg) => {
+    try {
+      // Check if the argument is a directory.
+      if (fs.statSync(arg).isDirectory()) {
+        // If it is, create a glob pattern to find all HTML files within it.
+        return path.join(arg, "**", "*.html");
+      }
+    } catch (error) {
+      // If fs.statSync fails, the path might not exist or isn't a directory.
+      // In that case, we assume it's a file path or a glob pattern and use it directly.
+    }
+    // Return the argument as-is for glob to process.
+    return arg;
+  });
+
+  console.log(`ℹ️  Searching for files matching: ${patterns.join(", ")}`);
+  // Use glob to find all files matching the generated patterns.
+  const files = globSync(patterns, { nodir: true });
+
+  // Return a deduplicated and sorted list of files.
+  return [...new Set(files)].sort();
+}
+
+const targets = getTargetFiles();
 
 if (targets.length === 0) {
   console.log("⚠️  No HTML files found in build directory");
@@ -22,7 +58,7 @@ if (targets.length === 0) {
   process.exit(0);
 }
 
-console.log(`🧪 Validating ${targets.length} files with ${MAX_WORKERS} parallel workers...`);
+console.log(`🧪 Validating ${targets.length} files with up to ${MAX_WORKERS} parallel workers...`);
 
 await validateParallel();
 
@@ -95,16 +131,18 @@ async function validateParallel() {
   }
 
   function startParallelProcessing() {
-    for (let i = 0; i < MAX_WORKERS; i++) {
+    const workerCount = Math.min(MAX_WORKERS, taskQueue.length);
+    for (let i = 0; i < workerCount; i++) {
       const worker = createWorker(i);
       workers.push(worker);
     }
 
-    const initialTasks = Math.min(MAX_WORKERS, taskQueue.length);
-    for (let i = 0; i < initialTasks; i++) {
-      const task = taskQueue.shift();
-      workers[i].postMessage({ filePath: task, workerId: i });
-    }
+    workers.forEach((worker, i) => {
+      if (taskQueue.length > 0) {
+        const task = taskQueue.shift();
+        worker.postMessage({ filePath: task, workerId: i });
+      }
+    });
   }
 
   return new Promise((resolve) => {
@@ -113,6 +151,10 @@ async function validateParallel() {
       originalComplete();
       resolve();
     };
-    startParallelProcessing();
+    if (targets.length > 0) {
+      startParallelProcessing();
+    } else {
+      completeParallelProcessing();
+    }
   });
 }

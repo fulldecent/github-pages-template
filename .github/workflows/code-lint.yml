@@ -34,7 +34,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Check with prettier # Use yarn script instead of a prettier action, in order to load plugins from .prettierrc.js
-        run: yarn run prettier-check
+        run: yarn run lint:prettier
 
   markdownlint:
     name: Markdownlint code lint
@@ -63,4 +63,4 @@ jobs:
         run: yarn install --immutable
 
       - name: Check with markdownlint
-        run: yarn run markdownlint-check
+        run: yarn run lint:markdown

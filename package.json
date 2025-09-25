@@ -1,4 +1,12 @@
 {
+  "--": [
+    "Notes:",
+    "Our scripts use a special POSIX shim that allows you to run i.e. yarn markdownlint-check and specify files to check, or omit the files and it has a default.",
+    "The magic is in the ${@:-\"**/*.md\"} part:",
+    "$@: This represents all the arguments passed to the script (e.g., the files you want to lint).",
+    "${...:-...}: This is the shell's 'use default value' operator.",
+    "In plain English, it means: If $@ (the list of arguments) is empty or not set, use the default value **/*.md. Otherwise, use the arguments that were provided."
+  ],
   "license": "UNLICENSED",
   "devDependencies": {
     "@fulldecent/nice-checkers-plugin": "^0.2.1",
@@ -11,15 +19,15 @@
     "prettier": "^3.6.2"
   },
   "scripts": {
+    "lint": "sh -c 'yarn lint:prettier \"$@\" && yarn lint:markdown \"$@\"' --",
+    "lint:prettier": "sh -c 'yarn prettier --check ${@:-\".\"}' --",
+    "lint:markdown": "sh -c 'yarn markdownlint-cli2 ${@:-\"**/*.md\"}' --",
+    "format-all": "yarn prettier --write . && yarn markdownlint-cli2 --fix '**/*.md'",
     "build": "bundle exec jekyll build",
-    "test": "yarn node test/html-validate.mjs && yarn node test/dirty-file-paths-checker.mjs",
-    "lint": "yarn prettier-check && yarn markdownlint-check",
-    "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
-    "prettier-check": "yarn prettier --check .",
-    "markdownlint-check": "yarn markdownlint-cli2 '**/*.md'",
-    "prettier-fix": "yarn prettier --write .",
-    "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
+    "test": "sh -c 'yarn test:html-validate \"$@\" && yarn test:dirty-file-paths-checker \"$@\"' --",
+    "test:html-validate": "node test/html-validate.mjs",
+    "test:dirty-file-paths-checker": "node test/dirty-file-paths-checker.mjs",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
   "packageManager": "yarn@4.10.3",
