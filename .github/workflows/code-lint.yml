@@ -20,13 +20,13 @@ jobs:
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
       - name: Enable Corepack
         run: corepack enable
       - name: Configure dependency cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           cache: yarn
       - name: Install dependencies
@@ -48,13 +48,13 @@ jobs:
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
       - name: Enable Corepack
         run: corepack enable
       - name: Configure dependency cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           cache: yarn
       - name: Install dependencies
