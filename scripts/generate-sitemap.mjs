@@ -1,102 +1,130 @@
+// scripts/generate-sitemap.mjs
 import fs from "fs";
 import path from "path";
-import https from "https";
-import { parseString } from "xml2js"; // Using xml2js for XML parsing
 
-// Site URL configuration - can be overridden via SITE_URL environment variable
-// For GitHub Pages, this should typically be https://username.github.io/repository-name
-const site = process.env.SITE_URL || "https://www.acls.net";
+// -------------------- constants --------------------
 const buildFolderPath = path.join(process.cwd(), "build");
 const sitemapPath = path.join(buildFolderPath, "sitemap.xml");
-const daysThreshold = 30; // Number of days to compare for updating lastmod
 
-// Function to generate sitemap XML content
-function generateSitemap(files, lastmodDate) {
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-
-  files.forEach((file) => {
-    // Convert file path to URL and remove file extensions
-    const url = file
-      .replace(buildFolderPath, "")
-      .replace(/\\/g, "/")
-      .replace(/index\.html?$/, "")
-      .replace(/\.html?$/, "");
-    xml += `<url><loc>${site}${url}</loc>`;
-    xml += `<lastmod>${lastmodDate.toISOString()}</lastmod>`; // Use lastmodDate if it exists
-    xml += url === "/" ? "<priority>1.00</priority>" : "<priority>0.80</priority>";
-    xml += "</url>\n";
-  });
-
-  xml += "</urlset>";
-  return xml;
+// -------------------- helpers --------------------
+function isHtmlFile(p) {
+  return path.extname(p).toLowerCase() === ".html";
 }
 
-// Recursive function to find HTML files in subdirectories
-function getHTMLFiles(dir, fileList) {
-  const files = fs.readdirSync(dir);
-  fileList = fileList || [];
+function readFileUtf8(p) {
+  return fs.readFileSync(p, "utf8");
+}
 
-  files.forEach((file) => {
-    const filePath = path.join(dir, file);
-    if (fs.statSync(filePath).isDirectory()) {
-      getHTMLFiles(filePath, fileList);
-    } else if (path.extname(file) === ".html") {
-      const content = fs.readFileSync(filePath, "utf8");
-      const experimentMetaTag = content.match(/<meta\s+name=["']experiment["']\s+content=["']true["']\s*\/?>/i);
-      if (!experimentMetaTag) {
-        fileList.push(filePath);
-      }
+function getHtmlFilesRecursive(dir, out = []) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const e of entries) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) {
+      getHtmlFilesRecursive(p, out);
+    } else if (isHtmlFile(p)) {
+      out.push(p);
     }
-  });
-
-  return fileList;
+  }
+  return out;
 }
 
-// Fetch sitemap.xml from the provided URL
-https
-  .get(`${site}/sitemap.xml`, (res) => {
-    let data = "";
-
-    res.on("data", (chunk) => {
-      data += chunk;
-    });
-
-    res.on("end", () => {
-      // Check if sitemap.xml file exists
-      parseString(data, (err, result) => {
-        if (err) {
-          generateAndWriteSitemap(new Date());
-          return;
-        }
-
-        // Get the lastmod date of the first URL
-        const lastmod = new Date(result.urlset.url[0].lastmod[0]);
-        const today = new Date();
-        // Calculate the difference in days
-        const differenceInTime = today.getTime() - lastmod.getTime();
-        const differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
-        // Generate the sitemap using lastmod if the difference is more than daysThreshold, else use currentDate
-        const sitemapDate = differenceInDays > daysThreshold ? today : lastmod;
-        generateAndWriteSitemap(sitemapDate);
-      });
-    });
-  })
-  .on("error", (err) => {
-    console.error("Error fetching sitemap:", err);
-    // If there's an error fetching the sitemap, generate the sitemap with the current date
-    generateAndWriteSitemap(new Date());
-  });
-
-// Function to generate and write sitemap
-function generateAndWriteSitemap(lastmodDate) {
-  // Find all HTML files in build folder and its subdirectories
-  const htmlFiles = getHTMLFiles(buildFolderPath);
-  // Generate sitemap XML content
-  const sitemapXML = generateSitemap(htmlFiles, lastmodDate);
-  // Write sitemap XML to file
-  fs.writeFile(sitemapPath, sitemapXML, (err) => {
-    if (err) throw err;
-    console.log("✅ Sitemap.xml generated successfully!");
-  });
+// Detect <meta name="experiment" content="true">
+function isExperiment(content) {
+  return /<meta\s+name=["']experiment["']\s+content=["']true["']\s*\/?>/i.test(content);
 }
+
+// Extract absolute canonical URL from <link rel="canonical" href="...">
+// - Attribute order-agnostic
+// - Single or double quotes
+function extractCanonicalAbsoluteUrl(content) {
+  const linkTags = content.match(/<link\b[^>]*>/gi) || [];
+  for (const tag of linkTags) {
+    if (!/\brel\s*=\s*["']canonical["']/i.test(tag)) continue;
+    const hrefMatch = tag.match(/\bhref\s*=\s*["']([^"']+)["']/i);
+    if (!hrefMatch) continue;
+
+    const href = hrefMatch[1].trim();
+    try {
+      const urlObj = new URL(href);
+      if (!/^https?:$/.test(urlObj.protocol)) {
+        return { error: `Canonical must use http(s) scheme: ${href}` };
+      }
+      return { url: href };
+    } catch {
+      return { error: `Canonical is not a valid absolute URL: ${href}` };
+    }
+  }
+  return { error: `No <link rel="canonical" href="..."> tag found` };
+}
+
+function isHomepage(absUrl) {
+  const u = new URL(absUrl);
+  return (u.pathname === "/" || u.pathname === "") && !u.search && !u.hash;
+}
+
+// -------------------- main --------------------
+function main() {
+  if (!fs.existsSync(buildFolderPath)) {
+    console.error(`❌ Build folder not found: ${buildFolderPath}`);
+    process.exit(1);
+  }
+
+  const htmlFiles = getHtmlFilesRecursive(buildFolderPath);
+  if (htmlFiles.length === 0) {
+    console.error(`❌ No HTML files found under ${buildFolderPath}`);
+    process.exit(1);
+  }
+
+  const errors = [];
+  const entries = [];
+
+  for (const filePath of htmlFiles) {
+    const content = readFileUtf8(filePath);
+
+    // Skip experiments entirely
+    if (isExperiment(content)) continue;
+
+    const { url, error } = extractCanonicalAbsoluteUrl(content);
+    if (error) {
+      errors.push(`• ${path.relative(buildFolderPath, filePath)} — ${error}`);
+      continue;
+    }
+
+    entries.push({
+      loc: url,
+      priority: isHomepage(url) ? "1.00" : "0.80",
+    });
+  }
+
+  if (errors.length > 0) {
+    console.error("❌ Canonical URL validation failed for the following pages:");
+    for (const e of errors) console.error(e);
+    process.exit(1);
+  }
+
+  // Deduplicate canonicals (multiple files may map to same canonical)
+  const seen = new Set();
+  const unique = [];
+  for (const e of entries) {
+    if (seen.has(e.loc)) continue;
+    seen.add(e.loc);
+    unique.push(e);
+  }
+
+  // Sort for deterministic output
+  unique.sort((a, b) => a.loc.localeCompare(b.loc));
+
+  // Build XML (no <lastmod>)
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  for (const e of unique) {
+    xml += `  <url><loc>${e.loc}</loc><priority>${e.priority}</priority></url>\n`;
+  }
+  xml += `</urlset>\n`;
+
+  fs.writeFileSync(sitemapPath, xml, "utf8");
+  console.log(`✅ sitemap.xml generated: ${path.relative(process.cwd(), sitemapPath)}`);
+  console.log(`   URLs: ${unique.length}`);
+}
+
+main();

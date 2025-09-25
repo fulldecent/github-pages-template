@@ -1,14 +1,16 @@
 ---
+# REQUIRED PARAMETERS
+#
+# - title: Every page needs a title
+# - 
 layout: null
-canonical-link: '/experiment-template/page-to-test'
+canonical-link: '/'
 title: Horse colors
 ---
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>{{ page.title }}</title>
-    <link rel="canonical" href="{{ page.canonical-link }}">
+    {% include head.html %}
   </head>
 
   <body>

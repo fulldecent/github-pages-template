@@ -1,21 +1,18 @@
 {
   "license": "UNLICENSED",
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.9.3",
-    "better-sqlite3": "^12.2.0",
+    "@fulldecent/nice-checkers-plugin": "^0.2.1",
+    "@shopify/prettier-plugin-liquid": "^1.10.0",
     "cheerio": "^1.1.2",
     "css": "^3.0.0",
     "glob": "^11.0.3",
     "html-validate": "^10.0.0",
     "markdownlint-cli2": "^0.18.1",
-    "prettier": "^3.6.2",
-    "shell-quote": "^1.8.3",
-    "structured-data-testing-tool": "^4.5.0"
+    "prettier": "^3.6.2"
   },
   "scripts": {
-    "test": "yarn node test/build-html-validate.mjs && yarn node test/dirty-file-paths-checker.mjs && yarn node test/build-structured-data-validate.mjs",
-    "test-test": "yarn node test/fixtures-html-validate-should-fail.mjs && yarn node test/fixtures-structured-data-should-fail.mjs",
-    "test-structured-data": "yarn node test/build-structured-data-validate.mjs",
+    "build": "bundle exec jekyll build",
+    "test": "yarn node test/html-validate.mjs && yarn node test/dirty-file-paths-checker.mjs",
     "lint": "yarn prettier-check && yarn markdownlint-check",
     "lint-fix": "yarn prettier-fix && yarn markdownlint-fix",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
@@ -25,7 +22,7 @@
     "markdownlint-fix": "yarn markdownlint-cli2 --fix '**/*.md'",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.9.2",
+  "packageManager": "yarn@4.10.3",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"

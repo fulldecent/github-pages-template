@@ -1,0 +1,27 @@
+{% comment %}
+  This includes content which must be in the <head> of every page.
+
+  Required parameters:
+  - page.title: The title of the page
+  - site.url: The base URL of the site, e.g. "https://example.com"
+
+  Optional parameters:
+  - page.canonical-link: The canonical link for the page, e.g. "/some-page"
+    If not provided, defaults to the current page URL (page.url).
+    This URL must start with a slash and be relative to the site root defined in _config.yml
+{% endcomment %}
+<meta charset="utf-8">
+<title>{{ page.title | escape }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+  rel="canonical"
+  href="
+    {%- if page['canonical-link'] -%}
+      {{- site.url -}}
+      {{- page['canonical-link'] | escape -}}
+    {%- else -%}
+      {{- site.url -}}
+      {{- page.url | escape -}}
+    {%- endif -%}
+  "
+>

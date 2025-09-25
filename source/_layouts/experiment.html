@@ -6,26 +6,19 @@
 #     - Add that UUID to front matter like: experiment_id: 'A21F7224-CB8B-41E0-9AD8-B26A1D86548D'
 #     - Add targets to front matter like: "targets: ['/variant-1', '/variant-2']"
 #   2. On each variant page (e.g. /variant-1.html)
-#     - Add to front matter a canonical-link key with the same value as the original page
+#     - Add to front matter a canonical-link key with the same value as the original page. Remember the this URL must
+#       start with a slash and be relative to the site root defined in _config.yml
 
 layout: null
 ---
 <!doctype html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include head.html %}
     <meta
       name="description"
       lang="{{ page.lang | default: site.lang | default: 'en' }}"
       content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
-    >
-    <title>
-      {%- if page.title -%}{{ page.title | escape }}{%- else -%}{{ site.title | escape }}{%- endif -%}
-    </title>
-    <link
-      rel="canonical"
-      href="{% if page.canonical-link -%}{{site.url}}{{page.canonical-link | escape}}{% else %}{{site.url}}{{page.url | escape}}{% endif %}"
     >
     <script>
       const experimentId = {{ page.experiment_id | jsonify }};
@@ -59,7 +52,8 @@ layout: null
       <h1>We're conducting an experiment.</h1>
       <p>Please click on one of the URLs below to continue:</p>
       <ul>
-        {%- assign shuffled_variants = page.variants | shuffle -%}
+        {%- assign size = page.variants | size -%}
+        {%- assign shuffled_variants = page.variants | sample: size -%}
         {%- for variant in shuffled_variants %}
           <li>
             <a href="{{ variant | escape }}">{{ variant | escape }}</a>
