@@ -5,7 +5,6 @@
 
 # For our testing scripts
 /cache
-/test/fixtures/actual-results.json
 
 # For DS Store
 **/.DS_Store

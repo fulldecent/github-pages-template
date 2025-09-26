@@ -38,7 +38,6 @@ Build the HTML website.
 
 ```sh
 yarn build
-bundle exec jekyll build
 ```
 
 Access your site at <http://127.0.0.1:4000> (or see other "server address" in console output).
@@ -66,6 +65,8 @@ yarn format-all
 ### Testing
 
 Perform website testing (you must have already [built the site](#build-the-site))
+
+:warning: `yarn build` produces different files than `bundle exec jekyll serve`. And the test suite may have false positives if you test the `serve` output.
 
 ```sh
 yarn test
