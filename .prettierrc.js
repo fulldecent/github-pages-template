@@ -11,12 +11,6 @@ module.exports = {
       options: {
         parser: "liquid-html",
       },
-    },
-    {
-      files: "*.md", // Disable Prettier for Markdown files because it is incompatible with Kramdown https://github.com/prettier/prettier/issues/3645
-      options: {
-        parser: null,
-      },
-    },
+    }
   ],
 };
