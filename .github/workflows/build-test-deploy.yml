@@ -23,7 +23,7 @@ jobs:
     name: Jekyll build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup Ruby # See https://www.ruby-lang.org/en/downloads/branches/
         uses: ruby/setup-ruby@v1
         with:
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
@@ -90,7 +90,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: build-artifact
           path: build/

@@ -10,7 +10,7 @@
     // Install latest stable Node (we use for validation scripts after build)
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts",
-      "installYarnUsingApt": false // We use Yarn 3, so we don't want to install Yarn using apt
+      "installYarnUsingApt": false // We use Yarn 4, so we don't want to install Yarn using apt
     }
   },
   "postCreateCommand": "/bin/sh -c 'corepack enable && corepack pack && yarn install --immutable'",

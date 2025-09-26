@@ -1,4 +1,4 @@
-import { parentPort, workerData } from "worker_threads";
+import { parentPort } from "worker_threads";
 import { HtmlValidate, FileSystemConfigLoader, formatterFactory, esmResolver } from "html-validate";
 
 // Initialize HtmlValidate instance (same as main script)
