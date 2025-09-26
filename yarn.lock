@@ -5,16 +5,16 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@fulldecent/nice-checkers-plugin@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@fulldecent/nice-checkers-plugin@npm:0.2.1"
+"@fulldecent/nice-checkers-plugin@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@fulldecent/nice-checkers-plugin@npm:1.0.0"
   dependencies:
     better-sqlite3: "npm:^12.4.1"
     cheerio: "npm:^1.1.2"
     shell-quote: "npm:^1.8.3"
   peerDependencies:
     html-validate: ^10.0.0
-  checksum: 10c0/904a94cf421238ded2528c5115717a8defe5b81f379175c6413a9bb089b4bacc8342a1d6ed3a83a4ebd10da45390e908d7348b48f591188923ade087a7fa553c
+  checksum: 10c0/6cf8f924e6c41ee4429e3e78f6c5f62ca4099a42c42f920900f14a6a4cf28c48964ef33f7003603cdf0c5b3d2fadb38cd03218d99ea7242cbbd5d1a48a47518e
   languageName: node
   linkType: hard
 
@@ -2148,7 +2148,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fulldecent/nice-checkers-plugin": "npm:^0.2.1"
+    "@fulldecent/nice-checkers-plugin": "npm:^1.0.0"
     "@shopify/prettier-plugin-liquid": "npm:^1.10.0"
     cheerio: "npm:^1.1.2"
     css: "npm:^3.0.0"

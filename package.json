@@ -9,7 +9,7 @@
   ],
   "license": "UNLICENSED",
   "devDependencies": {
-    "@fulldecent/nice-checkers-plugin": "^0.2.1",
+    "@fulldecent/nice-checkers-plugin": "^1.0.0",
     "@shopify/prettier-plugin-liquid": "^1.10.0",
     "cheerio": "^1.1.2",
     "css": "^3.0.0",
