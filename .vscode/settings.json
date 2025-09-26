@@ -20,11 +20,6 @@
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#4D210A",
-    "titleBar.activeBackground": "#6B2F0E",
-    "titleBar.activeForeground": "#FEFAF7"
-  },
   "search.exclude": {
     "**/.yarn": true,
     "**/.pnp.*": true
