@@ -27,8 +27,8 @@ Or if you do not want VS Code or the Docker setup, install your environment manu
 3. Install Node & yarn, use version in build-test-deploy.yml in "Setup Node.js", (try nvm):
 
    ```sh
-   nvm install --lts --reinstall-packages-from=current
-   nvm use --lts
+   nvm install # uses our .nvmrc
+   nvm use # uses our .nvmrc
    yarn install
    ```
 
@@ -37,6 +37,7 @@ Or if you do not want VS Code or the Docker setup, install your environment manu
 Build the HTML website.
 
 ```sh
+yarn build
 bundle exec jekyll build
 ```
 
