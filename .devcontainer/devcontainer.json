@@ -7,6 +7,10 @@
   "name": "Jekyll",
   "image": "mcr.microsoft.com/devcontainers/jekyll",
   "features": {
+    // The devcontainers/jekyll comes with the wrong Ruby version
+    "ghcr.io/devcontainers/features/ruby:1": {
+      "version": "3.3"
+    },
     // Install latest stable Node (we use for validation scripts after build)
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts",
