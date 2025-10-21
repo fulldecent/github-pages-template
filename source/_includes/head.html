@@ -6,22 +6,33 @@
   - site.url: The base URL of the site, e.g. "https://example.com"
 
   Optional parameters:
-  - page.canonical-link: The canonical link for the page, e.g. "/some-page"
+  - page.canonical_link: The canonical link for the page, e.g. "/some-page"
     If not provided, defaults to the current page URL (page.url).
     This URL must start with a slash and be relative to the site root defined in _config.yml
 {% endcomment %}
 <meta charset="utf-8">
 <title>{{ page.title | escape }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{%- comment -%}
+  Calculate the canonical URL.
+  If page.canonical_link is set, we'll use it directly.
+  If not, we'll use page.url, but must first remove any trailing 'index'
+  segment (which results from the '/:path' permalink config).
+{%- endcomment -%}
+{%- assign raw_path = page.url | escape -%}
+{%- assign path_parts = raw_path | split: '/' -%}
+{%- assign last_part = path_parts | last -%}
+
+{%- if last_part == 'index' -%}
+  {%- assign clean_parts = path_parts | pop -%}
+  {%- assign clean_page_url = clean_parts | join: '/' -%}
+  {%- comment -%} Handle the edge case where the path was just '/index' {%- endcomment -%}
+  {%- if clean_page_url == '' -%}{% assign clean_page_url = '/' %}{% endif -%}
+{%- else -%}
+  {%- comment -%} The path doesn't end in 'index', so use it as-is {%- endcomment -%}
+  {%- assign clean_page_url = raw_path -%}
+{%- endif -%}
 <link
   rel="canonical"
-  href="
-    {%- if page['canonical-link'] -%}
-      {{- site.url -}}
-      {{- page['canonical-link'] | escape -}}
-    {%- else -%}
-      {{- site.url -}}
-      {{- page.url | escape -}}
-    {%- endif -%}
-  "
+  href="{%- if page.canonical_link -%}{{site.url}}{{page.canonical_link}}{%- else -%}{{ site.url | escape }}{{ clean_page_url }}{%- endif -%}"
 >
