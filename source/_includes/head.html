@@ -26,8 +26,8 @@
 {%- if last_part == 'index' -%}
   {%- assign clean_parts = path_parts | pop -%}
   {%- assign clean_page_url = clean_parts | join: '/' -%}
+  {%- assign clean_page_url = clean_page_url | append: '/' -%}
   {%- comment -%} Handle the edge case where the path was just '/index' {%- endcomment -%}
-  {%- if clean_page_url == '' -%}{% assign clean_page_url = '/' %}{% endif -%}
 {%- else -%}
   {%- comment -%} The path doesn't end in 'index', so use it as-is {%- endcomment -%}
   {%- assign clean_page_url = raw_path -%}
