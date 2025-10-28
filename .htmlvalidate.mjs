@@ -9,7 +9,7 @@ export default defineConfig({
       "error",
       {
         allowExternal: {
-          exclude: ["\\\\?utm_source=chatgpt.com"],
+          exclude: ["utm_"],
         },
         allowRelative: {
           exclude: [".htm[l]?$"],
