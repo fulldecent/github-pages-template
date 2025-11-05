@@ -65,13 +65,13 @@
     "advice": "Favicon.ico is allowed for browser compatibility"
   },
   {
-    "path": "[^a-z0-9/.-]",
+    "path": ".",
     "dirty": true,
     "advice": "URLs must only use lowercase ASCII letters, numbers and dashes (except for the locale prefix, e.g., /en-US/...)"
   },
   {
-    "path": "^/[a-z]{2,3}-[A-Z]{2}/[a-z0-9/.-]+$",
+    "path": "^[a-z0-9/.-]*(/[a-z]+-[A-Z]{2}/)?[a-z0-9/.-]*$",
     "dirty": false,
-    "advice": "A URL with a locale prefix is allowed"
-  } 
+    "advice": "A valid URL with lowercase ASCII letters, numbers and dashes (except for the locale prefix, e.g., /en-US/...)"
+  }
 ]
