@@ -27,7 +27,8 @@ jobs:
       - name: Setup Ruby # See https://www.ruby-lang.org/en/downloads/branches/
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2 # Not needed with a .ruby-version file
+          # Match Ruby version from https://github.com/github/pages-gem/blob/master/.ruby-version
+          ruby-version: 3.3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Build site
         run: bundle exec jekyll build
