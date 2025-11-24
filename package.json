@@ -9,13 +9,13 @@
   ],
   "license": "UNLICENSED",
   "devDependencies": {
-    "@fulldecent/nice-checkers-plugin": "^1.0.0",
+    "@fulldecent/nice-checkers-plugin": "^1.1.2",
     "@shopify/prettier-plugin-liquid": "^1.10.0",
     "cheerio": "^1.1.2",
     "css": "^3.0.0",
-    "glob": "^11.0.3",
-    "html-validate": "^10.0.0",
-    "markdownlint-cli2": "^0.18.1",
+    "glob": "^13.0.0",
+    "html-validate": "^10.4.0",
+    "markdownlint-cli2": "^0.19.1",
     "prettier": "^3.6.2"
   },
   "scripts": {
