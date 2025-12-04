@@ -69,12 +69,24 @@ async function validateParallel() {
   const workers = [];
   const taskQueue = [...targets];
 
+  // Debouncing state
+  let lastSuccessReportTime = 0;
+  let pendingSuccessCount = 0;
+  let lastSuccessFilePath = null;
+  const DEBOUNCE_INTERVAL = 2000; // 2 seconds
+
   let isDone = false;
   function completeParallelProcessing() {
     if (isDone) return;
     isDone = true;
 
     workers.forEach((worker) => worker.terminate());
+
+    // Report any remaining successful files
+    if (pendingSuccessCount > 0 && lastSuccessFilePath) {
+      const relativeFilePath = path.relative(process.cwd(), lastSuccessFilePath);
+      console.log(`✅ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
+    }
 
     const failedResults = results.filter((r) => !r.isValid);
     const passedCount = results.length - failedResults.length;
@@ -108,7 +120,16 @@ async function validateParallel() {
           console.log(`- ${line}`);
         });
       } else {
-        console.log(`✅ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
+        // Debounce successful file reports
+        const now = Date.now();
+        pendingSuccessCount++;
+        lastSuccessFilePath = result.filePath;
+        
+        if (now - lastSuccessReportTime >= DEBOUNCE_INTERVAL) {
+          console.log(`✅ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
+          lastSuccessReportTime = now;
+          pendingSuccessCount = 0;
+        }
       }
 
       if (taskQueue.length > 0) {
