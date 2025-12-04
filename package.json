@@ -25,9 +25,10 @@
     "format-all": "yarn prettier --cache --cache-location=cache/.prettiercache --write . && yarn markdownlint-cli2 --fix '**/*.md'",
     "build": "bundle exec jekyll build",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
-    "test": "sh -c 'yarn test:html-validate \"$@\" && yarn test:dirty-file-paths-checker \"$@\"' --",
+    "test": "sh -c 'yarn test:html-validate \"$@\" && yarn test:dirty-file-paths-checker \"$@\" && yarn test:unused-assets' --",
     "test:html-validate": "node test/html-validate.mjs",
     "test:dirty-file-paths-checker": "node test/dirty-file-paths-checker.mjs",
+    "test:unused-assets": "node test/unused-assets.mjs",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
   "packageManager": "yarn@4.10.3",
