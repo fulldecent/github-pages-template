@@ -62,6 +62,8 @@ And automatically fix with:
 yarn format-all
 ```
 
+**Note:** Prettier caching is enabled using the `cache/` folder to speed up formatting checks. The cache is only written during `--write` operations (not `--check`), so CI environments should not expect cache benefits on lint-only operations.
+
 ### Testing
 
 Perform website testing (you must have already [built the site](#build-the-site))
