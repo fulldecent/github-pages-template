@@ -124,7 +124,7 @@ async function validateParallel() {
         const now = Date.now();
         pendingSuccessCount++;
         lastSuccessFilePath = result.filePath;
-        
+
         if (now - lastSuccessReportTime >= DEBOUNCE_INTERVAL) {
           console.log(`✅ (${completedTasks} of ${targets.length}) ${relativeFilePath}`);
           lastSuccessReportTime = now;
