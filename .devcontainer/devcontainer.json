@@ -4,9 +4,9 @@
 
 {
   "name": "Node.js & Eleventy",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:lts",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "features": {},
-  "postCreateCommand": "/bin/sh -c 'corepack enable && yarn install --immutable'",
+  "postCreateCommand": "COREPACK_ENABLE_DOWNLOAD_PROMPT=0 /bin/sh -c 'sudo corepack enable && corepack prepare yarn@4.12.0 --activate && yarn install --immutable'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]
