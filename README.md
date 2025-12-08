@@ -59,7 +59,7 @@ yarn lint
 And automatically fix with:
 
 ```sh
-yarn format-all
+yarn format
 ```
 
 **Note:** Prettier caching is enabled using the `cache/` folder to speed up formatting checks. The cache is only written during `--write` operations (not `--check`), so CI environments should not expect cache benefits on lint-only operations.
