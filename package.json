@@ -22,7 +22,7 @@
     "lint": "sh -c 'yarn lint:prettier \"$@\" && yarn lint:markdown \"$@\"' --",
     "lint:prettier": "sh -c 'yarn prettier --cache --cache-location=cache/.prettiercache --check ${@:-\".\"}' --",
     "lint:markdown": "sh -c 'yarn markdownlint-cli2 ${@:-\"**/*.md\"}' --",
-    "format-all": "yarn prettier --cache --cache-location=cache/.prettiercache --write . && yarn markdownlint-cli2 --fix '**/*.md'",
+    "format": "sh -c 'yarn prettier --cache --cache-location=cache/.prettiercache --write ${@:-\".\"} && yarn markdownlint-cli2 --fix ${@:-\"**/*.md\"}' --",
     "build": "bundle exec jekyll build",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
     "test": "sh -c 'yarn test:html-validate \"$@\" && yarn test:dirty-file-paths-checker \"$@\" && yarn test:unused-assets' --",
