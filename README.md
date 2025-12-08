@@ -1,6 +1,6 @@
-# Horses website (🔨 UPDATE THIS AFTER YOU "USE TEMPLATE")
+# Horses website (🔨 update this after you "use template")
 
-##   Updating content
+## Updating content
 
 🔨 Add specific notes here about content style guides or how contributors can work together to update content on your site.
 
@@ -8,44 +8,30 @@
 
 ### Setup local environment
 
-_In production (GitHub Actions), environment is setup by workflows in [.github/workflows/](.github/workflows/)._
+Use Node and yarn (see version in `packageManager`). Quick start with nvm:
 
-Use VS Code and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), install a Docker host (on Mac, use [OrbStack](https://orbstack.dev/)) then run VS Code command "Reopen in Container".
+```sh
+nvm install
+nvm use
+yarn install
+```
 
-Or if you do not want VS Code or the Docker setup, install your environment manually:
-
-1. Install Ruby (use version in [build-test-deploy.yml](https://github.com/fulldecent/github-pages-template/blob/main/.github/workflows/build-test-deploy.yml) in "Setup Ruby", (try [rbenv](https://github.com/rbenv/rbenv))
-
-2. Install Jekyll:
-
-   ```sh
-   gem update --system
-   gem install bundler
-   bundle install
-   ```
-
-3. Install Node & yarn, use version in build-test-deploy.yml in "Setup Node.js", (try nvm):
-
-   ```sh
-   nvm install # uses our .nvmrc
-   nvm use # uses our .nvmrc
-   yarn install
-   ```
+You can also open this folder in VS Code and use "Reopen in Container" if you prefer a Dev Container setup.
 
 ### Build the site
 
-Build the HTML website.
+Build the static HTML into `build/` with Eleventy.
 
 ```sh
 yarn build
 ```
 
-Access your site at <http://127.0.0.1:4000> (or see other "server address" in console output).
-
 ### Serve/run the site
 
+Run a local server with live reload on port 4000.
+
 ```sh
-bundle exec jekyll serve --livereload
+yarn serve
 ```
 
 ### Linting
@@ -66,40 +52,22 @@ yarn format-all
 
 ### Testing
 
-Perform website testing (you must have already [built the site](#build-the-site))
-
-:warning: `yarn build` produces different files than `bundle exec jekyll serve`. And the test suite may have false positives if you test the `serve` output.
+Perform website testing after you [build the site](#build-the-site):
 
 ```sh
 yarn test
 ```
 
-This tests structured data (JSON+LD), hyperlinks and other best practices on each page. This done using [HTML-validate](https://html-validate.org/) and [Nice Checkers](https://github.com/fulldecent/html-validate-nice-checkers).
+This runs HTML validation, link checks, and other best practices on each page using [HTML-validate](https://html-validate.org/) and [Nice Checkers](https://github.com/fulldecent/html-validate-nice-checkers).
 
-## Notes for VS Code
+## Why Eleventy instead of Jekyll
 
-Open this folder in VS Code, allow the "Reopen in Container" and install recommended extensions.
-
-This will give you formatting, linting, and other tools to help you develop.
-
-## Maintenance: updating dependencies
-
-Do this every month or so and please send a PR here if you see updates available:
-
-```sh
-yarn set version latest && yarn # Send PR
-yarn upgrade-interactive # Send PR
-```
-
-Also you can run this to update your environment to match the GitHub Pages (no PR, this is in .gitignore):
-
-```sh
-bundle update --conservative # "--consersative" ignores updates that GitHub Pages is not using
-```
+- Node-only tooling keeps setup lean while still producing GitHub Pages-ready HTML
+- Liquid templates stay compatible with the prior Jekyll structure
+- Fast local rebuilds and live reload with Eleventy 3
+- Output matches the earlier Jekyll build (differences only allowed in whitespace)
 
 ## References
 
-1. This website is built based on [best practices documented in github-pages-template](https://github.com/fulldecent/github-pages-template).
-2. Setting up Docker
-   1. We would prefer an open-source-licensed Docker implementation that runs at native speed on Mac, Linux and Windows. For Mac, you may prefer to [install Colima](https://github.com/abiosoft/colima?tab=readme-ov-file#installation) which is open source but about 5x slower than the OrbStack recommended above.
-3. We use the github-pages gem instead of Jekyll because GitHub Pages [uses those specific versions](https://pages.github.com/versions/) instead of what is in your Gemfile.lock. This is also why we add Gemfile.lock to .gitignore.
+1. This website follows best practices documented in <https://github.com/fulldecent/github-pages-template>.
+2. An Eleventy starter that mirrors this work lives at <https://github.com/fulldecent/github-pages-eleventy-template>.

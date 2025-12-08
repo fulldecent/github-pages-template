@@ -9,6 +9,7 @@
   ],
   "license": "UNLICENSED",
   "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
     "@fulldecent/nice-checkers-plugin": "^1.2.0",
     "@shopify/prettier-plugin-liquid": "^1.10.0",
     "cheerio": "^1.1.2",
@@ -23,7 +24,8 @@
     "lint:prettier": "sh -c 'yarn prettier --cache --cache-location=cache/.prettiercache --check ${@:-\".\"}' --",
     "lint:markdown": "sh -c 'yarn markdownlint-cli2 ${@:-\"**/*.md\"}' --",
     "format-all": "yarn prettier --cache --cache-location=cache/.prettiercache --write . && yarn markdownlint-cli2 --fix '**/*.md'",
-    "build": "bundle exec jekyll build",
+    "build": "ELEVENTY_RUN_MODE=build yarn eleventy",
+    "serve": "yarn eleventy --serve --watch --port 4000",
     "generate-sitemap": "node scripts/generate-sitemap.mjs",
     "test": "sh -c 'yarn test:html-validate \"$@\" && yarn test:dirty-file-paths-checker \"$@\" && yarn test:unused-assets' --",
     "test:html-validate": "node test/html-validate.mjs",

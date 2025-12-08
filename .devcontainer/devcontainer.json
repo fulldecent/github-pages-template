@@ -1,23 +1,12 @@
 // Documentation:
-//  - https://github.com/devcontainers/images/tree/main/src/jekyll
 //  - https://github.com/devcontainers/features/tree/main/src/node
 //  - https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions
 
 {
-  "name": "Jekyll",
-  "image": "mcr.microsoft.com/devcontainers/jekyll",
-  "features": {
-    // The devcontainers/jekyll comes with the wrong Ruby version
-    "ghcr.io/devcontainers/features/ruby:1": {
-      "version": "3.3"
-    },
-    // Install latest stable Node (we use for validation scripts after build)
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts",
-      "installYarnUsingApt": false // We use Yarn 4, so we don't want to install Yarn using apt
-    }
-  },
-  "postCreateCommand": "/bin/sh -c 'corepack enable && corepack pack && yarn install --immutable'",
+  "name": "Node.js & Eleventy",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:lts",
+  "features": {},
+  "postCreateCommand": "/bin/sh -c 'corepack enable && yarn install --immutable'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]

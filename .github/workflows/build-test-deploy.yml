@@ -18,20 +18,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build using Jekyll, and Node.js, save GitHub Pages artifact and build artifact
+  # Build using Eleventy, save GitHub Pages artifact and build artifact
   build:
-    name: Jekyll build
+    name: Eleventy build
     runs-on: ubuntu-latest
+    env:
+      # For repository named username.github.io, use https://username.github.io
+      # For other repositories, use https://username.github.io/repository-name
+      SITE_URL: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && format('https://{0}.github.io', github.repository_owner) || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
     steps:
       - uses: actions/checkout@v5
-      - name: Setup Ruby # See https://www.ruby-lang.org/en/downloads/branches/
-        uses: ruby/setup-ruby@v1
-        with:
-          # Match Ruby version from https://github.com/github/pages-gem/blob/master/.ruby-version
-          ruby-version: 3.3 # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Build site
-        run: bundle exec jekyll build
 
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
@@ -49,11 +45,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Build site
+        run: yarn build
+
       - name: Generate sitemap
-        env:
-          # For repository named username.github.io, use https://username.github.io
-          # For other repositories, use https://username.github.io/repository-name
-          SITE_URL: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && format('https://{0}.github.io', github.repository_owner) || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: yarn run generate-sitemap
       - name: Upload build artifact, ready for GitHub Pages deployment
         uses: actions/upload-pages-artifact@v4
@@ -63,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: build/ # the Jekyll build directory
+          path: build/ # the Eleventy build directory
           include-hidden-files: true # Workaround https://github.com/actions/upload-artifact/issues/610
 
   # Test the build artifact

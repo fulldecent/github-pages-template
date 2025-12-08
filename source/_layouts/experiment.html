@@ -7,22 +7,20 @@
 #     - Add targets to front matter like: "targets: ['/variant-1', '/variant-2']"
 #   2. On each variant page (e.g. /variant-1.html)
 #     - Add to front matter a canonical-link key with the same value as the original page. Remember the this URL must
-#       start with a slash and be relative to the site root defined in _config.yml
-
-layout: null
+#       start with a slash and be relative to the site root defined in eleventy.config.js
 ---
 <!doctype html>
-<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<html lang="{{ lang | default: site.lang | default: 'en' }}">
   <head>
-    {% include head.html %}
+    {% include "head.html" %}
     <meta
       name="description"
-      lang="{{ page.lang | default: site.lang | default: 'en' }}"
-      content="{%- if page.description -%}{{page.description}}{%- else -%}{{site.description}}{%- endif -%}"
+      lang="{{ lang | default: site.lang | default: 'en' }}"
+      content="{%- if description -%}{{description}}{%- else -%}{{site.description}}{%- endif -%}"
     >
     <script>
-      const experimentId = {{ page.experiment_id | jsonify }};
-      const targets = {{ page.variants | jsonify }};
+      const experimentId = {{ experiment_id | jsonify }};
+      const targets = {{ variants | jsonify }};
 
       async function redirectToTarget() {
         // Retrieve or set the bucket value (random 0-99) for this visitor
@@ -52,8 +50,7 @@ layout: null
       <h1>We're conducting an experiment.</h1>
       <p>Please click on one of the URLs below to continue:</p>
       <ul>
-        {%- assign size = page.variants | size -%}
-        {%- assign shuffled_variants = page.variants | sample: size -%}
+        {%- assign shuffled_variants = variants | shuffle -%}
         {%- for variant in shuffled_variants %}
           <li>
             <a href="{{ variant | escape }}">{{ variant | escape }}</a>
