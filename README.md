@@ -45,7 +45,7 @@ Access your site at <http://127.0.0.1:4000> (or see other "server address" in co
 ### Serve/run the site
 
 ```sh
-bundle exec jekyll serve --livereload
+yarn dev
 ```
 
 ### Linting
@@ -62,7 +62,17 @@ And automatically fix with:
 yarn format
 ```
 
-**Note:** Prettier caching is enabled using the `cache/` folder to speed up formatting checks. The cache is only written during `--write` operations (not `--check`), so CI environments should not expect cache benefits on lint-only operations.
+You can also run these commands on specific files:
+
+```sh
+yarn lint source/index.html README.md
+yarn format source/index.html README.md
+```
+
+**Notes:**
+- Prettier caching is enabled using the `cache/` folder to speed up formatting checks. The cache is only written during `--write` operations (not `--check`), so CI environments should not expect cache benefits on lint-only operations.
+- Markdown files (`.md`) are formatted by markdownlint, not Prettier (see `.prettierignore`).
+- When you pass specific files, only `.md` files are processed by markdownlint; other file types are silently skipped.
 
 ### Testing
 
