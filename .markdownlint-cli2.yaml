@@ -34,3 +34,5 @@ config:
   ol-prefix: false
   strong-style: false
   ul-: false
+  no-duplicate-heading:
+    siblings_only: true
