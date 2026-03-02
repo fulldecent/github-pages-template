@@ -35,14 +35,25 @@ layout: null
         // Hash the experiment ID and bucket value reproducibly into a random number
         const encoder = new TextEncoder();
         const data = encoder.encode(experimentId + bucket);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashBuffer = await crypto
+          .subtle
+          .digest('SHA-256', data);
         const randomNumber = new DataView(hashBuffer).getUint32(0, true);
 
         // Select a target
         const target = targets[randomNumber % targets.length];
 
-        // Replace the current history entry with the new one
-        window.location.replace(target);
+        // Replace the current history entry with the new one, preserving query parameters and fragments
+        const destinationUrl = new URL(target, window.location.href);
+        if (!destinationUrl.search) {
+          destinationUrl.search = window.location.search;
+        }
+        if (!destinationUrl.hash) {
+          destinationUrl.hash = window.location.hash;
+        }
+        window
+          .location
+          .replace(destinationUrl.toString());
       }
       redirectToTarget();
     </script>
