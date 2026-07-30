@@ -23,12 +23,11 @@ jobs:
     name: Jekyll build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Setup Ruby # See https://www.ruby-lang.org/en/downloads/branches/
         uses: ruby/setup-ruby@v1
         with:
-          # Match Ruby version from https://github.com/github/pages-gem/blob/master/.ruby-version
-          ruby-version: 3.3 # Not needed with a .ruby-version file
+          ruby-version: .ruby-version # Kept in sync with https://pages.github.com/versions.json
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Build site
         run: bundle exec jekyll build
@@ -36,14 +35,17 @@ jobs:
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
+          corepack enable
+          corepack prepare yarn@4.18.0 --activate
       - name: Configure dependency cache
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           cache: yarn
       - name: Install dependencies
@@ -56,11 +58,11 @@ jobs:
           SITE_URL: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && format('https://{0}.github.io', github.repository_owner) || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
         run: yarn build:sitemap
       - name: Upload build artifact, ready for GitHub Pages deployment
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: build/
       - name: Upload build artifact, ready for testing
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifact
           path: build/ # the Jekyll build directory
@@ -72,31 +74,34 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
+          corepack enable
+          corepack prepare yarn@4.18.0 --activate
       - name: Configure dependency cache
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           cache: yarn
       - name: Install dependencies
         run: yarn install --immutable
 
       - name: Download build artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: build-artifact
           path: build/
       - name: Restore testing cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: cache/
           key: test-cache
@@ -105,7 +110,7 @@ jobs:
       - name: Test suite
         run: yarn run test
       - name: Save testing cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         if: always()
         with:
           path: cache/
@@ -123,4 +128,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
