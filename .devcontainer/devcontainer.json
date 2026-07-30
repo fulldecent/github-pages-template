@@ -7,17 +7,20 @@
   "name": "Jekyll",
   "image": "mcr.microsoft.com/devcontainers/jekyll",
   "features": {
-    // The devcontainers/jekyll comes with the wrong Ruby version
-    "ghcr.io/devcontainers/features/ruby:1": {
-      "version": "3.3"
+    // Install rbenv (no Ruby yet); postCreateCommand installs the version from .ruby-version
+    "ghcr.io/devcontainers/features/ruby:2": {
+      "version": "none",
+      "versionManager": "rbenv"
     },
-    // Install latest stable Node (we use for validation scripts after build)
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts",
-      "installYarnUsingApt": false // We use Yarn 4, so we don't want to install Yarn using apt
+    // Install nvm (no Node yet); postCreateCommand installs the version from .nvmrc
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "none",
+      "pnpmVersion": "none", // We use Yarn 4 via Corepack
+      "installYarnUsingApt": false // We use Yarn 4 via Corepack
     }
   },
-  "postCreateCommand": "/bin/sh -c 'corepack enable && corepack pack && yarn install --immutable'",
+  // Ruby and Node versions come from .ruby-version and .nvmrc (single source of truth, shared with CI)
+  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; source \"$NVM_DIR/nvm.sh\"; nvm install; nvm use; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]

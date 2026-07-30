@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
@@ -20,14 +20,17 @@ jobs:
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
+          corepack enable
+          corepack prepare yarn@4.18.0 --activate
       - name: Configure dependency cache
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           cache: yarn
       - name: Install dependencies
@@ -42,21 +45,24 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
 
       # Installing Node + modern Yarn on GitHub Actions requires hack
       # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - name: Enable Corepack
-        run: corepack enable
+        run: |
+          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
+          corepack enable
+          corepack prepare yarn@4.18.0 --activate
       - name: Configure dependency cache
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           cache: yarn
       - name: Install dependencies

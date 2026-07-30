@@ -14,7 +14,12 @@ Use VS Code and the [Dev Containers extension](https://marketplace.visualstudio.
 
 Or if you do not want VS Code or the Docker setup, install your environment manually:
 
-1. Install Ruby (use version in [build-test-deploy.yml](https://github.com/fulldecent/github-pages-template/blob/main/.github/workflows/build-test-deploy.yml) in "Setup Ruby", (try [rbenv](https://github.com/rbenv/rbenv))
+1. Install Ruby to match GitHub Pages. The version is pinned in [.ruby-version](.ruby-version). On Mac, use [rbenv](https://github.com/rbenv/rbenv), which reads that file automatically:
+
+   ```sh
+   brew install rbenv
+   rbenv install # installs the version from .ruby-version
+   ```
 
 2. Install Jekyll:
 
@@ -105,6 +110,12 @@ Also you can run this to update your environment to match the GitHub Pages (no P
 
 ```sh
 bundle update --conservative # "--consersative" ignores updates that GitHub Pages is not using
+```
+
+Keep [.ruby-version](.ruby-version) matching [the Ruby that GitHub Pages runs](https://pages.github.com/versions/) (used by CI, the dev container, and rbenv locally):
+
+```sh
+curl -s https://pages.github.com/versions.json | jq -r .ruby > .ruby-version # Send PR if changed
 ```
 
 ## References
