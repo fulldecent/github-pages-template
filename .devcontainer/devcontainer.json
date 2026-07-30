@@ -7,11 +7,6 @@
   "name": "Jekyll",
   "image": "mcr.microsoft.com/devcontainers/jekyll",
   "features": {
-    // Install rbenv (no Ruby yet); postCreateCommand installs the version from .ruby-version
-    "ghcr.io/devcontainers/features/ruby:2": {
-      "version": "none",
-      "versionManager": "rbenv"
-    },
     // Install nvm (no Node yet); postCreateCommand installs the version from .nvmrc
     "ghcr.io/devcontainers/features/node:2": {
       "version": "none",
