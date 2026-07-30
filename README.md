@@ -18,7 +18,8 @@ Or if you do not want VS Code or the Docker setup, install your environment manu
 
    ```sh
    brew install rbenv
-   rbenv install # installs the version from .ruby-version
+   rbenv install # installs the Ruby version from .ruby-version
+   eval "$(rbenv init -)" # activate rbenv now
    ```
 
 2. Install Jekyll:
