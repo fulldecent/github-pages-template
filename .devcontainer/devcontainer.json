@@ -20,7 +20,7 @@
     }
   },
   // Ruby and Node versions come from .ruby-version and .nvmrc (single source of truth, shared with CI)
-  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; source \"$NVM_DIR/nvm.sh\"; nvm install; nvm use; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
+  "postCreateCommand": "rbenv install --skip-existing && rbenv rehash && . \"$NVM_DIR/nvm.sh\" && nvm install && nvm use && npm install -g corepack && corepack enable && corepack install && yarn install --immutable && bundle install",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]
