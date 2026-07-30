@@ -15,8 +15,8 @@
     }
   },
   // Ruby and Node versions come from .ruby-version and .nvmrc (single source of truth, shared with CI)
-  // We depend on the Jekyll image having rbenv + ruby-build installed
-  "postCreateCommand": "rbenv install --skip-existing && rbenv rehash && . \"$NVM_DIR/nvm.sh\" && nvm install && nvm use && npm install -g corepack && corepack enable && corepack install && yarn install --immutable && bundle install",
+  // We depend on the Jekyll image having RVM + ruby-build installed
+  "postCreateCommand": "bash -lc 'set -e; source /usr/local/rvm/scripts/rvm; rvm install \"$(tr -d \"[:space:]\" < .ruby-version)\"; rvm use \"$(tr -d \"[:space:]\" < .ruby-version)\" --default; . \"$NVM_DIR/nvm.sh\"; nvm install; nvm use; npm install -g corepack; corepack enable; corepack install; yarn install --immutable; bundle install'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]
