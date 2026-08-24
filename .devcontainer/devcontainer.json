@@ -1,28 +1,40 @@
 // Documentation:
-//  - https://github.com/devcontainers/images/tree/main/src/jekyll
-//  - https://github.com/devcontainers/features/tree/main/src/node
-//  - https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions
-
+// - https://github.com/devcontainers/images/tree/main/src/jekyll
+// - https://github.com/devcontainers/features/tree/main/src/ruby
+// - https://github.com/devcontainers/features/tree/main/src/node
 {
   "name": "Jekyll",
   "image": "mcr.microsoft.com/devcontainers/jekyll",
+
   "features": {
-    // Install rbenv (no Ruby yet); postCreateCommand installs the version from .ruby-version
+    // Install rbenv only. Let .ruby-version drive the actual Ruby.
     "ghcr.io/devcontainers/features/ruby:2": {
       "version": "none",
       "versionManager": "rbenv"
     },
-    // This feature cannot read .node-version, so update this pin alongside that file
+
+    // Pin Node. We manage Yarn ourselves via Corepack.
     "ghcr.io/devcontainers/features/node:2": {
       "version": "24",
-      "pnpmVersion": "none", // We use Yarn 4 via Corepack
-      "installYarnUsingApt": false // We use Yarn 4 via Corepack
+      "pnpmVersion": "none",
+      "installYarnUsingApt": false
     }
   },
-  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
+
+  "postCreateCommand": "bash -c 'set -euo pipefail; rbenv install --skip-existing; rbenv rehash; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
+
   "customizations": {
     "vscode": {
-      "extensions": ["html-validate.vscode-html-validate"]
+      "extensions": [
+        "html-validate.vscode-html-validate",
+        "Shopify.ruby-lsp"
+      ]
     }
+  },
+
+  "forwardPorts": [4000, 35729],
+  "portsAttributes": {
+    "4000": { "label": "Jekyll" },
+    "35729": { "label": "Live Reload" }
   }
 }
