@@ -12,15 +12,14 @@
       "version": "none",
       "versionManager": "rbenv"
     },
-    // Install nvm (no Node yet); postCreateCommand installs the version from .nvmrc
+    // This feature cannot read .node-version, so update this pin alongside that file
     "ghcr.io/devcontainers/features/node:2": {
-      "version": "none",
+      "version": "24",
       "pnpmVersion": "none", // We use Yarn 4 via Corepack
       "installYarnUsingApt": false // We use Yarn 4 via Corepack
     }
   },
-  // Ruby and Node versions come from .ruby-version and .nvmrc (single source of truth, shared with CI)
-  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; source \"$NVM_DIR/nvm.sh\"; nvm install; nvm use; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
+  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]

@@ -32,22 +32,16 @@ jobs:
       - name: Build site
         run: bundle exec jekyll build
 
-      # Installing Node + modern Yarn on GitHub Actions requires hack
-      # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
-      - name: Install Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          package-manager-cache: false
+      # Update this when Yarn no longer recommends Corepack
+      # See: https://yarnpkg.com/getting-started/install
       - name: Enable Corepack
-        run: |
-          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
-          corepack enable
-          corepack prepare yarn@4.18.0 --activate
-      - name: Configure dependency cache
+        run: corepack enable
+      - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
+          node-version-file: .node-version
           cache: yarn
+          cache-dependency-path: yarn.lock
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -76,22 +70,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Installing Node + modern Yarn on GitHub Actions requires hack
-      # https://github.com/actions/setup-node/issues/531#issuecomment-2960522861
-      - name: Install Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          package-manager-cache: false
+      # Update this when Yarn no longer recommends Corepack
+      # See: https://yarnpkg.com/getting-started/install
       - name: Enable Corepack
-        run: |
-          if ! command -v corepack >/dev/null 2>&1; then npm install -g corepack; fi
-          corepack enable
-          corepack prepare yarn@4.18.0 --activate
-      - name: Configure dependency cache
+        run: corepack enable
+      - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
+          node-version-file: .node-version
           cache: yarn
+          cache-dependency-path: yarn.lock
       - name: Install dependencies
         run: yarn install --immutable
 

@@ -30,11 +30,12 @@ Or if you do not want VS Code or the Docker setup, install your environment manu
    bundle install
    ```
 
-3. Install Node & yarn, use version in build-test-deploy.yml in "Setup Node.js", (try nvm):
+3. Install Node.js with [fnm](https://github.com/Schniz/fnm). The latest LTS version is pinned in [.node-version](.node-version):
 
    ```sh
-   nvm install # uses our .nvmrc
-   nvm use # uses our .nvmrc
+   fnm install
+   fnm use
+   corepack enable
    yarn install
    ```
 
