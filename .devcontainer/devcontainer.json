@@ -1,17 +1,11 @@
 // Documentation:
-//  - https://github.com/devcontainers/images/tree/main/src/jekyll
+//  - https://github.com/devcontainers/images/tree/main/src/jekyll # Don't use, it pegs Ruby 3.4
 //  - https://github.com/devcontainers/features/tree/main/src/node
-//  - https://code.visualstudio.com/docs/remote/ssh#_always-installed-extensions
 
 {
   "name": "Jekyll",
-  "image": "mcr.microsoft.com/devcontainers/jekyll",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3-bookworm", // We want 3.3.4 exactly but let's try this
   "features": {
-    // Install rbenv (no Ruby yet); postCreateCommand installs the version from .ruby-version
-    "ghcr.io/devcontainers/features/ruby:2": {
-      "version": "none",
-      "versionManager": "rbenv"
-    },
     // This feature cannot read .node-version, so update this pin alongside that file
     "ghcr.io/devcontainers/features/node:2": {
       "version": "24",
@@ -19,7 +13,7 @@
       "installYarnUsingApt": false // We use Yarn 4 via Corepack
     }
   },
-  "postCreateCommand": "/bin/bash -c 'set -e; rbenv install --skip-existing; rbenv rehash; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
+  "postCreateCommand": "/bin/sh -c 'set -e; npm install -g corepack; corepack enable; corepack prepare yarn@4.18.0 --activate; yarn install --immutable; bundle install'",
   "customizations": {
     "vscode": {
       "extensions": ["html-validate.vscode-html-validate"]

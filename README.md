@@ -114,7 +114,7 @@ Also you can run this to update your environment to match the GitHub Pages (no P
 bundle update --conservative # "--consersative" ignores updates that GitHub Pages is not using
 ```
 
-Keep [.ruby-version](.ruby-version) matching [the Ruby that GitHub Pages runs](https://pages.github.com/versions/) (used by CI, the dev container, and rbenv locally):
+Keep [.ruby-version](.ruby-version) matching [the Ruby that GitHub Pages runs](https://pages.github.com/versions.json) (used by CI, the dev container, and rbenv locally):
 
 ```sh
 curl -s https://pages.github.com/versions.json | jq -r .ruby > .ruby-version # Send PR if changed
