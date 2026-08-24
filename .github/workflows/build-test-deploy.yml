@@ -125,7 +125,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 18 # https://github.com/search?q=repo%3AGoogleChrome%2Flighthouse-ci+engines&type=code
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.15.x
       - name: Run Lighthouse CI
