@@ -104,6 +104,33 @@ jobs:
           path: cache/
           key: test-cache
 
+  # Lighthouse
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: build-artifact
+          path: build/
+      - name: Create extensionless URL symlinks
+        run: |
+          find build -name "*.html" -type f | while read file; do
+            dir=$(dirname "$file")
+            base=$(basename "$file" .html)
+            ln -sf "$(basename "$file")" "$dir/$base"
+          done
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 18 # https://github.com/search?q=repo%3AGoogleChrome%2Flighthouse-ci+engines&type=code
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.15.x
+      - name: Run Lighthouse CI
+        run: lhci autorun
+
   # Deploy the GitHub Pages artifact
   deploy-github-pages:
     name: Deploy to GitHub Pages
