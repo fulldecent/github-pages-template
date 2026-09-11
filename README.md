@@ -14,26 +14,18 @@ Use VS Code and the [Dev Containers extension](https://marketplace.visualstudio.
 
 Or if you do not want VS Code or the Docker setup, install your environment manually:
 
-1. Install Ruby to match GitHub Pages. The version is pinned in [.ruby-version](.ruby-version). On Mac, use [rbenv](https://github.com/rbenv/rbenv), which reads that file automatically:
+1. Install Ruby and gems to match GitHub Pages versions:
 
    ```sh
-   brew install rbenv
-   rbenv install # installs the Ruby version from .ruby-version
-   eval "$(rbenv init -)" # activate rbenv now
+   brew install rv # uses .ruby-version
+   rv ruby install
+   rv run bundle install
    ```
 
-2. Install Jekyll:
+2. Install Node.js, yarn and packages for utilities:
 
    ```sh
-   gem update --system
-   gem install bundler
-   bundle install
-   ```
-
-3. Install Node.js with [fnm](https://github.com/Schniz/fnm). The latest LTS version is pinned in [.node-version](.node-version):
-
-   ```sh
-   fnm install
+   fnm install # uses .node-version
    fnm use
    corepack enable
    yarn install
@@ -47,13 +39,13 @@ Build the HTML website.
 yarn build
 ```
 
-Access your site at <http://127.0.0.1:4000> (or see other "server address" in console output).
-
 ### Serve/run the site
 
 ```sh
 yarn dev
 ```
+
+Access your site at <http://127.0.0.1:4000> (or see other "server address" in console output).
 
 ### Linting
 
@@ -83,9 +75,7 @@ yarn format source/index.html README.md
 
 ### Testing
 
-Perform website testing (you must have already [built the site](#build-the-site))
-
-:warning: `yarn build` produces different files than `bundle exec jekyll serve`. And the test suite may have false positives if you test the `serve` output.
+Perform website testing (you must have already [built the site](#build-the-site)):
 
 ```sh
 yarn test
@@ -103,22 +93,26 @@ This will give you formatting, linting, and other tools to help you develop.
 
 Do this every month or so and please send a PR here if you see updates available:
 
-```sh
-yarn set version latest && yarn # Send PR
-yarn upgrade-interactive # Send PR
-```
+1. Update Node.js parts
+   
+   ```sh
+   curl -s https://nodejs.org/dist/index.json | jq -r '[.[] | select(.lts != false)][0].version' > .node-version
+   yarn set version latest && yarn
+   yarn upgrade-interactive
+   ```
+   
+2. Get updated Ruby + gems GitHub Pages uses, no PR for this, the lock file is git-ignored
+   
+   ```sh
+   curl -s https://pages.github.com/versions.json | jq -r .ruby > .ruby-version
+   rv ruby install
+   rv run bundle install
+   ```
+   
+3. Update versions in .github/workflows scripts to latest GitHub supported Action versions.
 
-Also you can run this to update your environment to match the GitHub Pages (no PR, this is in .gitignore):
+4. Update .devcontainer/devcontainer.json to use the latest Microsoft supported runners and matching versions per above.
 
-```sh
-bundle update --conservative # "--consersative" ignores updates that GitHub Pages is not using
-```
-
-Keep [.ruby-version](.ruby-version) matching [the Ruby that GitHub Pages runs](https://pages.github.com/versions.json) (used by CI, the dev container, and rbenv locally):
-
-```sh
-curl -s https://pages.github.com/versions.json | jq -r .ruby > .ruby-version # Send PR if changed
-```
 
 ## References
 

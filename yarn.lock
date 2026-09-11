@@ -5,9 +5,9 @@ __metadata:
   version: 10
   cacheKey: 10c0
 
-"@fulldecent/nice-checkers-plugin@npm:^1.3.7":
-  version: 1.3.7
-  resolution: "@fulldecent/nice-checkers-plugin@npm:1.3.7"
+"@fulldecent/nice-checkers-plugin@npm:^1.3.8":
+  version: 1.3.8
+  resolution: "@fulldecent/nice-checkers-plugin@npm:1.3.8"
   dependencies:
     better-sqlite3: "npm:^12.10.0"
     cheerio: "npm:^1.2.0"
@@ -17,7 +17,7 @@ __metadata:
   dependenciesMeta:
     better-sqlite3:
       built: true
-  checksum: 10c0/f402bfed7b655bbe51dc657a4e14a99eb3e6aa99d871985816495c1a4d93081c3fbe0b36dc9da0f573b897857755fa982251e53b0e8d99dc44b272db2986c103
+  checksum: 10c0/d44d264358cf67469b730c9336bf161b23f6a360943d2ac9326dccd63337b3fed2570c419675dd52337fd51e6ecd7eb3bf278631616508376bc97e73058d0514
   languageName: node
   linkType: hard
 
@@ -920,9 +920,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-validate@npm:^11.6.0":
-  version: 11.6.0
-  resolution: "html-validate@npm:11.6.0"
+"html-validate@npm:^11.15.0":
+  version: 11.15.0
+  resolution: "html-validate@npm:11.15.0"
   dependencies:
     "@html-validate/stylish": "npm:^6.0.0"
     "@sidvind/better-ajv-errors": "npm:7.0.0"
@@ -932,10 +932,10 @@ __metadata:
     semver: "npm:^7.0.0"
   peerDependencies:
     "@jest/globals": ^29.0.3 || ^30.0.0
-    "@vitest/expect": ^3.0.0 || ^4.0.1
+    "@vitest/expect": ^3.2.0 || ^4.0.1 || ^5.0.0
     jest: ^29.0.3 || ^30.0.0
     jest-snapshot: ^29.0.3 || ^30.0.0
-    vitest: ^3.0.0 || ^4.0.1
+    vitest: ^3.2.0 || ^4.0.1 || ^5.0.0
   peerDependenciesMeta:
     "@jest/globals":
       optional: true
@@ -949,7 +949,7 @@ __metadata:
       optional: true
   bin:
     html-validate: bin/html-validate.mjs
-  checksum: 10c0/12be26cee9df1233a8f027256b03298189af9bedae49be51a952fed5fa543d9216928f17606cff85f3f9db89f866aee9199c499a23e1397a9d9c55feff0b669a
+  checksum: 10c0/efcfae04b055a4f57340398595f94de3edd2156d6c04de214942780f7295e24eec7a23e0a718c149612707e3cf18dd710587d004eba042506aef1f3f0422e4cd
   languageName: node
   linkType: hard
 
@@ -2154,13 +2154,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fulldecent/nice-checkers-plugin": "npm:^1.3.7"
+    "@fulldecent/nice-checkers-plugin": "npm:^1.3.8"
     "@shopify/prettier-plugin-liquid": "npm:^1.11.0"
     cheerio: "npm:^1.2.0"
     css: "npm:^3.0.0"
     front-matter: "npm:^4.0.2"
     glob: "npm:^13.0.6"
-    html-validate: "npm:^11.6.0"
+    html-validate: "npm:^11.15.0"
     markdownlint-cli2: "npm:^0.23.2"
     prettier: "npm:^3.9.6"
     xml2js: "npm:^0.6.2"
