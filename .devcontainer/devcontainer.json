@@ -4,7 +4,7 @@
 
 {
   "name": "Jekyll",
-  "image": "mcr.microsoft.com/devcontainers/ruby:3.3-bookworm", // We want 3.3.4 exactly but let's try this
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3-bookworm", // Minor tag (3.3) must match .ruby-version. This image does not pin the patch; CI and rbenv do.
   "features": {
     // This feature cannot read .node-version, so update this pin alongside that file
     "ghcr.io/devcontainers/features/node:2": {
