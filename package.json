@@ -60,7 +60,7 @@
     "test:unused-assets": "node test/unused-assets.mjs",
     "postinstall": "yarn dlx @yarnpkg/sdks vscode"
   },
-  "packageManager": "yarn@4.18.0",
+  "packageManager": "yarn@4.18.1",
   "dependencies": {
     "front-matter": "^4.0.2",
     "xml2js": "^0.6.2"
