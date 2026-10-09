@@ -32,7 +32,7 @@
     "- Workaround: run tests individually or use CI/CD which may handle this differently.",
     "- The tests themselves pass correctly (see output), only the exit code is affected."
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "@fulldecent/nice-checkers-plugin": "^1.3.8",
     "@shopify/prettier-plugin-liquid": "^1.11.0",

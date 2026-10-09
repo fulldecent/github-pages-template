@@ -1,0 +1,43 @@
+name: Lint
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    # Runs on all pull requests targeting any branch
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Prettier & Markdownlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # Prettier has to run through Yarn. .prettierrc.js loads
+      # @shopify/prettier-plugin-liquid, and Yarn PnP is what resolves that plugin.
+      # The Node version is the one pinned in .node-version for the same reason.
+      # Update this when Yarn no longer recommends Corepack.
+      # See: https://yarnpkg.com/getting-started/install
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check formatting (Prettier)
+        run: yarn run lint:prettier
+
+      - name: Check Markdown (markdownlint)
+        # markdownlint-cli2 reads .markdownlint-cli2.yaml.
+        run: yarn run lint:markdown

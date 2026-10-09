@@ -1,16 +1,19 @@
-# For Jekyll
-.jekyll-metadata
-.jekyll-cache
+# macOS
+.DS_Store
+
+# Secrets. .env.example is the committed sample.
+.env
+.env.*
+!.env.example
+
+# Jekyll writes the site here. GitHub Pages publishes the CI artifact.
 /build
 
-# For our testing scripts
+# Test and Prettier caches
 /cache
 
-# For DS Store
-**/.DS_Store
-
-# Yarn Berry
-# Ideas: https://github.com/yarnpkg/berry/issues/454
+# Yarn Berry. Corepack reads packageManager in package.json, so this stays uncommitted.
+# https://github.com/yarnpkg/berry/issues/454
 /.yarn
 
 ################################################################################
