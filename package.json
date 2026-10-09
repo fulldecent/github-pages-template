@@ -36,22 +36,31 @@
     "- @yarnpkg/sdks depends on @yarnpkg/core ^4.9.1.",
     "- 4.9.2 declares got as a patch file under ~/.yarn/patches that exists only in the Yarn repository.",
     "- yarn dlx @yarnpkg/sdks fails with ENOENT on that patch. https://github.com/yarnpkg/berry/issues/7281",
-    "- resolutions pins @yarnpkg/core to 4.9.1, and postinstall runs the local sdks binary."
+    "- resolutions pins @yarnpkg/core to 4.9.1, and postinstall runs the local sdks binary.",
+    "",
+    "Transitive security overrides:",
+    "- ajv, brace-expansion, fast-uri, and undici are pinned in resolutions.",
+    "- html-validate and cheerio already allow these releases, and Yarn had locked older vulnerable ones.",
+    "- ajv 8.20.0, brace-expansion 5.0.12, fast-uri 3.1.8, undici 7.30.0."
   ],
   "license": "MIT",
   "devDependencies": {
-    "@fulldecent/nice-checkers-plugin": "^1.3.8",
-    "@shopify/prettier-plugin-liquid": "^1.11.0",
+    "@fulldecent/nice-checkers-plugin": "^1.3.11",
+    "@shopify/prettier-plugin-liquid": "^1.11.2",
     "@yarnpkg/sdks": "^3.3.1",
     "cheerio": "^1.2.0",
     "css": "^3.0.0",
     "glob": "^13.0.6",
-    "html-validate": "^11.15.0",
-    "markdownlint-cli2": "^0.23.2",
-    "prettier": "^3.9.6"
+    "html-validate": "^11.16.2",
+    "markdownlint-cli2": "^0.23.3",
+    "prettier": "^3.9.9"
   },
   "resolutions": {
-    "@yarnpkg/core": "4.9.1"
+    "@yarnpkg/core": "4.9.1",
+    "ajv": "8.20.0",
+    "brace-expansion": "5.0.12",
+    "fast-uri": "3.1.8",
+    "undici": "7.30.0"
   },
   "scripts": {
     "lint": "sh -c 'yarn lint:prettier \"$@\" && yarn lint:markdown \"$@\"' --",
