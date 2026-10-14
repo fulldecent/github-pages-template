@@ -73,7 +73,7 @@ Or install the toolchain on the host:
    yarn install
    ```
 
-   For a Node.js module or command-line tool, start from https://github.com/fulldecent/node.js-template.
+   For a Node.js module or command-line tool, start from [node.js-template](https://github.com/fulldecent/node.js-template).
 
 `yarn build:jekyll` and `yarn dev` run Jekyll through `rv run bundle exec`. A `bundle` taken from Homebrew uses a different Ruby than [.ruby-version](.ruby-version) and fails looking for `exe/bundle`.
 
