@@ -174,7 +174,7 @@ A change that needs a server at request time is outside this site. The page is f
 1. This project is released under the [MIT license](./LICENSE.md).
 1. [EditorConfig](.editorconfig) and the top of [.gitignore](.gitignore) are taken from project-template release 1.3.0. The rules that follow are `/build`, `/cache`, and `/.yarn`, then [GitHubPages.gitignore](https://github.com/github/gitignore/blob/main/GitHubPages.gitignore) and [Node.gitignore](https://github.com/github/gitignore/blob/main/Node.gitignore). The Node paste repeats the `.env` lines.
 1. Prettier runs through Yarn. [.prettierrc.js](.prettierrc.js) loads `@shopify/prettier-plugin-liquid` with `require.resolve`, which Yarn PnP resolves. Markdown uses [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) and [.markdownlint-cli2.yaml](.markdownlint-cli2.yaml), which extends `markdownlint/style/prettier` and limits `no-duplicate-heading` to siblings.
-1. `.yarnrc.yml` sets `enableScripts` so `better-sqlite3` can build, `npmMinimalAgeGate` to 0, and `approvedGitRepositories` to `"**"`. [Yarn: Security](https://yarnpkg.com/features/security)
+1. `.yarnrc.yml` sets `npmMinimalAgeGate` to 0 and `approvedGitRepositories` to `"**"`. [Yarn: Security](https://yarnpkg.com/features/security)
 1. We use the github-pages gem. GitHub Pages [builds with the versions on pages.github.com](https://pages.github.com/versions/) and ignores `Gemfile.lock`, which is why that file is gitignored. [pages-gem issue 768](https://github.com/github/pages-gem/issues/768)
 1. For Mac, [OrbStack](https://orbstack.dev/) runs the dev container. [Colima](https://github.com/abiosoft/colima?tab=readme-ov-file#installation) is an open-source Docker host and is about 5x slower for this workload.
 
